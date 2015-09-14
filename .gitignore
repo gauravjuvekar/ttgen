@@ -2,3 +2,4 @@ ttgen
 *.o
 *.taghl
 tags
+*~
