@@ -1,0 +1,4 @@
+ttgen
+*.o
+*.taghl
+tags
