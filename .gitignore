@@ -3,3 +3,5 @@ ttgen
 *.taghl
 tags
 *~
+*.pyc
+*.db
