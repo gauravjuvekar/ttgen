@@ -5,3 +5,7 @@ tags
 *~
 *.pyc
 *.db
+*.d
+deps/*
+obj/*
+*.in
