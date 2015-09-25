@@ -1,43 +1,44 @@
-CREATE TABLE "rooms" (
-    "pk" INTEGER PRIMARY KEY,
-    "name" TEXT,
-    "capacity" INTEGER
+CREATE TABLE batches_timeranges (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "batch" INTEGER NOT NULL,
+    "start" INTEGER NOT NULL,
+    "end" INTEGER NOT NULL,
+    FOREIGN KEY (batch) REFERENCES batches(pk)
 );
-CREATE TABLE "batches" (
-    "pk" INTEGER PRIMARY KEY,
-    "name" TEXT,
-    "heads" INTEGER,
+CREATE TABLE batches_subjects (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "batch" INTEGER NOT NULL,
+    "subject" INTEGER NOT NULL,
+    FOREIGN KEY (subject) REFERENCES subjects(pk),
+    FOREIGN KEY (batch) REFERENCES batches(pk)
+);
+CREATE TABLE batches (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "name" TEXT NOT NULL,
+    "heads" INTEGER NOT NULL,
     "parent" INTEGER,
     FOREIGN KEY (parent) REFERENCES batches(pk)
 );
+CREATE TABLE rooms (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "name" TEXT NOT NULL,
+    "capacity" INTEGER NOT NULL,
+    "parallel" INTEGER NOT NULL
+);
 CREATE TABLE subjects (
-    "pk" INTEGER,
-    "name" TEXT,
-    "frequency" INTEGER,
-    "contiguous_time" INTEGER
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "name" TEXT NOT NULL,
+    "frequency" INTEGER NOT NULL,
+    "contiguous_time" INTEGER NOT NULL
 );
-CREATE TABLE "teachers" (
-    "pk" INTEGER PRIMARY KEY,
-    "name" TEXT
+CREATE TABLE teachers (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "name" TEXT NOT NULL
 );
-CREATE TABLE "teachers_timeranges" (
-    "pk" INTEGER PRIMARY KEY,
-    "start" INTEGER,
-    "end" INTEGER,
-    "teacher" INTEGER,
+CREATE TABLE teachers_timeranges (
+    "pk" INTEGER PRIMARY KEY NOT NULL,
+    "start" INTEGER NOT NULL,
+    "end" INTEGER NOT NULL,
+    "teacher" INTEGER NOT NULL,
     FOREIGN KEY (teacher) REFERENCES teachers(pk)
-);
-CREATE TABLE "batches_subjects" (
-    "pk" INTEGER PRIMARY KEY,
-    "batch" INTEGER,
-    "subject" INTEGER,
-    FOREIGN KEY (batch) REFERENCES batches(pk),
-    FOREIGN KEY (subject) REFERENCES subjects(pk)
-);
-CREATE TABLE "batches_timeranges" (
-    "pk" INTEGER PRIMARY KEY,
-    "batch" INTEGER,
-    "start" INTEGER,
-    "end" INTEGER,
-    FOREIGN KEY (batch) REFERENCES batches(pk)
 );
