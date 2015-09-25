@@ -1,0 +1,43 @@
+CREATE TABLE "rooms" (
+    "pk" INTEGER PRIMARY KEY,
+    "name" TEXT,
+    "capacity" INTEGER
+);
+CREATE TABLE "batches" (
+    "pk" INTEGER PRIMARY KEY,
+    "name" TEXT,
+    "heads" INTEGER,
+    "parent" INTEGER,
+    FOREIGN KEY (parent) REFERENCES batches(pk)
+);
+CREATE TABLE subjects (
+    "pk" INTEGER,
+    "name" TEXT,
+    "frequency" INTEGER,
+    "contiguous_time" INTEGER
+);
+CREATE TABLE "teachers" (
+    "pk" INTEGER PRIMARY KEY,
+    "name" TEXT
+);
+CREATE TABLE "teachers_timeranges" (
+    "pk" INTEGER PRIMARY KEY,
+    "start" INTEGER,
+    "end" INTEGER,
+    "teacher" INTEGER,
+    FOREIGN KEY (teacher) REFERENCES teachers(pk)
+);
+CREATE TABLE "batches_subjects" (
+    "pk" INTEGER PRIMARY KEY,
+    "batch" INTEGER,
+    "subject" INTEGER,
+    FOREIGN KEY (batch) REFERENCES batches(pk),
+    FOREIGN KEY (subject) REFERENCES subjects(pk)
+);
+CREATE TABLE "batches_timeranges" (
+    "pk" INTEGER PRIMARY KEY,
+    "batch" INTEGER,
+    "start" INTEGER,
+    "end" INTEGER,
+    FOREIGN KEY (batch) REFERENCES batches(pk)
+);
