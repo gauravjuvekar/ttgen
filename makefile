@@ -15,6 +15,8 @@ DEPS=$(objects:%.o=$(DEPSDIR)/%.d)
 $(TARGET) : $(addprefix $(OBJDIR)/, $(objects))
 	$(CC) $(CFLAGS) -o $(TARGET) $^ $(LDFLAGS) $(LDLIBS)
 
+$(SRCDIR)/window.c: $(SRCDIR)/gui.ui.hex.in
+
 $(OBJDIR)/%.o : $(SRCDIR)/%.c $(DEPSDIR)/%.d
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEPFLAGS) -c -o $@ $<
 	mv -f $(DEPSDIR)/$*.Td $(DEPSDIR)/$*.d
@@ -29,3 +31,4 @@ $(DEPSDIR)/%.d: ;
 .PHONY : clean
 clean :
 	rm --force --recursive -- $(OBJDIR) $(TARGET) $(DEPSDIR)
+	rm --force -- src/*.hex.in
