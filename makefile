@@ -9,7 +9,7 @@ override CFLAGS+=-Wall -Wextra -std=c11 $(shell pkg-config --cflags gtk+-3.0)
 override LDLIBS+=$(shell pkg-config --libs gtk+-3.0)
 override DEPFLAGS+=-MMD -MP -MT $@ -MF $(DEPSDIR)/$*.Td
 
-objects=window.o
+objects=window.o interval.o
 DEPS=$(objects:%.o=$(DEPSDIR)/%.d)
 
 $(TARGET) : $(addprefix $(OBJDIR)/, $(objects))
