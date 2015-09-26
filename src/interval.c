@@ -3,11 +3,6 @@
 #include "interval.h"
 
 
-static gint compare_Interval(const Interval *a, const Interval *b) {
-	return (gint32)a->start - (gint32)b->start;
-}
-
-
 /*! \brief Takes the union of \p interval with \p intervals
  *
  * \param[in,out] intervals The intervals to add to
@@ -19,8 +14,8 @@ Intervals unite_Intervals(Intervals intervals, const Interval interval) {
 	g_assert(interval.start <  interval.end);
 	g_assert(interval.start <= 7 * 24 * 60 * 60);
 	g_assert(interval.end   <= 7 * 24 * 60 * 60);
-	g_assert(interval.start >= 0);
-	g_assert(interval.end   >= 0);
+	g_assert((gint32)interval.start >= 0);
+	g_assert((gint32)interval.end   >= 0);
 
 	intervals = g_list_first(intervals);
 
