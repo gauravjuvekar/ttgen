@@ -1,4 +1,5 @@
 src/project*
+*.tar.gz
 *.taghl
 tags
 *.pyc
