@@ -6,4 +6,6 @@ install:
 
 script:
     - ./configure
+    - touch aclocal.m4
+      # Because a git clone messes all timestamps
     - make

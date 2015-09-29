@@ -1,5 +1,4 @@
 AC_INIT([project], [0.1], [gauravjuvekar@gmail.com])
-AM_MAINTAINER_MODE([disable])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 AC_PROG_CC
