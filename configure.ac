@@ -4,7 +4,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_PROG_CC_STDC
 
-PKG_CHECK_MODULES(GTK3, gtk+-3.0)
+PKG_CHECK_MODULES(GTK3, gtk+-3.0 >= 3.10)
 
 AC_CHECK_PROG([xxd],[xxd],[yes],[no])
 AM_CONDITIONAL([FOUND_XXD], [test "x$xxd" = xyes])
