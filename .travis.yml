@@ -6,6 +6,6 @@ install:
 
 script:
     - ./configure
-    - touch aclocal.m4
+    - touch configure.ac aclocal.m4 configure Makefile.am Makefile.in
       # Because a git clone messes all timestamps
     - make
