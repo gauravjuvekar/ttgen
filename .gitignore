@@ -11,9 +11,6 @@ tags
 /config.*
 /m4/
 /stamp-h?
-/compile
-/missing
-/depcomp
 .deps/
 .dirstamp
 *.o
