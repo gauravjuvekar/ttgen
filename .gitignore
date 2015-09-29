@@ -15,7 +15,6 @@ tags
 /compile
 /missing
 /depcomp
-/install-sh
 .deps/
 .dirstamp
 *.o
