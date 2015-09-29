@@ -3,7 +3,7 @@ OBJDIR=obj
 _create_obj_dir:=$(shell mkdir -p $(OBJDIR))
 DEPSDIR=deps
 _create_deps_dir:=$(shell mkdir -p $(DEPSDIR))
-TARGET=ttgen
+TARGET=project
 
 override CFLAGS+=-Wall -Wextra -std=c11 $(shell pkg-config --cflags gtk+-3.0)
 override LDLIBS+=$(shell pkg-config --libs gtk+-3.0)
