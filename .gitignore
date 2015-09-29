@@ -6,7 +6,6 @@ tags
 *.db
 *.inc
 *Makefile
-/aclocal.m4
 /autom4te.cache/
 /config.*
 /m4/
