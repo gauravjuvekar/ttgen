@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 
 const char gui_builder_string[] = {
-#include "gui.ui.hex.in"
+#include "gui.ui.hex.inc"
 	, '\0'
 };
 
