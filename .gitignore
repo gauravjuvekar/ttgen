@@ -1,16 +1,41 @@
 src/project*
 *.tar.gz
 *.taghl
-tags
+*tags
 *.pyc
 *.db
 *.inc
-*Makefile
+*Makefile.in
+*Makfile
 /autom4te.cache/
 /config.*
 /m4/
+/aclocal.m4
+/configure
+/compile
+/install-sh
+/missing
 /stamp-h?
+/depcomp
 .deps/
 .dirstamp
 *.o
 *~
+
+
+	modified:   Makefile.am
+	deleted:    Makefile.in
+	deleted:    aclocal.m4
+	deleted:    compile
+	deleted:    configure
+	modified:   configure.ac
+	deleted:    depcomp
+	deleted:    install-sh
+	deleted:    missing
+	deleted:    src/Makefile.in
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore.swp
+
