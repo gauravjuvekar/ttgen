@@ -209,7 +209,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection1"/>
+                              <object class="GtkTreeSelection" id="allocations_tree_view_selection"/>
                             </child>
                           </object>
                         </child>
@@ -235,7 +235,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection2"/>
+                              <object class="GtkTreeSelection" id="teachers_tree_view_selection"/>
                             </child>
                           </object>
                         </child>
@@ -265,7 +265,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection3"/>
+                              <object class="GtkTreeSelection" id="rooms_tree_view_selection"/>
                             </child>
                           </object>
                         </child>
@@ -295,7 +295,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection4"/>
+                              <object class="GtkTreeSelection" id="batches_tree_view_selection"/>
                             </child>
                           </object>
                         </child>
@@ -325,7 +325,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection5"/>
+                              <object class="GtkTreeSelection" id="subjects_tree_view_slection"/>
                             </child>
                           </object>
                         </child>
