@@ -1,7 +1,8 @@
-src/project*
-*.tar.gz
+ttgen
+*.o
 *.taghl
-*tags
+tags
+*~
 *.pyc
 *.db
 *.inc
@@ -13,7 +14,8 @@ src/project*
 /aclocal.m4
 /test-driver
 /autoscan.log
-/configure*
+/configure
+/configure.scan
 /compile
 /install-sh
 /missing
