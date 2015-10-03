@@ -14,7 +14,8 @@ tags
 /aclocal.m4
 /test-driver
 /autoscan.log
-/configure*
+/configure
+/configure.scan
 /compile
 /install-sh
 /missing
