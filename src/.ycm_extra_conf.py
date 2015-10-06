@@ -40,7 +40,7 @@ flags = [
 '-pedantic',
 '-std=gnu99',
 '-x',
-'-c',
+'c',
 '-pthread',
 '-I/usr/include/gtk-3.0',
 '-I/usr/include/atk-1.0',
