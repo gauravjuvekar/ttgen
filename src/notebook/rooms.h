@@ -2,7 +2,7 @@
 #define NOTEBOOK_ROOMS_H 1
 
 #include <gtk/gtk.h>
-
+#include "../sqlite/sqlite3.h"
 
 typedef enum {
 	COLUMN_STRING_name,
@@ -12,6 +12,6 @@ typedef enum {
 } TreeView_Rooms_E;
 
 GtkListStore *Rooms_ListStore_new(void);
-void set_Rooms_from_db(GtkListStore *list_store);
+void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db);
 
 #endif

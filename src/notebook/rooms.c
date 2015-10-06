@@ -1,6 +1,8 @@
 #include <gtk/gtk.h>
 
 #include "rooms.h"
+#include "../sqlite/sqlite3.h"
+#include "../db_tables/rooms.h"
 
 
 GtkListStore *Rooms_ListStore_new(void) {
@@ -10,18 +12,18 @@ GtkListStore *Rooms_ListStore_new(void) {
 	                          G_TYPE_INT);
 }
 
-void set_Rooms_from_db(GtkListStore *list_store) {
+void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
+	sqlite3_stmt *stmt;
+	sqlite3_prepare(db, "SELECT * FROM rooms", -1, &stmt, NULL);
 	GtkTreeIter iter;
-
-	/* TODO FIXME */
-
-	gint i;
-	for(i = 0; i < 10; i++) {
+	while(sqlite3_step(stmt) == SQLITE_ROW) {
 		gtk_list_store_append(list_store, &iter);
+		Room room = Room_from_stmt(stmt);
 		gtk_list_store_set(list_store, &iter,
-		                   COLUMN_STRING_name, "Some name",
-		                   COLUMN_INT_capacity, 70,
-		                   COLUMN_INT_parallel, 1,
+		                   COLUMN_STRING_name,  room.name,
+		                   COLUMN_INT_capacity, room.capacity,
+		                   COLUMN_INT_parallel, room.parallel,
 		                   -1);
 	}
+	sqlite3_finalize(stmt);
 }
