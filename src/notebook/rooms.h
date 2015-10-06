@@ -4,14 +4,7 @@
 #include <gtk/gtk.h>
 #include "../sqlite/sqlite3.h"
 
-typedef enum {
-	COLUMN_STRING_name,
-	COLUMN_INT_capacity,
-	COLUMN_INT_parallel,
-	N_COLUMNS
-} TreeView_Rooms_E;
 
-GtkListStore *Rooms_ListStore_new(void);
-void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db);
+void init_notebook_rooms(GtkBuilder *builder, sqlite3 *db);
 
 #endif

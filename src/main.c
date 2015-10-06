@@ -16,32 +16,8 @@ int main(int argc, char* argv[]) {
 	GObject *window = gtk_builder_get_object(builder, "main_window");
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-	GObject *rooms_tree_view = gtk_builder_get_object(builder,
-	                                                  "rooms_tree_view");
-	GtkListStore *list_store = Rooms_ListStore_new();
-	set_Rooms_from_db(list_store, db);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(rooms_tree_view),
-	                        GTK_TREE_MODEL(list_store));
+	init_notebook_rooms(builder, db);
 
-
-	GtkCellRenderer *renderer;
-	GtkTreeViewColumn *column;
-	renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes("Name", renderer,
-	                                                  "text",
-	                                                  COLUMN_STRING_name,
-	                                                  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(rooms_tree_view), column);
-	column = gtk_tree_view_column_new_with_attributes("Capacity", renderer,
-	                                                  "text",
-	                                                  COLUMN_INT_capacity,
-	                                                  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(rooms_tree_view), column);
-	column = gtk_tree_view_column_new_with_attributes("Parallel", renderer,
-	                                                  "text",
-	                                                  COLUMN_INT_parallel,
-	                                                  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(rooms_tree_view), column);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();
