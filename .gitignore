@@ -1,5 +1,7 @@
 *project
 *.o
+*.a
+*.out
 *.db
 *.pyc
 *.inc
@@ -24,6 +26,7 @@ tags
 /configure.scan
 /compile
 /install-sh
+/ar-lib
 /missing
 /stamp-h?
 /depcomp
