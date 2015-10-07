@@ -5,6 +5,7 @@
 #include "../db_tables/rooms.h"
 
 typedef enum {
+	COLUMN_INT_pk,
 	COLUMN_STRING_name,
 	COLUMN_INT_capacity,
 	COLUMN_INT_parallel,
@@ -16,6 +17,7 @@ static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db);
 
 static GtkListStore *Rooms_ListStore_new(void) {
 	return gtk_list_store_new(N_COLUMNS,
+	                          G_TYPE_INT,
 	                          G_TYPE_STRING,
 	                          G_TYPE_INT,
 	                          G_TYPE_INT);
@@ -58,6 +60,7 @@ static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
 		gtk_list_store_append(list_store, &iter);
 		Room room = Room_from_stmt(stmt);
 		gtk_list_store_set(list_store, &iter,
+		                   COLUMN_INT_pk,       room.pk,
 		                   COLUMN_STRING_name,  room.name,
 		                   COLUMN_INT_capacity, room.capacity,
 		                   COLUMN_INT_parallel, room.parallel,
