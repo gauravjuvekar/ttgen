@@ -4,7 +4,8 @@ nodist_project_SOURCES = gui.ui.hex.inc
 BUILT_SOURCES          = gui.ui.hex.inc
 project_SOURCES        = main.c\
                          notebook/rooms.c    db_tables/rooms.c\
-                         notebook/subjects.c db_tables/subjects.c
+                         notebook/subjects.c db_tables/subjects.c\
+                         notebook/teachers.c db_tables/teachers.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread
 SUBDIRS                = sqlite

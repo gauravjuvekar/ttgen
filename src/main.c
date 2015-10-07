@@ -2,6 +2,7 @@
 
 #include "notebook/rooms.h"
 #include "notebook/subjects.h"
+#include "notebook/teachers.h"
 
 const char gui_builder_string[] = {
 #include "gui.ui.hex.inc"
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
 
 	init_notebook_rooms(builder, db);
 	init_notebook_subjects(builder, db);
+	init_notebook_teachers(builder, db);
 
 
 	gtk_widget_show(GTK_WIDGET(window));
