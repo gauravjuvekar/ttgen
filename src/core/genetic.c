@@ -34,8 +34,7 @@ Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
 	Schedule *clone = g_new(Schedule, 1);
 	*clone = (Schedule) {
 		.time_slots = g_memdup(schedule->time_slots,
-		                        sizeof(*(schedule->time_slots)) *
-		                        meta->n_rooms * meta->n_slots),
+		                        sizeof(*(schedule->time_slots)) * meta->n_rooms * meta->n_slots),
 		.fitness = schedule->fitness,
 		.allocations = g_memdup(schedule->allocations,
 		                        sizeof(*(schedule->allocations)) *
@@ -89,7 +88,6 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 		gint second = g_random_int_range(0, meta->n_allocs);
 
 		gint tmp;
-
 		tmp = schedule->allocations[first];
 		schedule->allocations[first] = schedule->allocations[second];
 		schedule->allocations[second] = tmp;
@@ -99,4 +97,31 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 			schedule->time_slots[schedule->allocations[second]];
 		schedule->time_slots[schedule->allocations[second]] = tmp;
 	}
+	schedule->fitness = Schedule_fitness(schedule, meta);
+}
+
+void Schedule_crossover(const Schedule *mother, const Schedule *father,
+                        Schedule **daughter,    Schedule **son,
+                        const Meta *meta) {
+	gint crossover_1 = g_random_int_range(0, meta->n_allocs);
+	gint crossover_2 = g_random_int_range(crossover_1, meta->n_allocs + 1);
+
+	*daughter = Schedule_clone(mother, meta);
+	*son      = Schedule_clone(father, meta);
+
+	gint i;
+	for(i = crossover_1; i < crossover_2; i++) {
+		/* Swap son and daughter elements */
+		gint tmp;
+		tmp = (*son)->allocations[i];
+		(*son)->allocations[i] = (*daughter)->allocations[i];
+		(*daughter)->allocations[i] = tmp;
+
+		tmp = (*son)->time_slots[(*son)->allocations[i]];
+		(*son)->time_slots[(*son)->allocations[i]] =
+			(*daughter)->time_slots[(*daughter)->allocations[i]];
+		(*daughter)->time_slots[(*daughter)->allocations[i]] = tmp;
+	}
+	(*son)->fitness      = Schedule_fitness(*son, meta);
+	(*daughter)->fitness = Schedule_fitness(*daughter, meta);
 }

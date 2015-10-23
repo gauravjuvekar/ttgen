@@ -16,7 +16,7 @@ typedef struct Meta {
 	const gint n_rooms;
 	const gint n_allocs;
 	const Allocation *const allocs;
-	const gint crossover_points;
+	/* const gint crossover_points; */ /* Fixed at 2 for now */
 	const gint mutate_swaps;
 	const gfloat fitness_penalty_time_clash_teacher;
 	const gfloat fitness_penalty_time_clash_batch;
@@ -38,8 +38,6 @@ void     Schedule_crossover(const Schedule *mother, const Schedule *father,
 						    Schedule **daughter,    Schedule **son,
                             const Meta *meta);
 
-
 gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta);
-
 
 #endif
