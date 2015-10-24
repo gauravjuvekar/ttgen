@@ -35,14 +35,15 @@ void Population_evolve(Population *population,
 		gint daughter = meta->n_population - 2;
 		gint mother   = 0;
 		gint father   = 1;
-		g_ptr_array_remove_index(population->schedules, son);
-		g_ptr_array_remove_index(population->schedules, daughter);
+		g_ptr_array_remove_range(population->schedules, daughter, 2);
+		Schedule *son_schedule;
+		Schedule *daughter_schedule;
+
 		Schedule_crossover(g_ptr_array_index(population->schedules, mother),
 		                   g_ptr_array_index(population->schedules, father),
-		                   &g_ptr_array_index(population->schedules, son),
-		                   &g_ptr_array_index(population->schedules, daughter),
-		                   meta);
-
+		                   &son_schedule, &daughter_schedule, meta);
+		g_ptr_array_add(population->schedules, son_schedule);
+		g_ptr_array_add(population->schedules, daughter_schedule);
 		Schedule_mutate(g_ptr_array_index(population->schedules, son), meta);
 		Schedule_mutate(g_ptr_array_index(population->schedules, daughter),
 		                meta);
