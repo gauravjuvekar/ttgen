@@ -59,6 +59,7 @@ void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 		 */
 		g_assert(empty < slot);
 	}
+	schedule->fitness = Schedule_fitness(schedule, meta);
 }
 
 
@@ -75,11 +76,13 @@ Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
 	return clone;
 }
 
+
 void Schedule_free(Schedule *schedule) {
 	g_free(schedule->time_slots);
 	g_free(schedule->allocations);
 	g_free(schedule);
 }
+
 
 gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 	gint alloc;
@@ -113,6 +116,32 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 	return fitness;
 }
 
+
+gint Schedule_compare(const Schedule *a, const Schedule *b) {
+	/* Fittest first */
+
+	if (a->fitness > b->fitness) {
+		if ((a->fitness - b->fitness) < (10 * FLT_EPSILON)) {
+			return 0;
+		}
+		else {
+			return -1;
+		}
+	}
+	else if (a->fitness < b->fitness) {
+		if ((b->fitness - a->fitness) < (10 * FLT_EPSILON)) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+	else {
+		return 0;
+	}
+}
+
+
 void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 	gint swaps;
 	for(swaps = 0; swaps < meta->mutate_swaps; swaps++) {
@@ -131,6 +160,7 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 	}
 	schedule->fitness = Schedule_fitness(schedule, meta);
 }
+
 
 void Schedule_crossover(const Schedule *mother, const Schedule *father,
                         Schedule **daughter,    Schedule **son,
