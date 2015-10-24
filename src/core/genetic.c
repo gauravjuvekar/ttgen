@@ -30,6 +30,38 @@ Schedule *Schedule_init(const Meta *meta) {
 	return schedule;
 }
 
+
+void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
+	/* The caller should check if a allocatable solution exists */
+	g_assert(meta->n_allocs <= meta->n_rooms * meta->n_slots);
+	gint alloc;
+	for(alloc = 0; alloc < meta->n_allocs; alloc++) {
+		gint slot = g_random_int_range(0, meta->n_slots * meta->n_rooms);
+		gint empty;
+		for(empty = slot; empty < meta->n_slots * meta->n_rooms; empty++) {
+			if (schedule->time_slots[empty] == -1) {
+				schedule->time_slots[empty] = alloc;
+				schedule->allocations[alloc] = empty;
+				break;
+			}
+		}
+		if (!(empty < meta->n_slots * meta->n_rooms)) {
+			for(empty = 0; empty < slot; empty++) {
+				if (schedule->time_slots[empty] == -1) {
+					schedule->time_slots[empty] = alloc;
+					schedule->allocations[alloc] = empty;
+					break;
+				}
+			}
+		}
+		/* Empty slot not found. This is not possible if
+		 * number of allocs is <= number of slots
+		 */
+		g_assert(empty < slot);
+	}
+}
+
+
 Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
 	Schedule *clone = g_new(Schedule, 1);
 	*clone = (Schedule) {

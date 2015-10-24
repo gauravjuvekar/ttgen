@@ -31,6 +31,7 @@ typedef struct Schedule {
 } Schedule;
 
 Schedule *Schedule_init(const Meta *meta);
+void     Schedule_seed_random(Schedule *schedule, const Meta *meta);
 Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta);
 void     Schedule_free(Schedule *schedule);
 void     Schedule_mutate(Schedule *schedule, const Meta *meta);
