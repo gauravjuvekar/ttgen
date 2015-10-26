@@ -126,8 +126,8 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 				time_clash_batch += 1;
 			}
 		}
-		g_assert(time_clash_batch > -1);
-		g_assert(time_clash_teacher > -1);
+		/* g_assert(time_clash_batch > -1); */
+		/* g_assert(time_clash_teacher > -1); */
 		fitness += (time_clash_teacher *
 		            meta->fitness_penalty_time_clash_teacher);
 		fitness += (time_clash_batch *
@@ -177,10 +177,8 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 		schedule->allocations[first] = schedule->allocations[second];
 		schedule->allocations[second] = tmp;
 
-		tmp = schedule->time_slots[schedule->allocations[first]];
-		schedule->time_slots[schedule->allocations[first]] =
-			schedule->time_slots[schedule->allocations[second]];
-		schedule->time_slots[schedule->allocations[second]] = tmp;
+		schedule->time_slots[schedule->allocations[first]]  = first;
+		schedule->time_slots[schedule->allocations[second]] = second;
 	}
 	schedule->fitness = Schedule_fitness(schedule, meta);
 }
@@ -203,10 +201,8 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
 		(*son)->allocations[i] = (*daughter)->allocations[i];
 		(*daughter)->allocations[i] = tmp;
 
-		tmp = (*son)->time_slots[(*son)->allocations[i]];
-		(*son)->time_slots[(*son)->allocations[i]] =
-			(*daughter)->time_slots[(*daughter)->allocations[i]];
-		(*daughter)->time_slots[(*daughter)->allocations[i]] = tmp;
+		(*son)->time_slots[(*son)->allocations[i]] = i;
+		(*daughter)->time_slots[(*daughter)->allocations[i]] = i;
 	}
 	(*son)->fitness      = Schedule_fitness(*son, meta);
 	(*daughter)->fitness = Schedule_fitness(*daughter, meta);
