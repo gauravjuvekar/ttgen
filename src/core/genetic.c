@@ -11,7 +11,16 @@ static inline gint time_slot_from_slot(gint slot, const Meta *meta) {
 }
 static inline gint slot_from_array(const gint *array, gint slot, gint room,
                                    const Meta *meta) {
-	return array[slot * meta->n_rooms + room]; }
+	return array[slot * meta->n_rooms + room];
+}
+
+
+static void assert_Schedule_valid(const Schedule *schedule, const Meta *meta) {
+	gint alloc;
+	for(alloc = 0; alloc < meta->n_allocs; alloc++) {
+		g_assert(schedule->time_slots[schedule->allocations[alloc]] == alloc);
+	}
+}
 
 Schedule *Schedule_init(const Meta *meta) {
 	Schedule *schedule = g_new(Schedule, 1);
@@ -77,20 +86,24 @@ void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 			g_assert(empty < slot);
 		}
 	}
+	assert_Schedule_valid(schedule, meta);
 	schedule->fitness = Schedule_fitness(schedule, meta);
 }
 
 
 Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
+	assert_Schedule_valid(schedule, meta);
 	Schedule *clone = g_new(Schedule, 1);
 	*clone = (Schedule) {
 		.time_slots = g_memdup(schedule->time_slots,
-		                        sizeof(*(schedule->time_slots)) * meta->n_rooms * meta->n_slots),
+		                       sizeof(*(schedule->time_slots)) *
+		                       meta->n_rooms * meta->n_slots),
 		.fitness = schedule->fitness,
 		.allocations = g_memdup(schedule->allocations,
 		                        sizeof(*(schedule->allocations)) *
 		                        meta->n_allocs)
 	};
+	assert_Schedule_valid(clone, meta);
 	return clone;
 }
 
@@ -103,8 +116,11 @@ void Schedule_free(Schedule *schedule) {
 
 
 gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
+	assert_Schedule_valid(schedule, meta);
+
 	gint alloc;
 	gfloat fitness = 0;
+
 
 	for(alloc = 0; alloc < meta->n_allocs; alloc++) {
 		gint slot = schedule->allocations[alloc];
@@ -167,6 +183,7 @@ gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b) {
 
 
 void Schedule_mutate(Schedule *schedule, const Meta *meta) {
+	assert_Schedule_valid(schedule, meta);
 	gint swaps;
 	for(swaps = 0; swaps < meta->mutate_swaps; swaps++) {
 		gint first  = g_random_int_range(0, meta->n_allocs);
@@ -180,6 +197,7 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 		schedule->time_slots[schedule->allocations[first]]  = first;
 		schedule->time_slots[schedule->allocations[second]] = second;
 	}
+	assert_Schedule_valid(schedule, meta);
 	schedule->fitness = Schedule_fitness(schedule, meta);
 }
 
@@ -187,6 +205,9 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 void Schedule_crossover(const Schedule *mother, const Schedule *father,
                         Schedule **daughter,    Schedule **son,
                         const Meta *meta) {
+	assert_Schedule_valid(mother, meta);
+	assert_Schedule_valid(father, meta);
+
 	gint crossover_1 = g_random_int_range(0, meta->n_allocs);
 	gint crossover_2 = g_random_int_range(crossover_1, meta->n_allocs + 1);
 
@@ -204,6 +225,8 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
 		(*son)->time_slots[(*son)->allocations[i]] = i;
 		(*daughter)->time_slots[(*daughter)->allocations[i]] = i;
 	}
+	assert_Schedule_valid(*son, meta);
+	assert_Schedule_valid(*daughter, meta);
 	(*son)->fitness      = Schedule_fitness(*son, meta);
 	(*daughter)->fitness = Schedule_fitness(*daughter, meta);
 }
