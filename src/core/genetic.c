@@ -11,8 +11,7 @@ static inline gint time_slot_from_slot(gint slot, const Meta *meta) {
 }
 static inline gint slot_from_array(const gint *array, gint slot, gint room,
                                    const Meta *meta) {
-	return array[slot * meta->n_rooms + room];
-}
+	return array[slot * meta->n_rooms + room]; }
 
 Schedule *Schedule_init(const Meta *meta) {
 	Schedule *schedule = g_new(Schedule, 1);
@@ -30,6 +29,25 @@ Schedule *Schedule_init(const Meta *meta) {
 	return schedule;
 }
 
+void   Schedule_print(const Schedule *schedule, const Meta *meta) {
+	gint room;
+	for(room = 0; room < meta->n_rooms; room++) {
+		gint time_slot;
+		for(time_slot = 0; time_slot < meta->n_slots; time_slot++) {
+			gint slot = slot_from_array(schedule->time_slots, time_slot, room,
+			                            meta);
+			if (slot == -1) {
+				g_print("(          )\t");
+			}
+			else {
+				Allocation alloc = meta->allocs[slot];
+				g_print("(T%d, B%d, S%d)\t",
+				        alloc.teacher, alloc.batch, alloc.subject);
+			}
+		}
+		g_print("\n");
+	}
+}
 
 void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 	/* The caller should check if a allocatable solution exists */
@@ -108,6 +126,8 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 				time_clash_batch += 1;
 			}
 		}
+		g_assert(time_clash_batch > -1);
+		g_assert(time_clash_teacher > -1);
 		fitness += (time_clash_teacher *
 		            meta->fitness_penalty_time_clash_teacher);
 		fitness += (time_clash_batch *

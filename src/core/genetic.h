@@ -26,4 +26,6 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta);
 gint   Schedule_compare(const Schedule *a, const Schedule *b);
 gint   Schedule_compare_wrapper(const Schedule **a, const Schedule **b);
 
+void   Schedule_print(const Schedule *schedule, const Meta *meta);
+
 #endif
