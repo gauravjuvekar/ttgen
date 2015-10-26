@@ -2,6 +2,7 @@
 #include "../sqlite/sqlite3.h"
 #include "genetic.h"
 #include "evolution.h"
+#include "meta.h"
 
 int main(int argc, char **argv) {
 	(void)argc;
