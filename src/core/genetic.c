@@ -61,6 +61,7 @@ Meta Meta_from_db(sqlite3 *db) {
 	gint i = 0;
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
 		allocs[i] = Allocation_from_stmt(stmt);
+		i++;
 	}
 	sqlite3_finalize(stmt);
 
@@ -118,11 +119,11 @@ void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 					break;
 				}
 			}
+			/* Empty slot not found. This is not possible if
+			 * number of allocs is <= number of slots
+			 */
+			g_assert(empty < slot);
 		}
-		/* Empty slot not found. This is not possible if
-		 * number of allocs is <= number of slots
-		 */
-		g_assert(empty < slot);
 	}
 	schedule->fitness = Schedule_fitness(schedule, meta);
 }
@@ -204,6 +205,10 @@ gint Schedule_compare(const Schedule *a, const Schedule *b) {
 	else {
 		return 0;
 	}
+}
+
+gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b) {
+	return Schedule_compare(*a, *b);
 }
 
 

@@ -27,6 +27,8 @@ typedef struct Meta {
 
 } Meta;
 
+Meta Meta_from_db(sqlite3 *db);
+
 typedef struct Schedule {
 	gint   *time_slots;
 	gfloat fitness;
@@ -45,5 +47,6 @@ void     Schedule_crossover(const Schedule *mother, const Schedule *father,
 
 gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta);
 gint   Schedule_compare(const Schedule *a, const Schedule *b);
+gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b);
 
 #endif

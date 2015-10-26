@@ -24,12 +24,12 @@ void Population_evolve(Population *population,
                        const gfloat(fitness),
                        const Meta *meta) {
 	gfloat max_fitness;
+	g_ptr_array_sort(population->schedules,
+					 (GCompareFunc)Schedule_compare_wrapper);
 	for(max_fitness = FLT_MIN;
 	    max_fitness < fitness && population->generations < generations;
 	    population->generations++) {
 
-		g_ptr_array_sort(population->schedules,
-		                 (GCompareFunc)Schedule_compare);
 
 		gint son      = meta->n_population - 1;
 		gint daughter = meta->n_population - 2;
@@ -47,5 +47,9 @@ void Population_evolve(Population *population,
 		Schedule_mutate(g_ptr_array_index(population->schedules, son), meta);
 		Schedule_mutate(g_ptr_array_index(population->schedules, daughter),
 		                meta);
+		g_ptr_array_sort(population->schedules,
+						 (GCompareFunc)Schedule_compare_wrapper);
+		max_fitness = (*(Schedule *)
+		               g_ptr_array_index(population->schedules, 0)).fitness;
 	}
 }
