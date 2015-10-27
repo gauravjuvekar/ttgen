@@ -58,33 +58,44 @@ void   Schedule_print(const Schedule *schedule, const Meta *meta) {
 	}
 }
 
+
+static gint Schedule_find_vacant(const Schedule *schedule, gint current, const Meta *meta) {
+		gint right;
+		gint left;
+		left = right = current;
+		g_assert(left >= 0);
+		g_assert(right < meta->n_slots * meta->n_rooms);
+		while (((schedule->time_slots[right] != -1) &&
+		        (schedule->time_slots[left]  != -1)) &&
+		       !((left == 0) &&
+		         (right == (meta->n_slots * meta->n_rooms)))) {
+			if (right + 1 < meta->n_slots * meta->n_rooms) {
+				right++;
+			} if (left - 1 >= 0) {
+				left--;
+			}
+			g_assert(left >= 0);
+			g_assert(right < meta->n_slots * meta->n_rooms);
+		}
+		if (schedule->time_slots[right] == -1) {
+			return right;
+		}
+		if (schedule->time_slots[left]  == -1) {
+			return left;
+		}
+		g_assert(FALSE); /* Atleast one vacant slot must be found */
+}
+
+
 void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 	/* The caller should check if a allocatable solution exists */
 	g_assert(meta->n_allocs <= meta->n_rooms * meta->n_slots);
 	gint alloc;
 	for(alloc = 0; alloc < meta->n_allocs; alloc++) {
 		gint slot = g_random_int_range(0, meta->n_slots * meta->n_rooms);
-		gint empty;
-		for(empty = slot; empty < meta->n_slots * meta->n_rooms; empty++) {
-			if (schedule->time_slots[empty] == -1) {
-				schedule->time_slots[empty] = alloc;
-				schedule->allocations[alloc] = empty;
-				break;
-			}
-		}
-		if (!(empty < meta->n_slots * meta->n_rooms)) {
-			for(empty = 0; empty < slot; empty++) {
-				if (schedule->time_slots[empty] == -1) {
-					schedule->time_slots[empty] = alloc;
-					schedule->allocations[alloc] = empty;
-					break;
-				}
-			}
-			/* Empty slot not found. This is not possible if
-			 * number of allocs is <= number of slots
-			 */
-			g_assert(empty < slot);
-		}
+		gint empty = Schedule_find_vacant(schedule, slot, meta);
+		schedule->time_slots[empty] = alloc;
+		schedule->allocations[alloc] = empty;
 	}
 	assert_Schedule_valid(schedule, meta);
 	schedule->fitness = Schedule_fitness(schedule, meta);
@@ -213,8 +224,16 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
 
 	*daughter = Schedule_clone(mother, meta);
 	*son      = Schedule_clone(father, meta);
+	assert_Schedule_valid(*son, meta);
+	assert_Schedule_valid(*daughter, meta);
 
 	gint i;
+	for(i = crossover_1; i < crossover_2; i++) {
+		/* Free the time slots of children */
+		(*son     )->time_slots[(*son     )->allocations[i]] = -1;
+		(*daughter)->time_slots[(*daughter)->allocations[i]] = -1;
+	}
+
 	for(i = crossover_1; i < crossover_2; i++) {
 		/* Swap son and daughter elements */
 		gint tmp;
@@ -222,7 +241,11 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
 		(*son)->allocations[i] = (*daughter)->allocations[i];
 		(*daughter)->allocations[i] = tmp;
 
-		(*son)->time_slots[(*son)->allocations[i]] = i;
+		(*son    )->allocations[i] =
+			Schedule_find_vacant(*son,      (*son     )->allocations[i], meta);
+		(*daughter)->allocations[i] =
+			Schedule_find_vacant(*daughter, (*daughter)->allocations[i], meta);
+		(*son     )->time_slots[(*son     )->allocations[i]] = i;
 		(*daughter)->time_slots[(*daughter)->allocations[i]] = i;
 	}
 	assert_Schedule_valid(*son, meta);
