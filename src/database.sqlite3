@@ -1,59 +1,29 @@
-CREATE TABLE batches_timeranges (
-    "pk"    INTEGER NOT NULL PRIMARY KEY,
-    "batch" INTEGER NOT NULL,
-    "start" INTEGER NOT NULL,
-    "end"   INTEGER NOT NULL,
-    FOREIGN KEY (batch) REFERENCES batches(pk)
-);
-CREATE TABLE batches_subjects (
-    "pk"      INTEGER NOT NULL PRIMARY KEY,
-    "batch"   INTEGER NOT NULL,
-    "subject" INTEGER NOT NULL,
-    FOREIGN KEY (subject) REFERENCES subjects(pk),
-    FOREIGN KEY (batch)   REFERENCES batches(pk)
-);
 CREATE TABLE batches (
     "pk"     INTEGER NOT NULL PRIMARY KEY,
     "name"   TEXT    NOT NULL,
     "heads"  INTEGER NOT NULL,
     "parent" INTEGER,
-    FOREIGN KEY (parent) REFERENCES batches(pk)
+    FOREIGN KEY (parent) REFERENCES batches(pk) ON UPDATE CASCADE
 );
 CREATE TABLE rooms (
     "pk"       INTEGER NOT NULL PRIMARY KEY,
     "name"     TEXT    NOT NULL,
-    "capacity" INTEGER NOT NULL,
-    "parallel" INTEGER NOT NULL
+    "capacity" INTEGER NOT NULL
 );
 CREATE TABLE subjects (
     "pk"              INTEGER NOT NULL PRIMARY KEY,
-    "name"            TEXT    NOT NULL,
-    "frequency"       INTEGER NOT NULL,
-    "contiguous_time" INTEGER NOT NULL DEFAULT 3600,
-	"parallel"        INTEGER NOT NULL DEFAULT 0
+    "name"            TEXT    NOT NULL
 );
 CREATE TABLE teachers (
     "pk"   INTEGER NOT NULL PRIMARY KEY,
     "name" TEXT    NOT NULL
 );
-CREATE TABLE teachers_timeranges (
-    "pk"      INTEGER NOT NULL PRIMARY KEY,
-    "start"   INTEGER NOT NULL,
-    "end"     INTEGER NOT NULL,
-    "teacher" INTEGER NOT NULL,
-    FOREIGN KEY (teacher) REFERENCES teachers(pk)
-);
 CREATE TABLE allocations (
 	"pk"       INTEGER NOT NULL PRIMARY KEY,
 	"batch"    INTEGER NOT NULL,
 	"subject"  INTEGER NOT NULL,
-	"room"     INTEGER NOT NULL,
 	"teacher"  INTEGER NOT NULL,
-	"start"    INTEGER NOT NULL,
-	"end"      INTEGER NOT NULL,
-	"priority" INTEGER NOT NULL DEFAULT 0,
-	FOREIGN KEY (batch)   REFERENCES batches(pk),
-	FOREIGN KEY (subject) REFERENCES subjects(pk),
-	FOREIGN KEY (room)    REFERENCES rooms(pk),
-	FOREIGN KEY (teacher) REFERENCES teachers(pk)
+	FOREIGN KEY (batch)   REFERENCES batches(pk)  ON UPDATE CASCADE,
+	FOREIGN KEY (subject) REFERENCES subjects(pk) ON UPDATE CASCADE,
+	FOREIGN KEY (teacher) REFERENCES teachers(pk) ON UPDATE CASCADE
 );

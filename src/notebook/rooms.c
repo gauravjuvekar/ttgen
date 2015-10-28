@@ -8,7 +8,6 @@ typedef enum {
 	COLUMN_INT_pk,
 	COLUMN_STRING_name,
 	COLUMN_INT_capacity,
-	COLUMN_INT_parallel,
 	N_COLUMNS
 } TreeView_Rooms_E;
 
@@ -19,7 +18,6 @@ static GtkListStore *Rooms_ListStore_new(void) {
 	return gtk_list_store_new(N_COLUMNS,
 	                          G_TYPE_INT,
 	                          G_TYPE_STRING,
-	                          G_TYPE_INT,
 	                          G_TYPE_INT);
 }
 
@@ -43,13 +41,6 @@ void init_notebook_rooms(GtkBuilder *builder, sqlite3 *db) {
 			"Capacity",
 			gtk_cell_renderer_text_new(), "text", COLUMN_INT_capacity, NULL)
 	);
-	gtk_tree_view_append_column(
-		rooms_tree_view,
-		gtk_tree_view_column_new_with_attributes(
-			"Parallel",
-			gtk_cell_renderer_text_new(), "text", COLUMN_INT_parallel, NULL)
-	);
-
 }
 
 static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
@@ -63,7 +54,6 @@ static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_INT_pk,       room.pk,
 		                   COLUMN_STRING_name,  room.name,
 		                   COLUMN_INT_capacity, room.capacity,
-		                   COLUMN_INT_parallel, room.parallel,
 		                   -1);
 	}
 	sqlite3_finalize(stmt);
