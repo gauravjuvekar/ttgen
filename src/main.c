@@ -3,6 +3,7 @@
 #include "notebook/rooms.h"
 #include "notebook/subjects.h"
 #include "notebook/teachers.h"
+#include "notebook/batches.h"
 
 const char gui_builder_string[] = {
 #include "gui.ui.hex.inc"
@@ -12,7 +13,7 @@ const char gui_builder_string[] = {
 int main(int argc, char* argv[]) {
 	gtk_init(&argc, &argv);
 	sqlite3 *db;
-	sqlite3_open("database.db", &db);
+	sqlite3_open("new.db", &db);
 
 	GtkBuilder *builder = gtk_builder_new_from_string(gui_builder_string, -1);
 	GObject *window = gtk_builder_get_object(builder, "main_window");
@@ -21,6 +22,7 @@ int main(int argc, char* argv[]) {
 	init_notebook_rooms(builder, db);
 	init_notebook_subjects(builder, db);
 	init_notebook_teachers(builder, db);
+	init_notebook_batches(builder, db);
 
 
 	gtk_widget_show(GTK_WIDGET(window));

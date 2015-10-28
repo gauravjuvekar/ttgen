@@ -5,7 +5,9 @@ BUILT_SOURCES          = gui.ui.hex.inc
 project_SOURCES        = main.c\
                          notebook/rooms.c    db_tables/rooms.c\
                          notebook/subjects.c db_tables/subjects.c\
-                         notebook/teachers.c db_tables/teachers.c
+                         notebook/teachers.c db_tables/teachers.c\
+                         notebook/batches.c  db_tables/batches.c\
+                         core/genetic.c core/evolution.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread
 SUBDIRS                = sqlite
