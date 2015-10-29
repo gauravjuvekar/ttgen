@@ -6,5 +6,6 @@
 
 
 void init_notebook_batches(GtkBuilder *builder, sqlite3 *db);
+void refresh_notebook_batches(GtkBuilder* builder, sqlite3 *db);
 
 #endif

@@ -1,12 +1,14 @@
 #include <gtk/gtk.h>
 
-#include "notebook/rooms.h"
-#include "notebook/subjects.h"
-#include "notebook/teachers.h"
-#include "notebook/batches.h"
+#include "notebook/notebook.h"
 
 const char gui_builder_string[] = {
 #include "gui.ui.hex.inc"
+	, '\0'
+};
+
+const char db_schema_string[] = {
+#include "database.sqlite3.hex.inc"
 	, '\0'
 };
 
@@ -19,11 +21,11 @@ int main(int argc, char* argv[]) {
 	GObject *window = gtk_builder_get_object(builder, "main_window");
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-	init_notebook_rooms(builder, db);
-	init_notebook_subjects(builder, db);
-	init_notebook_teachers(builder, db);
-	init_notebook_batches(builder, db);
-
+	CallBackData cb_data = (CallBackData) {
+		.db = db,
+		.builder = builder
+	};
+	init_notebooks(&cb_data);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();

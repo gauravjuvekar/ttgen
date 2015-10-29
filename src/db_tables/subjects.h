@@ -8,12 +8,10 @@
 typedef struct Subject {
 	gint        pk;
 	const gchar *name;
-	gint        frequency;
-	gint        contiguous_time;
-	gint        parallel;
 } Subject;
 
 
 Subject Subject_from_stmt(sqlite3_stmt *stmt);
+void    insert_Subject(sqlite3 *db, const Subject *subject);
 
 #endif

@@ -67,3 +67,11 @@ static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 	}
 	sqlite3_finalize(stmt);
 }
+
+void refresh_notebook_batches(GtkBuilder* builder, sqlite3 *db) {
+	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
+		gtk_builder_get_object(builder, "batches_tree_view")
+	);
+	GtkTreeModel *list_store = gtk_tree_view_get_model(batches_tree_view);
+	set_Batches_from_db((GtkListStore *)list_store, db);
+}
