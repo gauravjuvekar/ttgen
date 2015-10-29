@@ -1,7 +1,6 @@
-#include <gtk/gtk.h>
+#include "../main.h"
 
 #include "teachers.h"
-#include "../sqlite/sqlite3.h"
 #include "../db_tables/teachers.h"
 
 typedef enum {

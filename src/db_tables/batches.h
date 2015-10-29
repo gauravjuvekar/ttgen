@@ -1,10 +1,7 @@
 #ifndef DB_TABLES_BATCHES_H
 #define DB_TABLES_BATCHES_H 1
 
-#include <gtk/gtk.h>
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
-
+#include "../main.h"
 
 typedef struct Batch {
 	gint        pk;

@@ -1,7 +1,6 @@
-#include <gtk/gtk.h>
+#include "../main.h"
 
 #include "batches.h"
-#include "../sqlite/sqlite3.h"
 #include "../db_tables/batches.h"
 
 typedef enum {

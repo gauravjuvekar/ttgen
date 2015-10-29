@@ -1,6 +1,6 @@
-#include "../sqlite/sqlite3.h"
-#include "batches.h"
+#include "../main.h"
 
+#include "batches.h"
 
 Batch Batch_from_stmt(sqlite3_stmt *stmt) {
 	return (Batch) {

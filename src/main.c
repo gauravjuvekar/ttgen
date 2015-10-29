@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+#include "main.h"
 
 #include "notebook/notebook.h"
 

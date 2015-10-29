@@ -1,8 +1,7 @@
 #ifndef DB_TABLES_SUBJECTS_H
 #define DB_TABLES_SUBJECTS_H 1
 
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../main.h"
 
 
 typedef struct Subject {

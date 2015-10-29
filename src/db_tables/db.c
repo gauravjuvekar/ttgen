@@ -1,6 +1,6 @@
-#include <glib.h>
+#include "../main.h"
+
 #include "db.h"
-#include "../sqlite/sqlite3.h"
 
 static const char schema[] = {
 #include "../database.sqlite3.hex.inc"

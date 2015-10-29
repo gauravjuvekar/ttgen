@@ -1,11 +1,10 @@
-#include <gtk/gtk.h>
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../main.h"
+
 #include "notebook.h"
 
 void init_notebooks(CallBackData *cb_data) {
 	init_notebook_rooms(cb_data->builder, cb_data->db);
-	init_notebook_subjects(cb_data->builder, cb_data->db);
+	init_notebook_subjects(cb_data);
 	init_notebook_teachers(cb_data->builder, cb_data->db);
 	init_notebook_batches(cb_data->builder, cb_data->db);
 	g_signal_connect(gtk_builder_get_object(cb_data->builder,

@@ -1,18 +1,13 @@
 #ifndef NOTEBOOK_NOTEBOOK_H
 #define NOTEBOOK_NOTEBOOK_H 1
 
-#include <gtk/gtk.h>
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../main.h"
+
 #include "rooms.h"
 #include "batches.h"
 #include "subjects.h"
 #include "teachers.h"
 
-typedef struct CallBackData {
-	sqlite3    *db;
-	GtkBuilder *builder;
-} CallBackData;
 
 typedef enum NotebookTabs {
 	TAB_ALLOCATION,
