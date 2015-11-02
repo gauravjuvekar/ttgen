@@ -12,5 +12,6 @@ typedef struct Teacher {
 
 Teacher Teacher_from_stmt(sqlite3_stmt *stmt);
 void insert_Teacher(sqlite3 *db, const Teacher *teacher);
+void remove_Teacher(sqlite3 *db, gint pk);
 
 #endif

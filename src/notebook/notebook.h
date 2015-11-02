@@ -22,6 +22,7 @@ void add_button_CB(GtkButton *button, CallBackData *data);
 void remove_button_CB(GtkButton *button, CallBackData *data);
 
 void init_notebooks(CallBackData *cb_data);
+typedef void (*refresh_notebook_func)(CallBackData *data);
 
 
 #endif
