@@ -14,7 +14,7 @@ void Population_seed(Population *population, const Meta *meta) {
 		g_ptr_array_add(population->schedules, Schedule_init(meta));
 		Schedule_seed_random(g_ptr_array_index(population->schedules,
 		                                       individual),
-		                     meta);
+		                                       meta);
 	}
 }
 
