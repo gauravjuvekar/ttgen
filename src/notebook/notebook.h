@@ -11,6 +11,7 @@
 
 typedef enum NotebookTabs {
 	TAB_ALLOCATION,
+	TAB_SCHEDULES,
 	TAB_TEACHERS,
 	TAB_ROOMS,
 	TAB_BATCHES,

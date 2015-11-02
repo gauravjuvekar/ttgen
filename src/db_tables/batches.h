@@ -12,6 +12,6 @@ typedef struct Batch {
 
 
 Batch Batch_from_stmt(sqlite3_stmt *stmt);
-void  refresh_notebook_batches(GtkBuilder* builder, sqlite3 *db);
+void  insert_Batch(sqlite3 *db, const Batch *batch);
 
 #endif

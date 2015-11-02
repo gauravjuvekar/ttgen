@@ -3,6 +3,7 @@
 
 #include "../main.h"
 
-void init_notebook_teachers(GtkBuilder *builder, sqlite3 *db);
+void init_notebook_teachers(CallBackData *data);
+void refresh_notebook_teachers(CallBackData *data);
 
 #endif

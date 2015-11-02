@@ -18,12 +18,41 @@ static GtkListStore *Teachers_ListStore_new(void) {
 	                          G_TYPE_STRING);
 }
 
-void init_notebook_teachers(GtkBuilder *builder, sqlite3 *db) {
+static void add_teacher_CB(GtkButton* button, CallBackData *data) {
+	(void)button;
+	GObject *name_entry = gtk_builder_get_object(
+		data->builder, "teachers_add_window_name_entry");
+	Teacher teacher = (Teacher) {
+		.name = gtk_entry_get_text((GtkEntry *)name_entry)
+	};
+
+	insert_Teacher(data->db, &teacher);
+	GObject *window = gtk_builder_get_object(
+		data->builder, "teachers_add_window");
+	gtk_widget_hide((GtkWidget *)window);
+	gtk_entry_set_text((GtkEntry *)name_entry, "");
+
+	refresh_notebook_teachers(data);
+}
+
+
+static void cancel_add_teacher_CB(GtkButton* button, CallBackData *data) {
+	(void)button;
+	GObject *name_entry = gtk_builder_get_object(
+		data->builder, "teachers_add_window_name_entry");
+	GObject *window = gtk_builder_get_object(
+		data->builder, "teachers_add_window");
+	gtk_widget_hide((GtkWidget *)window);
+	gtk_entry_set_text((GtkEntry *)name_entry, "");
+}
+
+
+void init_notebook_teachers(CallBackData *data) {
 	GtkTreeView *teachers_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(builder, "teachers_tree_view")
+		gtk_builder_get_object(data->builder, "teachers_tree_view")
 	);
 	GtkListStore *list_store = Teachers_ListStore_new();
-	set_Teachers_from_db(list_store, db);
+	set_Teachers_from_db(list_store, data->db);
 	gtk_tree_view_set_model(teachers_tree_view, GTK_TREE_MODEL(list_store));
 
 	gtk_tree_view_append_column(
@@ -32,6 +61,15 @@ void init_notebook_teachers(GtkBuilder *builder, sqlite3 *db) {
 			"Name",
 			gtk_cell_renderer_text_new(), "text", COLUMN_STRING_name, NULL)
 	);
+
+	GObject *add_teacher_button = gtk_builder_get_object(
+		data->builder, "teachers_add_window_ok_button");
+	g_signal_connect(add_teacher_button, "clicked",
+	                 G_CALLBACK(add_teacher_CB), data);
+	GObject *cancel_add_teacher_button = gtk_builder_get_object(
+		data->builder, "teachers_add_window_cancel_button");
+	g_signal_connect(cancel_add_teacher_button, "clicked",
+	                 G_CALLBACK(cancel_add_teacher_CB), data);
 }
 
 static void set_Teachers_from_db(GtkListStore *list_store, sqlite3 *db) {
@@ -47,4 +85,12 @@ static void set_Teachers_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   -1);
 	}
 	sqlite3_finalize(stmt);
+}
+
+void refresh_notebook_teachers(CallBackData *data) {
+	GtkTreeView *teachers_tree_view = GTK_TREE_VIEW(
+		gtk_builder_get_object(data->builder, "teachers_tree_view"));
+	GtkTreeModel *list_store = gtk_tree_view_get_model(teachers_tree_view);
+	gtk_list_store_clear((GtkListStore *)list_store);
+	set_Teachers_from_db((GtkListStore *)list_store, data->db);
 }

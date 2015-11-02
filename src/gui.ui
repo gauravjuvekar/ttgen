@@ -173,21 +173,23 @@
             <property name="can_focus">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkViewport" id="timetable_surface_viewport">
+              <object class="GtkScrolledWindow" id="timetable_scrolled_window">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkLabel" id="label4">
+                  <object class="GtkViewport" id="timetable_viewport">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_bottom">14</property>
-                    <property name="label" translatable="yes">label</property>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </object>
                 </child>
               </object>
               <packing>
-                <property name="resize">False</property>
-                <property name="shrink">True</property>
+                <property name="resize">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
             <child>
@@ -265,6 +267,36 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkScrolledWindow" id="schedules_scrolled_window">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="schedules_tree_view">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection6"/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child type="tab">
+                      <object class="GtkLabel" id="schedules_tab">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Schedules</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                        <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkScrolledWindow" id="teachers_scrolled_window">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -280,7 +312,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -290,7 +322,7 @@
                         <property name="label" translatable="yes">Teachers</property>
                       </object>
                       <packing>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>
@@ -310,7 +342,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -320,7 +352,7 @@
                         <property name="label" translatable="yes">Rooms</property>
                       </object>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>
@@ -340,7 +372,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -350,7 +382,7 @@
                         <property name="label" translatable="yes">Batches</property>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>
@@ -370,7 +402,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">4</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -380,7 +412,7 @@
                         <property name="label" translatable="yes">Subjects</property>
                       </object>
                       <packing>
-                        <property name="position">4</property>
+                        <property name="position">5</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>
@@ -397,37 +429,30 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkBox" id="fitness_box">
+                      <object class="GtkButtonBox" id="evolve_button_box">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="layout_style">start</property>
                         <child>
-                          <object class="GtkLabel" id="target_fitness_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Target fitness</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="padding">15</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSpinButton" id="target_fitness_spin_button">
+                          <object class="GtkButton" id="evolve_button">
+                            <property name="label" translatable="yes">Evolve</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">1</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
+                        <property name="padding">6</property>
+                        <property name="pack_type">end</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -457,7 +482,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="padding">15</property>
+                            <property name="padding">6</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -478,32 +503,44 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
+                        <property name="pack_type">end</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButtonBox" id="evolve_button_box">
+                      <object class="GtkBox" id="fitness_box">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
-                        <property name="layout_style">start</property>
                         <child>
-                          <object class="GtkButton" id="evolve_button">
-                            <property name="label" translatable="yes">Evolve</property>
+                          <object class="GtkLabel" id="target_fitness_label">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Target fitness</property>
+                            <property name="ellipsize">middle</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
+                            <property name="padding">6</property>
                             <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="target_fitness_spin_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
+                        <property name="pack_type">end</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -529,6 +566,108 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkWindow" id="teachers_add_window">
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">main_window</property>
+    <child>
+      <object class="GtkBox" id="teachers_add_window_vbox">
+        <property name="can_focus">False</property>
+        <property name="margin_left">6</property>
+        <property name="margin_right">6</property>
+        <property name="margin_top">6</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButtonBox" id="teachers_add_window_actionarea">
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="teachers_add_window_cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="yalign">0.60000002384185791</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="teachers_add_window_ok_button">
+                <property name="label" translatable="yes">Ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">6</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="teachers_add_window_grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">12</property>
+            <property name="column_spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="teachers_add_window_name_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Name</property>
+                <property name="ellipsize">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="teachers_add_window_name_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="rooms_add_window_capacity_adjustment">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkWindow" id="rooms_add_window">
     <property name="can_focus">False</property>
@@ -634,108 +773,12 @@
               <object class="GtkSpinButton" id="rooms_add_window_capacity_spinbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="adjustment">rooms_add_window_capacity_adjustment</property>
                 <property name="numeric">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="teachers_add_window">
-    <property name="can_focus">False</property>
-    <property name="modal">True</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="transient_for">main_window</property>
-    <child>
-      <object class="GtkBox" id="teachers_add_window_vbox">
-        <property name="can_focus">False</property>
-        <property name="margin_left">6</property>
-        <property name="margin_right">6</property>
-        <property name="margin_top">6</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child>
-          <object class="GtkButtonBox" id="teachers_add_window_actionarea">
-            <property name="can_focus">False</property>
-            <property name="spacing">6</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="teachers_add_window_cancel_button">
-                <property name="label" translatable="yes">Cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="yalign">0.60000002384185791</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="teachers_add_window_ok_button">
-                <property name="label" translatable="yes">Ok</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">6</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkGrid" id="teachers_add_window_grid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="row_spacing">12</property>
-            <property name="column_spacing">12</property>
-            <child>
-              <object class="GtkLabel" id="teachers_add_window_name_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">Name</property>
-                <property name="ellipsize">end</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="teachers_add_dialog_window_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
