@@ -23,6 +23,7 @@ void insert_Teacher(sqlite3 *db, const Teacher *teacher) {
 	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
 }
 
+
 void remove_Teacher(sqlite3 *db, gint pk) {
 	sqlite3_stmt *stmt;
 	g_assert(sqlite3_prepare(db,

@@ -27,3 +27,16 @@ void insert_Room(sqlite3 *db, const Room *room) {
 	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
 	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
 }
+
+
+void remove_Room(sqlite3 *db, gint pk) {
+	sqlite3_stmt *stmt;
+	g_assert(sqlite3_prepare(db,
+	                         "DELETE FROM rooms WHERE pk=:pk;",
+	                         -1, &stmt, NULL) == SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":pk"), pk) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+}

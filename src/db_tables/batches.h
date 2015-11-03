@@ -13,5 +13,6 @@ typedef struct Batch {
 
 Batch Batch_from_stmt(sqlite3_stmt *stmt);
 void  insert_Batch(sqlite3 *db, const Batch *batch);
+void  remove_Batch(sqlite3 *db, gint pk);
 
 #endif

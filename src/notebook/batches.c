@@ -22,12 +22,12 @@ static GtkListStore *Batches_ListStore_new(void) {
 	                          G_TYPE_INT);
 }
 
-void init_notebook_batches(GtkBuilder *builder, sqlite3 *db) {
+void init_notebook_batches(CallBackData *data) {
 	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(builder, "batches_tree_view")
+		gtk_builder_get_object(data->builder, "batches_tree_view")
 	);
 	GtkListStore *list_store = Batches_ListStore_new();
-	set_Batches_from_db(list_store, db);
+	set_Batches_from_db(list_store, data->db);
 	gtk_tree_view_set_model(batches_tree_view, GTK_TREE_MODEL(list_store));
 
 	gtk_tree_view_append_column(
@@ -48,6 +48,19 @@ void init_notebook_batches(GtkBuilder *builder, sqlite3 *db) {
 			"Parent",
 			gtk_cell_renderer_text_new(), "text", COLUMN_INT_parent, NULL)
 	);
+
+
+	GObject *batches_parent_combobox = gtk_builder_get_object(
+		data->builder, "batches_add_window_parent_combobox");
+	gtk_combo_box_set_model((GtkComboBox *)batches_parent_combobox,
+	                        GTK_TREE_MODEL(list_store));
+
+	GtkCellRenderer *combobox_text = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(batches_parent_combobox),
+	                           combobox_text, TRUE);
+	gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(batches_parent_combobox),
+	                              combobox_text,
+	                              "text", COLUMN_STRING_name);
 }
 
 static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
@@ -67,10 +80,11 @@ static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_finalize(stmt);
 }
 
-void refresh_notebook_batches(GtkBuilder* builder, sqlite3 *db) {
+void refresh_notebook_batches(CallBackData *data) {
 	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(builder, "batches_tree_view")
+		gtk_builder_get_object(data->builder, "batches_tree_view")
 	);
 	GtkTreeModel *list_store = gtk_tree_view_get_model(batches_tree_view);
-	set_Batches_from_db((GtkListStore *)list_store, db);
+	gtk_list_store_clear((GtkListStore *)list_store);
+	set_Batches_from_db((GtkListStore *)list_store, data->db);
 }

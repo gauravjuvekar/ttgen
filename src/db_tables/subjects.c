@@ -22,3 +22,16 @@ void insert_Subject(sqlite3 *db, const Subject *subject) {
 	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
 	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
 }
+
+
+void remove_Subject(sqlite3 *db, gint pk) {
+	sqlite3_stmt *stmt;
+	g_assert(sqlite3_prepare(db,
+	                         "DELETE FROM subjects WHERE pk=:pk;",
+	                         -1, &stmt, NULL) == SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":pk"), pk) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+}

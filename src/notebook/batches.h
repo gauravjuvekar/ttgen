@@ -4,7 +4,7 @@
 
 #include "../main.h"
 
-void init_notebook_batches(GtkBuilder *builder, sqlite3 *db);
-void refresh_notebook_batches(GtkBuilder* builder, sqlite3 *db);
+void init_notebook_batches(CallBackData *data);
+void refresh_notebook_batches(CallBackData *data);
 
 #endif

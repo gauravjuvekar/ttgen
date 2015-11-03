@@ -7,7 +7,7 @@ void init_notebooks(CallBackData *cb_data) {
 	init_notebook_rooms(cb_data);
 	init_notebook_subjects(cb_data);
 	init_notebook_teachers(cb_data);
-	init_notebook_batches(cb_data->builder, cb_data->db);
+	init_notebook_batches(cb_data);
 	g_signal_connect(gtk_builder_get_object(cb_data->builder,
 	                                        "db_entry_insert_new_button"),
 	                 "clicked", G_CALLBACK(add_button_CB), cb_data);
@@ -53,9 +53,7 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 	NotebookTabs tab = gtk_notebook_get_current_page((GtkNotebook *)notebook);
 
 	gchar *tree_selection_object = NULL;
-	remove_DB_func        remove_entry_func;
-	refresh_notebook_func refresh_func;
-
+	remove_DB_func remove_entry_func;
 
 	switch(tab) {
 		case TAB_ALLOCATION:
@@ -63,15 +61,18 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 		case TAB_TEACHERS:
 			tree_selection_object = "teachers_tree_view_selection";
 			remove_entry_func = remove_Teacher;
-			refresh_func = refresh_notebook_teachers;
 			break;
 		case TAB_ROOMS:
 			tree_selection_object = "rooms_tree_view_selection";
+			remove_entry_func = remove_Room;
 			break;
 		case TAB_BATCHES:
+			tree_selection_object = "batches_tree_view_selection";
+			remove_entry_func = remove_Batch;
 			break;
 		case TAB_SUBJECTS:
 			tree_selection_object = "subjects_tree_view_selection";
+			remove_entry_func  = remove_Subject;
 			break;
 		default:
 			g_assert(FALSE);
@@ -86,5 +87,8 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 	gtk_tree_model_get(model, &iter, 0, &pk, -1);
 	remove_entry_func(data->db, pk);
 
-	refresh_func(data);
+	refresh_notebook_rooms(data);
+	refresh_notebook_subjects(data);
+	refresh_notebook_batches(data);
+	refresh_notebook_teachers(data);
 }
