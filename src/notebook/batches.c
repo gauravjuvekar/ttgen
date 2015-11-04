@@ -22,10 +22,68 @@ static GtkListStore *Batches_ListStore_new(void) {
 	                          G_TYPE_INT);
 }
 
+static void add_batch_CB(GtkButton* button, CallBackData *data) {
+	(void)button;
+	GObject *name_entry = gtk_builder_get_object(
+		data->builder, "batches_add_window_name_entry");
+	GObject *heads_spin_button = gtk_builder_get_object(
+		data->builder, "batches_add_window_heads_spinbutton");
+	GtkComboBox *combo_box = (GtkComboBox *)gtk_builder_get_object(
+		data->builder, "batches_add_window_parent_combobox");
+	GtkTreeModel *list_store = gtk_combo_box_get_model(combo_box);
+	GtkTreeIter iter;
+	gint parent_pk;
+	if (gtk_combo_box_get_active_iter(combo_box, &iter)) {
+		gtk_tree_model_get(list_store, &iter, 0, &parent_pk, -1);
+	}
+	else {
+		parent_pk = 0;
+	}
+	Batch batch = (Batch) {
+		.name = gtk_entry_get_text((GtkEntry *)name_entry),
+		.heads = gtk_spin_button_get_value_as_int(
+			 (GtkSpinButton *)heads_spin_button),
+		.parent = parent_pk
+	};
+
+	insert_Batch(data->db, &batch);
+	GObject *window = gtk_builder_get_object(
+		data->builder, "batches_add_window");
+	gtk_widget_hide((GtkWidget *)window);
+	gtk_entry_set_text((GtkEntry *)name_entry, "");
+	gtk_combo_box_set_active(combo_box, -1);
+
+	refresh_notebook_batches(data);
+}
+
+
+static void cancel_add_batch_CB(GtkButton* button, CallBackData *data) {
+	(void)button;
+	GObject *name_entry = gtk_builder_get_object(
+		data->builder, "batches_add_window_name_entry");
+	GObject *window = gtk_builder_get_object(
+		data->builder, "batches_add_window");
+	gtk_widget_hide((GtkWidget *)window);
+	gtk_entry_set_text((GtkEntry *)name_entry, "");
+	GtkComboBox *combo_box = (GtkComboBox *)gtk_builder_get_object(
+		data->builder, "batches_add_window_parent_combobox");
+	gtk_combo_box_set_active(combo_box, -1);
+}
+
+
+static gboolean close_add_batch_window_CB(GtkWidget *widget,
+                                          GdkEvent  *event,
+                                          CallBackData *data) {
+	(void)widget;
+	(void)event;
+	cancel_add_batch_CB(NULL, data);
+	return TRUE;
+}
+
+
 void init_notebook_batches(CallBackData *data) {
 	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(data->builder, "batches_tree_view")
-	);
+		gtk_builder_get_object(data->builder, "batches_tree_view"));
 	GtkListStore *list_store = Batches_ListStore_new();
 	set_Batches_from_db(list_store, data->db);
 	gtk_tree_view_set_model(batches_tree_view, GTK_TREE_MODEL(list_store));
@@ -48,6 +106,20 @@ void init_notebook_batches(CallBackData *data) {
 			"Parent",
 			gtk_cell_renderer_text_new(), "text", COLUMN_INT_parent, NULL)
 	);
+
+	GObject *add_batch_button = gtk_builder_get_object(
+		data->builder, "batches_add_window_ok_button");
+	g_signal_connect(add_batch_button, "clicked",
+	                 G_CALLBACK(add_batch_CB), data);
+	GObject *cancel_add_batch_button = gtk_builder_get_object(
+		data->builder, "batches_add_window_cancel_button");
+	g_signal_connect(cancel_add_batch_button, "clicked",
+	                 G_CALLBACK(cancel_add_batch_CB), data);
+	GObject *add_batch_window = gtk_builder_get_object(data->builder,
+													   "batches_add_window");
+	g_signal_connect(add_batch_window, "delete-event",
+	                 G_CALLBACK(close_add_batch_window_CB), data);
+
 
 
 	GObject *batches_parent_combobox = gtk_builder_get_object(
@@ -82,8 +154,7 @@ static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 
 void refresh_notebook_batches(CallBackData *data) {
 	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(data->builder, "batches_tree_view")
-	);
+		gtk_builder_get_object(data->builder, "batches_tree_view"));
 	GtkTreeModel *list_store = gtk_tree_view_get_model(batches_tree_view);
 	gtk_list_store_clear((GtkListStore *)list_store);
 	set_Batches_from_db((GtkListStore *)list_store, data->db);

@@ -52,6 +52,15 @@ static void cancel_add_subject_CB(GtkButton *button, CallBackData *data) {
 }
 
 
+static gboolean close_add_subject_window_CB(GtkWidget *widget,
+                                            GdkEvent  *event,
+                                            CallBackData *data) {
+	(void)widget;
+	(void)event;
+	cancel_add_subject_CB(NULL, data);
+	return TRUE;
+}
+
 void init_notebook_subjects(CallBackData *data) {
 	GtkTreeView *subjects_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "subjects_tree_view")
@@ -76,6 +85,10 @@ void init_notebook_subjects(CallBackData *data) {
 		data->builder, "subjects_add_window_cancel_button");
 	g_signal_connect(cancel_add_subject_button, "clicked",
 	                 G_CALLBACK(cancel_add_subject_CB), data);
+	GObject *add_subject_window = gtk_builder_get_object(data->builder,
+													   "subjects_add_window");
+	g_signal_connect(add_subject_window, "delete-event",
+	                 G_CALLBACK(close_add_subject_window_CB), data);
 }
 
 

@@ -15,7 +15,7 @@ Batch Batch_from_stmt(sqlite3_stmt *stmt) {
 void insert_Batch(sqlite3 *db, const Batch *batch) {
 	sqlite3_stmt *stmt;
 	g_assert(sqlite3_prepare(db,
-	                         "INSERT INTO batches(name, capacity) "
+	                         "INSERT INTO batches(name, heads, parent) "
 	                         "VALUES (:name, :heads, :parent);",
 	                         -1, &stmt, NULL) == SQLITE_OK);
 	g_assert(sqlite3_bind_text(stmt,

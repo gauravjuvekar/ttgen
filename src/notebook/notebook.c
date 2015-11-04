@@ -81,14 +81,15 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 	                                            tree_selection_object);
 	GtkTreeModel *model;
 	GtkTreeIter  iter;
-	g_assert(gtk_tree_selection_get_selected((GtkTreeSelection *)selection,
-	                                         &model, &iter));
-	gint pk;
-	gtk_tree_model_get(model, &iter, 0, &pk, -1);
-	remove_entry_func(data->db, pk);
+	if (gtk_tree_selection_get_selected((GtkTreeSelection *)selection,
+	                                    &model, &iter)) {
+		gint pk;
+		gtk_tree_model_get(model, &iter, 0, &pk, -1);
+		remove_entry_func(data->db, pk);
 
-	refresh_notebook_rooms(data);
-	refresh_notebook_subjects(data);
-	refresh_notebook_batches(data);
-	refresh_notebook_teachers(data);
+		refresh_notebook_rooms(data);
+		refresh_notebook_subjects(data);
+		refresh_notebook_batches(data);
+		refresh_notebook_teachers(data);
+	}
 }

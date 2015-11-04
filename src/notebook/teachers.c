@@ -47,6 +47,16 @@ static void cancel_add_teacher_CB(GtkButton* button, CallBackData *data) {
 }
 
 
+static gboolean close_add_teacher_window_CB(GtkWidget *widget,
+                                            GdkEvent  *event,
+                                            CallBackData *data) {
+	(void)widget;
+	(void)event;
+	cancel_add_teacher_CB(NULL, data);
+	return TRUE;
+}
+
+
 void init_notebook_teachers(CallBackData *data) {
 	GtkTreeView *teachers_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "teachers_tree_view")
@@ -70,6 +80,10 @@ void init_notebook_teachers(CallBackData *data) {
 		data->builder, "teachers_add_window_cancel_button");
 	g_signal_connect(cancel_add_teacher_button, "clicked",
 	                 G_CALLBACK(cancel_add_teacher_CB), data);
+	GObject *add_teacher_window = gtk_builder_get_object(data->builder,
+													   "teachers_add_window");
+	g_signal_connect(add_teacher_window, "delete-event",
+	                 G_CALLBACK(close_add_teacher_window_CB), data);
 }
 
 static void set_Teachers_from_db(GtkListStore *list_store, sqlite3 *db) {

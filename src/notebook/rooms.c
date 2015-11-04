@@ -43,6 +43,7 @@ static void add_room_CB(GtkButton* button, CallBackData *data) {
 }
 
 
+
 static void cancel_add_room_CB(GtkButton* button, CallBackData *data) {
 	(void)button;
 	GObject *name_entry = gtk_builder_get_object(
@@ -51,6 +52,16 @@ static void cancel_add_room_CB(GtkButton* button, CallBackData *data) {
 		data->builder, "rooms_add_window");
 	gtk_widget_hide((GtkWidget *)window);
 	gtk_entry_set_text((GtkEntry *)name_entry, "");
+}
+
+
+static gboolean close_add_room_window_CB(GtkWidget *widget,
+                                         GdkEvent  *event,
+                                         CallBackData *data) {
+	(void)widget;
+	(void)event;
+	cancel_add_room_CB(NULL, data);
+	return TRUE;
 }
 
 
@@ -84,6 +95,10 @@ void init_notebook_rooms(CallBackData *data) {
 		data->builder, "rooms_add_window_cancel_button");
 	g_signal_connect(cancel_add_room_button, "clicked",
 	                 G_CALLBACK(cancel_add_room_CB), data);
+	GObject *add_room_window = gtk_builder_get_object(data->builder,
+													   "rooms_add_window");
+	g_signal_connect(add_room_window, "delete-event",
+	                 G_CALLBACK(close_add_room_window_CB), data);
 }
 
 static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
