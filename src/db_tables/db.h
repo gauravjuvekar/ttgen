@@ -10,6 +10,7 @@
 
 void init_db(sqlite3 *db, const char *file_name);
 void new_db(sqlite3 *db);
+void reset_pks(sqlite3 *db);
 
 typedef void (*remove_DB_func)(sqlite3 *db, gint pk);
 
