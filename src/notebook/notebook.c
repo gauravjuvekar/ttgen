@@ -8,6 +8,7 @@ void init_notebooks(CallBackData *cb_data) {
 	init_notebook_subjects(cb_data);
 	init_notebook_teachers(cb_data);
 	init_notebook_batches(cb_data);
+	init_notebook_allocations(cb_data);
 	g_signal_connect(gtk_builder_get_object(cb_data->builder,
 	                                        "db_entry_insert_new_button"),
 	                 "clicked", G_CALLBACK(add_button_CB), cb_data);
@@ -23,9 +24,9 @@ void add_button_CB(GtkButton *button, CallBackData *data) {
 
 	gchar *builder_window_name = NULL;
 	switch(tab) {
-		case TAB_ALLOCATION:
-			break;
+		case TAB_ALLOCATIONS:
 			builder_window_name = "allocations_add_window";
+			break;
 		case TAB_TEACHERS:
 			builder_window_name = "teachers_add_window";
 			break;
@@ -56,7 +57,9 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 	remove_DB_func remove_entry_func;
 
 	switch(tab) {
-		case TAB_ALLOCATION:
+		case TAB_ALLOCATIONS:
+			tree_selection_object = "allocations_tree_view_selection";
+			remove_entry_func = remove_Allocation;
 			break;
 		case TAB_TEACHERS:
 			tree_selection_object = "teachers_tree_view_selection";

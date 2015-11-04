@@ -7,10 +7,11 @@
 #include "batches.h"
 #include "subjects.h"
 #include "teachers.h"
+#include "allocations.h"
 
 
 typedef enum NotebookTabs {
-	TAB_ALLOCATION,
+	TAB_ALLOCATIONS,
 	TAB_SCHEDULES,
 	TAB_TEACHERS,
 	TAB_ROOMS,

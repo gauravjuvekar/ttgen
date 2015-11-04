@@ -1,22 +1,22 @@
 CREATE TABLE batches (
-    "pk"     INTEGER NOT NULL PRIMARY KEY,
-    "name"   TEXT    NOT NULL,
-    "heads"  INTEGER NOT NULL,
-    "parent" INTEGER,
-    FOREIGN KEY (parent) REFERENCES batches(pk) ON UPDATE CASCADE ON DELETE CASCADE
+	"pk"     INTEGER NOT NULL PRIMARY KEY,
+	"name"   TEXT    NOT NULL,
+	"heads"  INTEGER NOT NULL,
+	"parent" INTEGER,
+	FOREIGN KEY (parent) REFERENCES batches(pk) ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE rooms (
-    "pk"       INTEGER NOT NULL PRIMARY KEY,
-    "name"     TEXT    NOT NULL,
-    "capacity" INTEGER NOT NULL
+	"pk"       INTEGER NOT NULL PRIMARY KEY,
+	"name"     TEXT    NOT NULL,
+	"capacity" INTEGER NOT NULL
 );
 CREATE TABLE subjects (
-    "pk"              INTEGER NOT NULL PRIMARY KEY,
-    "name"            TEXT    NOT NULL
+	"pk"              INTEGER NOT NULL PRIMARY KEY,
+	"name"            TEXT    NOT NULL
 );
 CREATE TABLE teachers (
-    "pk"   INTEGER NOT NULL PRIMARY KEY,
-    "name" TEXT    NOT NULL
+	"pk"   INTEGER NOT NULL PRIMARY KEY,
+	"name" TEXT    NOT NULL
 );
 CREATE TABLE allocations (
 	"pk"       INTEGER NOT NULL PRIMARY KEY,
@@ -26,4 +26,22 @@ CREATE TABLE allocations (
 	FOREIGN KEY (batch)   REFERENCES batches(pk)  ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (subject) REFERENCES subjects(pk) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (teacher) REFERENCES teachers(pk) ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE TABLE schedules (
+	"pk"      INTEGER NOT NULL PRIMARY KEY,
+	"fitness" REAL    NOT NULL
+);
+CREATE TABLE schedule_allocs (
+	"pk"         INTEGER NOT NULL PRIMARY KEY,
+	"schedule"   INTEGER NOT NULL,
+	"allocation" INTEGER NOT NULL,
+	"slot"       INTEGER NOT NULL,
+	FOREIGN KEY (schedule)   REFERENCES schedules(pk)   ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (allocation) REFERENCES allocations(pk) ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE TABLE meta (
+	"key"         TEXT NOT NULL PRIMARY KEY,
+	"text_value"  TEXT    DEFAULT NULL,
+	"int_value"   INTEGER DEFAULT NULL,
+	"float_value" REAL    DEFAULT NULL
 );

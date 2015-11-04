@@ -2,6 +2,68 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <object class="GtkListStore" id="allocations_list_store">
+    <columns>
+      <!-- column-name pk -->
+      <column type="gint"/>
+      <!-- column-name batch_pk -->
+      <column type="gint"/>
+      <!-- column-name subject_pk -->
+      <column type="gint"/>
+      <!-- column-name teacher_pk -->
+      <column type="gint"/>
+    </columns>
+  </object>
+  <object class="GtkAdjustment" id="preferences_fitness_penalty_time_clash_batch_adjustment">
+    <property name="lower">-1000000</property>
+    <property name="upper">-1000</property>
+    <property name="step_increment">1000</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="preferences_fitness_penalty_time_clash_teacher_adjustment">
+    <property name="lower">-1000000</property>
+    <property name="upper">-1000</property>
+    <property name="value">-1000</property>
+    <property name="step_increment">1000</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="preferences_mutate_swaps_adjustment">
+    <property name="upper">5</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="preferences_population_adjustment">
+    <property name="lower">10</property>
+    <property name="upper">500</property>
+    <property name="value">50</property>
+    <property name="step_increment">50</property>
+    <property name="page_increment">50</property>
+  </object>
+  <object class="GtkAdjustment" id="preferences_time_slots_adjustment">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="rooms_add_window_capacity_adjustment">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkEntryBuffer" id="subjects_new_name_entry_buffer"/>
+  <object class="GtkAdjustment" id="target_fitness_adjustment">
+    <property name="lower">-10000</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">100</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="target_generations_adjustment">
+    <property name="lower">1</property>
+    <property name="upper">1000000</property>
+    <property name="value">1000</property>
+    <property name="step_increment">1000</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -15,17 +77,17 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="menuitem1">
+              <object class="GtkMenuItem" id="file_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu" id="menu1">
+                  <object class="GtkMenu" id="file_menu_items">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem1">
+                      <object class="GtkImageMenuItem" id="file_new_menuitem">
                         <property name="label">gtk-new</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -34,7 +96,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem2">
+                      <object class="GtkImageMenuItem" id="file_open_menuitem">
                         <property name="label">gtk-open</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -43,31 +105,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem3">
-                        <property name="label">gtk-save</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label">gtk-save-as</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                      <object class="GtkSeparatorMenuItem" id="file_separator_menuitem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem5">
+                      <object class="GtkImageMenuItem" id="file_quit_menuitem">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -80,45 +124,18 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem2">
+              <object class="GtkMenuItem" id="edit_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
+                  <object class="GtkMenu" id="edit_menu_items">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
+                      <object class="GtkImageMenuItem" id="edit_preferences_menuitem">
+                        <property name="label">gtk-preferences</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -130,7 +147,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem3">
+              <object class="GtkMenuItem" id="view_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_View</property>
@@ -138,7 +155,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem4">
+              <object class="GtkMenuItem" id="help_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Help</property>
@@ -249,6 +266,8 @@
                           <object class="GtkTreeView" id="allocations_tree_view">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="model">allocations_list_store</property>
+                            <property name="search_column">0</property>
                             <child internal-child="selection">
                               <object class="GtkTreeSelection" id="allocations_tree_view_selection"/>
                             </child>
@@ -490,6 +509,8 @@
                           <object class="GtkSpinButton" id="target_generations_spin_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="input_purpose">number</property>
+                            <property name="adjustment">target_generations_adjustment</property>
                             <property name="climb_rate">10</property>
                             <property name="numeric">True</property>
                           </object>
@@ -529,6 +550,7 @@
                           <object class="GtkSpinButton" id="target_fitness_spin_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="adjustment">target_fitness_adjustment</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -567,13 +589,13 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="teachers_add_window">
+  <object class="GtkWindow" id="allocations_add_window">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
     <child>
-      <object class="GtkBox" id="teachers_add_window_vbox">
+      <object class="GtkBox" id="allocations_add_window_vbox">
         <property name="can_focus">False</property>
         <property name="margin_left">6</property>
         <property name="margin_right">6</property>
@@ -581,17 +603,16 @@
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <object class="GtkButtonBox" id="teachers_add_window_actionarea">
+          <object class="GtkButtonBox" id="allocations_add_window_actionarea">
             <property name="can_focus">False</property>
             <property name="spacing">6</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="teachers_add_window_cancel_button">
+              <object class="GtkButton" id="allocations_add_window_cancel_button">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="yalign">0.60000002384185791</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -600,7 +621,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="teachers_add_window_ok_button">
+              <object class="GtkButton" id="allocations_add_window_ok_button">
                 <property name="label" translatable="yes">Ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -622,18 +643,18 @@
           </packing>
         </child>
         <child>
-          <object class="GtkGrid" id="teachers_add_window_grid">
+          <object class="GtkGrid" id="allocations_add_window_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_spacing">12</property>
             <property name="column_spacing">12</property>
             <child>
-              <object class="GtkLabel" id="teachers_add_window_name_label">
+              <object class="GtkLabel" id="allocations_add_window_subject_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
-                <property name="label" translatable="yes">Name</property>
-                <property name="ellipsize">end</property>
+                <property name="label" translatable="yes">Subject</property>
+                <property name="justify">right</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -643,13 +664,68 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="teachers_add_window_name_entry">
+              <object class="GtkLabel" id="allocations_add_window_batch_label">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Batch</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="allocations_add_window_teacher_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Teacher</property>
+                <property name="justify">right</property>
+                <property name="ellipsize">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="allocations_add_window_subject_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="allocations_add_window_batch_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="allocations_add_window_teacher_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -663,11 +739,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="rooms_add_window_capacity_adjustment">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
   </object>
   <object class="GtkWindow" id="batches_add_window">
     <property name="can_focus">False</property>
@@ -819,6 +890,240 @@
       </object>
     </child>
   </object>
+  <object class="GtkWindow" id="preferences_window">
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">main_window</property>
+    <child>
+      <object class="GtkBox" id="preferences_window_vbox">
+        <property name="can_focus">False</property>
+        <property name="margin_left">6</property>
+        <property name="margin_right">6</property>
+        <property name="margin_top">6</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButtonBox" id="preferences_window_actionarea">
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="preferences_window_cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="preferences_window_ok_button">
+                <property name="label" translatable="yes">Ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">6</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="preferences_window_grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">12</property>
+            <property name="column_spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="preferences_window_mutate_swaps">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Mutations per child</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_fitness_penalty_time_clash_teacher">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Fitness penalty for
+teacher time clash</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_fitness_penalty_time_clash_batch">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Fitness penalty for
+batch time clash</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_mutation_swaps_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_mutate_swaps_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_fitness_penalty_time_clash_teacher_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_fitness_penalty_time_clash_teacher_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">-1000</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_fitness_penalty_time_clash_batch_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">-1000</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_fitness_penalty_time_clash_batch_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">-1000</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_population">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Number of schedules</property>
+                <property name="justify">fill</property>
+                <property name="angle">0.01</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_population_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">0</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_population_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">50</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_time_slots">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Time slots per week</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_time_slots_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">5</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_time_slots_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">50</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="rooms_add_window">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
@@ -943,7 +1248,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkEntryBuffer" id="subjects_new_name_entry_buffer"/>
   <object class="GtkWindow" id="subjects_add_window">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
@@ -1009,6 +1313,7 @@
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Name</property>
+                <property name="justify">right</property>
                 <property name="ellipsize">end</property>
               </object>
               <packing>
@@ -1036,6 +1341,104 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">6</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="teachers_add_window">
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">main_window</property>
+    <child>
+      <object class="GtkBox" id="teachers_add_window_vbox">
+        <property name="can_focus">False</property>
+        <property name="margin_left">6</property>
+        <property name="margin_right">6</property>
+        <property name="margin_top">6</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButtonBox" id="teachers_add_window_actionarea">
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="teachers_add_window_cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="yalign">0.60000002384185791</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="teachers_add_window_ok_button">
+                <property name="label" translatable="yes">Ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">6</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="teachers_add_window_grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">12</property>
+            <property name="column_spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="teachers_add_window_name_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Name</property>
+                <property name="justify">right</property>
+                <property name="ellipsize">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="teachers_add_window_name_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>

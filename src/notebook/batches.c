@@ -137,7 +137,8 @@ void init_notebook_batches(CallBackData *data) {
 
 static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_stmt *stmt;
-	sqlite3_prepare(db, "SELECT * FROM batches", -1, &stmt, NULL);
+	sqlite3_prepare(db, "SELECT pk, name, heads, parent FROM batches;",
+	                -1, &stmt, NULL);
 	GtkTreeIter iter;
 	while(sqlite3_step(stmt) == SQLITE_ROW) {
 		gtk_list_store_append(list_store, &iter);
