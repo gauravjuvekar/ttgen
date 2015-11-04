@@ -3,6 +3,7 @@
 #include "rooms.h"
 #include "../db_tables/rooms.h"
 
+
 typedef enum {
 	COLUMN_INT_pk,
 	COLUMN_STRING_name,
@@ -10,15 +11,7 @@ typedef enum {
 	N_COLUMNS
 } TreeView_Rooms_E;
 
-static GtkListStore *Rooms_ListStore_new(void);
 static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db);
-
-static GtkListStore *Rooms_ListStore_new(void) {
-	return gtk_list_store_new(N_COLUMNS,
-	                          G_TYPE_INT,
-	                          G_TYPE_STRING,
-	                          G_TYPE_INT);
-}
 
 
 static void add_room_CB(GtkButton* button, CallBackData *data) {
@@ -41,7 +34,6 @@ static void add_room_CB(GtkButton* button, CallBackData *data) {
 
 	refresh_notebook_rooms(data);
 }
-
 
 
 static void cancel_add_room_CB(GtkButton* button, CallBackData *data) {
@@ -67,24 +59,25 @@ static gboolean close_add_room_window_CB(GtkWidget *widget,
 
 void init_notebook_rooms(CallBackData *data) {
 	GtkTreeView *rooms_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(data->builder, "rooms_tree_view")
-	);
-	GtkListStore *list_store = Rooms_ListStore_new();
+		gtk_builder_get_object(data->builder, "rooms_tree_view"));
+	GtkListStore *list_store =
+		(GtkListStore *)gtk_tree_view_get_model(rooms_tree_view);
 	set_Rooms_from_db(list_store, data->db);
-	gtk_tree_view_set_model(rooms_tree_view, GTK_TREE_MODEL(list_store));
 
 	gtk_tree_view_append_column(
-		rooms_tree_view,
-		gtk_tree_view_column_new_with_attributes(
-			"Name",
-			gtk_cell_renderer_text_new(), "text", COLUMN_STRING_name, NULL)
-	);
+	  	rooms_tree_view,
+	 	gtk_tree_view_column_new_with_attributes(
+	 		"Name",
+	 		gtk_cell_renderer_text_new(),
+	 		"text", COLUMN_STRING_name,
+	  		NULL));
 	gtk_tree_view_append_column(
 		rooms_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Capacity",
-			gtk_cell_renderer_text_new(), "text", COLUMN_INT_capacity, NULL)
-	);
+			gtk_cell_renderer_text_new(),
+			"text", COLUMN_INT_capacity,
+			NULL));
 
 
 	GObject *add_room_button = gtk_builder_get_object(
@@ -96,10 +89,11 @@ void init_notebook_rooms(CallBackData *data) {
 	g_signal_connect(cancel_add_room_button, "clicked",
 	                 G_CALLBACK(cancel_add_room_CB), data);
 	GObject *add_room_window = gtk_builder_get_object(data->builder,
-													   "rooms_add_window");
+	                                                  "rooms_add_window");
 	g_signal_connect(add_room_window, "delete-event",
 	                 G_CALLBACK(close_add_room_window_CB), data);
 }
+
 
 static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_stmt *stmt;
@@ -122,7 +116,8 @@ static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
 void refresh_notebook_rooms(CallBackData *data) {
 	GtkTreeView *rooms_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "rooms_tree_view"));
-	GtkTreeModel *list_store = gtk_tree_view_get_model(rooms_tree_view);
-	gtk_list_store_clear((GtkListStore *)list_store);
-	set_Rooms_from_db((GtkListStore *)list_store, data->db);
+	GtkListStore *list_store =
+		(GtkListStore *)gtk_tree_view_get_model(rooms_tree_view);
+	gtk_list_store_clear(list_store);
+	set_Rooms_from_db(list_store, data->db);
 }

@@ -94,5 +94,6 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 		refresh_notebook_subjects(data);
 		refresh_notebook_batches(data);
 		refresh_notebook_teachers(data);
+		refresh_notebook_allocations(data);
 	}
 }

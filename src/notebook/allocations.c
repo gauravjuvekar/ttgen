@@ -3,6 +3,7 @@
 #include "allocations.h"
 #include "../db_tables/allocations.h"
 
+
 typedef enum {
 	COLUMN_INT_pk,
 	COLUMN_INT_batch,
@@ -11,16 +12,8 @@ typedef enum {
 	N_COLUMNS
 } TreeView_Allocations_E;
 
-static GtkListStore *Allocations_ListStore_new(void);
 static void set_Allocations_from_db(GtkListStore *list_store, sqlite3 *db);
 
-static GtkListStore *Allocations_ListStore_new(void) {
-	return gtk_list_store_new(N_COLUMNS,
-	                          G_TYPE_INT,
-	                          G_TYPE_INT,
-	                          G_TYPE_INT,
-	                          G_TYPE_INT);
-}
 
 static void add_allocation_CB(GtkButton* button, CallBackData *data) {
 	(void)button;
@@ -108,29 +101,30 @@ static gboolean close_add_allocation_window_CB(GtkWidget *widget,
 void init_notebook_allocations(CallBackData *data) {
 	GtkTreeView *allocations_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "allocations_tree_view"));
-	/* GtkListStore *list_store = Allocations_ListStore_new(); */
 	GtkTreeModel *list_store = gtk_tree_view_get_model(allocations_tree_view);
 	set_Allocations_from_db((GtkListStore *)list_store, data->db);
-	/* gtk_tree_view_set_model(allocations_tree_view, GTK_TREE_MODEL(list_store)); */
 
 	gtk_tree_view_append_column(
 		allocations_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Batch",
-			gtk_cell_renderer_text_new(), "text", COLUMN_INT_batch, NULL)
-	);
+			gtk_cell_renderer_text_new(),
+			"text", COLUMN_INT_batch,
+			NULL));
 	gtk_tree_view_append_column(
 		allocations_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Subject",
-			gtk_cell_renderer_text_new(), "text", COLUMN_INT_subject, NULL)
-	);
+			gtk_cell_renderer_text_new(),
+			"text", COLUMN_INT_subject,
+			NULL));
 	gtk_tree_view_append_column(
 		allocations_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Teacher",
-			gtk_cell_renderer_text_new(), "text", COLUMN_INT_teacher, NULL)
-	);
+			gtk_cell_renderer_text_new(),
+			"text", COLUMN_INT_teacher,
+			NULL));
 
 	GObject *add_allocation_button = gtk_builder_get_object(
 		data->builder, "allocations_add_window_ok_button");
@@ -153,24 +147,6 @@ void init_notebook_allocations(CallBackData *data) {
 	GtkComboBox *teacher_combo_box = (GtkComboBox *)gtk_builder_get_object(
 		data->builder, "allocations_add_window_teacher_combobox");
 
-	gtk_combo_box_set_model(
-		(GtkComboBox *)subject_combo_box,
-		GTK_TREE_MODEL(
-			gtk_tree_view_get_model((GtkTreeView *)
-				gtk_builder_get_object(data->builder,
-									   "subjects_tree_view"))));
-	gtk_combo_box_set_model(
-		(GtkComboBox *)batch_combo_box,
-		GTK_TREE_MODEL(
-			gtk_tree_view_get_model((GtkTreeView *)
-				gtk_builder_get_object(data->builder,
-									   "batches_tree_view"))));
-	gtk_combo_box_set_model(
-		(GtkComboBox *)teacher_combo_box,
-		GTK_TREE_MODEL(
-			gtk_tree_view_get_model((GtkTreeView *)
-				gtk_builder_get_object(data->builder,
-									   "teachers_tree_view"))));
 
 	GtkCellRenderer *combobox_text;
 	combobox_text = gtk_cell_renderer_text_new();
@@ -193,6 +169,7 @@ void init_notebook_allocations(CallBackData *data) {
 	                              "text", 1);
 }
 
+
 static void set_Allocations_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_stmt *stmt;
 	sqlite3_prepare(db, "SELECT pk, batch, subject, teacher FROM allocations;",
@@ -211,10 +188,12 @@ static void set_Allocations_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_finalize(stmt);
 }
 
+
 void refresh_notebook_allocations(CallBackData *data) {
 	GtkTreeView *allocations_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "allocations_tree_view"));
-	GtkTreeModel *list_store = gtk_tree_view_get_model(allocations_tree_view);
-	gtk_list_store_clear((GtkListStore *)list_store);
-	set_Allocations_from_db((GtkListStore *)list_store, data->db);
+	GtkListStore *list_store =
+		(GtkListStore *)gtk_tree_view_get_model(allocations_tree_view);
+	gtk_list_store_clear(list_store);
+	set_Allocations_from_db(list_store, data->db);
 }

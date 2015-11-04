@@ -10,16 +10,7 @@ typedef enum {
 	N_COLUMNS
 } TreeView_Subjects_E;
 
-
-static GtkListStore *Subjects_ListStore_new(void);
 static void set_Subjects_from_db(GtkListStore *list_store, sqlite3 *db);
-
-
-static GtkListStore *Subjects_ListStore_new(void) {
-	return gtk_list_store_new(N_COLUMNS,
-	                          G_TYPE_INT,
-	                          G_TYPE_STRING);
-}
 
 
 static void add_subject_CB(GtkButton* button, CallBackData *data) {
@@ -41,6 +32,7 @@ static void add_subject_CB(GtkButton* button, CallBackData *data) {
 	refresh_notebook_subjects(data);
 }
 
+
 static void cancel_add_subject_CB(GtkButton *button, CallBackData *data) {
 	(void)button;
 	GObject *window = gtk_builder_get_object(
@@ -61,20 +53,21 @@ static gboolean close_add_subject_window_CB(GtkWidget *widget,
 	return TRUE;
 }
 
+
 void init_notebook_subjects(CallBackData *data) {
 	GtkTreeView *subjects_tree_view = GTK_TREE_VIEW(
-		gtk_builder_get_object(data->builder, "subjects_tree_view")
-	);
-	GtkListStore *list_store = Subjects_ListStore_new();
+		gtk_builder_get_object(data->builder, "subjects_tree_view"));
+	GtkListStore *list_store =
+		(GtkListStore *)gtk_tree_view_get_model(subjects_tree_view);
 	set_Subjects_from_db(list_store, data->db);
-	gtk_tree_view_set_model(subjects_tree_view, GTK_TREE_MODEL(list_store));
 
 	gtk_tree_view_append_column(
 		subjects_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Name",
-			gtk_cell_renderer_text_new(), "text", COLUMN_STRING_name, NULL)
-	);
+			gtk_cell_renderer_text_new(),
+			"text", COLUMN_STRING_name,
+			NULL));
 
 
 	GObject *add_subject_button = gtk_builder_get_object(
@@ -111,7 +104,8 @@ static void set_Subjects_from_db(GtkListStore *list_store, sqlite3 *db) {
 void refresh_notebook_subjects(CallBackData *data) {
 	GtkTreeView *subjects_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "subjects_tree_view"));
-	GtkTreeModel *list_store = gtk_tree_view_get_model(subjects_tree_view);
-	gtk_list_store_clear((GtkListStore *)list_store);
-	set_Subjects_from_db((GtkListStore *)list_store, data->db);
+	GtkListStore *list_store =
+		(GtkListStore *)gtk_tree_view_get_model(subjects_tree_view);
+	gtk_list_store_clear(list_store);
+	set_Subjects_from_db(list_store, data->db);
 }
