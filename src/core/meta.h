@@ -13,17 +13,18 @@ typedef struct Allocation {
 Allocation Allocation_from_stmt(sqlite3_stmt *stmt);
 
 typedef struct Meta {
-	const gint n_teachers;
-	const gint n_batches;
-	const gint n_time_slots;
-	const gint n_rooms;
-	const gint n_allocs;
-	const Allocation *const allocs;
+	gint n_teachers;
+	gint n_batches;
+	gint n_time_slots;
+	gint n_time_slots_per_day;
+	gint n_rooms;
+	gint n_allocs;
+	Allocation *allocs;
 	/* const gint crossover_points; */ /* Fixed at 2 for now */
-	const gint mutate_swaps;
-	const gfloat fitness_penalty_time_clash_teacher;
-	const gfloat fitness_penalty_time_clash_batch;
-	const gint n_population;
+	gint   mutate_swaps;
+	gfloat fitness_penalty_time_clash_teacher;
+	gfloat fitness_penalty_time_clash_batch;
+	gint   n_population;
 
 } Meta;
 
