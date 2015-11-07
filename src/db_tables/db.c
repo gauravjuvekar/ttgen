@@ -39,7 +39,7 @@ void reset_pks(sqlite3 *db) {
 	for (table = 0; table < tables_n; table++) {
 		gchar *sql = g_strdup_printf(
 			"UPDATE %s SET pk = (SELECT COUNT() FROM %s tmp "
-			                     "WHERE tmp.pk <= %s.pk);",
+			                     "WHERE tmp.pk < %s.pk);",
 			tables[table], tables[table], tables[table]);
 		g_assert(sqlite3_prepare(db, sql, -1, &stmt, NULL) == SQLITE_OK);
 		g_assert(sqlite3_step(stmt) == SQLITE_DONE);
