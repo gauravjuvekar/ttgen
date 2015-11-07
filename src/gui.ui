@@ -8,10 +8,16 @@
       <column type="gint"/>
       <!-- column-name batch_pk -->
       <column type="gint"/>
+      <!-- column-name batch_name -->
+      <column type="gchararray"/>
       <!-- column-name subject_pk -->
       <column type="gint"/>
+      <!-- column-name subject_name -->
+      <column type="gchararray"/>
       <!-- column-name teacher_pk -->
       <column type="gint"/>
+      <!-- column-name teacher_name -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkListStore" id="batches_list_store">

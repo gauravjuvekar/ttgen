@@ -6,9 +6,12 @@
 
 typedef enum {
 	COLUMN_INT_pk,
-	COLUMN_INT_batch,
-	COLUMN_INT_subject,
-	COLUMN_INT_teacher,
+	COLUMN_INT_batch_pk,
+	COLUMN_STRING_batch_name,
+	COLUMN_INT_subject_pk,
+	COLUMN_STRING_subject_name,
+	COLUMN_INT_teacher_pk,
+	COLUMN_STRING_teacher_name,
 	N_COLUMNS
 } TreeView_Allocations_E;
 
@@ -36,21 +39,21 @@ static void add_allocation_CB(GtkButton* button, CallBackData *data) {
 
 	if (gtk_combo_box_get_active_iter(subject_combo_box, &iter)) {
 		gtk_tree_model_get(subject_list_store, &iter,
-		                   COLUMN_INT_subject, &(allocation.subject), -1);
+		                   0, &(allocation.subject), -1);
 	}
 	else {
 		return;
 	}
 	if (gtk_combo_box_get_active_iter(teacher_combo_box, &iter)) {
 		gtk_tree_model_get(teacher_list_store, &iter,
-		                   COLUMN_INT_teacher, &(allocation.teacher), -1);
+		                   0, &(allocation.teacher), -1);
 	}
 	else {
 		return;
 	}
 	if (gtk_combo_box_get_active_iter(batch_combo_box, &iter)) {
 		gtk_tree_model_get(batch_list_store, &iter,
-		                   COLUMN_INT_batch, &(allocation.batch), -1);
+		                   0, &(allocation.batch), -1);
 	}
 	else {
 		return;
@@ -109,21 +112,21 @@ void init_notebook_allocations(CallBackData *data) {
 		gtk_tree_view_column_new_with_attributes(
 			"Batch",
 			gtk_cell_renderer_text_new(),
-			"text", COLUMN_INT_batch,
+			"text", COLUMN_STRING_batch_name,
 			NULL));
 	gtk_tree_view_append_column(
 		allocations_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Subject",
 			gtk_cell_renderer_text_new(),
-			"text", COLUMN_INT_subject,
+			"text", COLUMN_STRING_subject_name,
 			NULL));
 	gtk_tree_view_append_column(
 		allocations_tree_view,
 		gtk_tree_view_column_new_with_attributes(
 			"Teacher",
 			gtk_cell_renderer_text_new(),
-			"text", COLUMN_INT_teacher,
+			"text", COLUMN_STRING_teacher_name,
 			NULL));
 
 	GObject *add_allocation_button = gtk_builder_get_object(
@@ -172,18 +175,35 @@ void init_notebook_allocations(CallBackData *data) {
 
 static void set_Allocations_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_stmt *stmt;
-	sqlite3_prepare(db, "SELECT pk, batch, subject, teacher FROM allocations;",
-	                -1, &stmt, NULL);
+
+	const gchar *sql = "SELECT "
+		"allocations.pk,      "
+		"allocations.batch,   "
+		"allocations.subject, "
+		"allocations.teacher, "
+		"batches.name,        "
+		"subjects.name,       "
+		"teachers.name        "
+			"FROM allocations "
+				"INNER JOIN batches  ON allocations.batch=batches.pk    "
+				"INNER JOIN teachers ON allocations.teacher=teachers.pk "
+				"INNER JOIN subjects ON subjects.pk=allocations.subject;";
+
+	sqlite3_prepare(db, sql, -1, &stmt, NULL);
 	GtkTreeIter iter;
 	while(sqlite3_step(stmt) == SQLITE_ROW) {
 		gtk_list_store_append(list_store, &iter);
 		Allocation allocation = Allocation_from_stmt(stmt);
-		gtk_list_store_set(list_store, &iter,
-		                   COLUMN_INT_pk,      allocation.pk,
-		                   COLUMN_INT_batch,   allocation.batch,
-		                   COLUMN_INT_subject, allocation.subject,
-		                   COLUMN_INT_teacher, allocation.teacher,
-		                   -1);
+		gtk_list_store_set(
+			list_store, &iter,
+			COLUMN_INT_pk,              allocation.pk,
+			COLUMN_INT_batch_pk,        allocation.batch,
+			COLUMN_INT_subject_pk,      allocation.subject,
+			COLUMN_INT_teacher_pk,      allocation.teacher,
+			COLUMN_STRING_batch_name,   sqlite3_column_text(stmt, 4),
+			COLUMN_STRING_subject_name, sqlite3_column_text(stmt, 5),
+			COLUMN_STRING_teacher_name, sqlite3_column_text(stmt, 6),
+			-1);
 	}
 	sqlite3_finalize(stmt);
 }
