@@ -1,16 +1,10 @@
-#ifndef CORE_META_H
-#define CORE_META_H 1
+#ifndef DB_TABLES_META_H
+#define DB_TABLES_META_H 1
 
 #include <glib.h>
 #include "../sqlite/sqlite3.h"
 
-typedef struct Allocation {
-	gint teacher;
-	gint batch;
-	gint subject;
-} Allocation;
-
-Allocation Allocation_from_stmt(sqlite3_stmt *stmt);
+#include "allocations.h"
 
 typedef struct Meta {
 	gint n_teachers;

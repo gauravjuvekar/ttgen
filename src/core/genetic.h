@@ -4,7 +4,7 @@
 #include <glib.h>
 #include "../sqlite/sqlite3.h"
 
-#include "meta.h"
+#include "../db_tables/meta.h"
 
 typedef struct Schedule {
 	gint   *time_slots;
