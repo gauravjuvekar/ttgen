@@ -14,7 +14,7 @@ Meta Meta_from_db(sqlite3 *db) {
 	sqlite3_stmt *stmt;
 	gint n_teachers;
 	gint n_batches;
-	gint n_slots = 7;
+	gint n_time_slots = 7;
 	gint n_rooms;
 	gint n_allocs;
 	Allocation *allocs;
@@ -56,7 +56,7 @@ Meta Meta_from_db(sqlite3 *db) {
 	return (Meta) {
 		.n_teachers = n_teachers,
 		.n_batches  = n_batches,
-		.n_slots    = n_slots,
+		.n_time_slots = n_time_slots,
 		.n_rooms    = n_rooms,
 		.n_allocs   = n_allocs,
 		.allocs     = allocs,

@@ -26,13 +26,13 @@ Schedule *Schedule_init(const Meta *meta) {
 	Schedule *schedule = g_new(Schedule, 1);
 	*schedule = (Schedule) {
 		.time_slots = g_malloc(sizeof(*(schedule->time_slots)) *
-		                       meta->n_slots * meta->n_rooms),
+		                       meta->n_time_slots * meta->n_rooms),
 		.fitness = 0,
 		.allocations = g_malloc(sizeof(*(schedule->allocations)) *
 		                        meta->n_allocs)
 	};
 	gint slot;
-	for(slot = 0; slot < meta->n_slots * meta->n_rooms; slot++) {
+	for(slot = 0; slot < meta->n_time_slots * meta->n_rooms; slot++) {
 		schedule->time_slots[slot] = -1;
 	}
 	return schedule;
@@ -42,7 +42,7 @@ void   Schedule_print(const Schedule *schedule, const Meta *meta) {
 	gint room;
 	for(room = 0; room < meta->n_rooms; room++) {
 		gint time_slot;
-		for(time_slot = 0; time_slot < meta->n_slots; time_slot++) {
+		for(time_slot = 0; time_slot < meta->n_time_slots; time_slot++) {
 			gint slot = slot_from_array(schedule->time_slots, time_slot, room,
 			                            meta);
 			if (slot == -1) {
@@ -64,18 +64,18 @@ static gint Schedule_find_vacant(const Schedule *schedule, gint current, const M
 		gint left;
 		left = right = current;
 		g_assert(left >= 0);
-		g_assert(right < meta->n_slots * meta->n_rooms);
+		g_assert(right < meta->n_time_slots * meta->n_rooms);
 		while (((schedule->time_slots[right] != -1) &&
 		        (schedule->time_slots[left]  != -1)) &&
 		       !((left == 0) &&
-		         (right == (meta->n_slots * meta->n_rooms)))) {
-			if (right + 1 < meta->n_slots * meta->n_rooms) {
+		         (right == (meta->n_time_slots * meta->n_rooms)))) {
+			if (right + 1 < meta->n_time_slots * meta->n_rooms) {
 				right++;
 			} if (left - 1 >= 0) {
 				left--;
 			}
 			g_assert(left >= 0);
-			g_assert(right < meta->n_slots * meta->n_rooms);
+			g_assert(right < meta->n_time_slots * meta->n_rooms);
 		}
 		if (schedule->time_slots[right] == -1) {
 			return right;
@@ -89,10 +89,10 @@ static gint Schedule_find_vacant(const Schedule *schedule, gint current, const M
 
 void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 	/* The caller should check if a allocatable solution exists */
-	g_assert(meta->n_allocs <= meta->n_rooms * meta->n_slots);
+	g_assert(meta->n_allocs <= meta->n_rooms * meta->n_time_slots);
 	gint alloc;
 	for(alloc = 0; alloc < meta->n_allocs; alloc++) {
-		gint slot = g_random_int_range(0, meta->n_slots * meta->n_rooms);
+		gint slot = g_random_int_range(0, meta->n_time_slots * meta->n_rooms);
 		gint empty = Schedule_find_vacant(schedule, slot, meta);
 		schedule->time_slots[empty] = alloc;
 		schedule->allocations[alloc] = empty;
@@ -108,7 +108,7 @@ Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
 	*clone = (Schedule) {
 		.time_slots = g_memdup(schedule->time_slots,
 		                       sizeof(*(schedule->time_slots)) *
-		                       meta->n_rooms * meta->n_slots),
+		                       meta->n_rooms * meta->n_time_slots),
 		.fitness = schedule->fitness,
 		.allocations = g_memdup(schedule->allocations,
 		                        sizeof(*(schedule->allocations)) *

@@ -15,7 +15,7 @@ Allocation Allocation_from_stmt(sqlite3_stmt *stmt);
 typedef struct Meta {
 	const gint n_teachers;
 	const gint n_batches;
-	const gint n_slots;
+	const gint n_time_slots;
 	const gint n_rooms;
 	const gint n_allocs;
 	const Allocation *const allocs;
