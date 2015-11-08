@@ -23,5 +23,8 @@ typedef struct Meta {
 } Meta;
 
 Meta Meta_from_db(sqlite3 *db);
+void insert_Meta(sqlite3 *db, const Meta *meta);
+void init_db_with_Meta(sqlite3 *db, const Meta *meta);
+
 
 #endif

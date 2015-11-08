@@ -81,3 +81,153 @@ Meta Meta_from_db(sqlite3 *db) {
 
 	return retval;
 }
+
+
+void insert_Meta(sqlite3 *db, const Meta *meta) {
+	sqlite3_stmt *stmt;
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, int_value) "
+	                         "VALUES(\"n_time_slots\", :time_slots);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":time_slots"),
+	                          meta->n_time_slots) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, int_value) "
+	                         "VALUES(\"n_time_slots_per_day\", :time_slots);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":time_slots"),
+	                          meta->n_time_slots_per_day) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, int_value) "
+	                         "VALUES(\"n_population\", :population);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":population"),
+	                          meta->n_population) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, int_value) "
+	                         "VALUES(\"mutate_swaps\", :mutations);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":mutations"),
+	                          meta->mutate_swaps) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, float_value) "
+	                         "VALUES(\"fitness_penalty_time_clash_batch\", "
+	                         ":penalty);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_double(stmt,
+	                             sqlite3_bind_parameter_index(stmt, ":penalty"),
+	                             meta->fitness_penalty_time_clash_batch) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR REPLACE INTO meta(key, float_value) "
+	                         "VALUES(\"fitness_penalty_time_clash_teacher\", "
+	                         ":penalty);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_double(stmt,
+	                             sqlite3_bind_parameter_index(stmt, ":penalty"),
+	                             meta->fitness_penalty_time_clash_teacher) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+}
+
+
+void init_db_with_Meta(sqlite3 *db, const Meta *meta) {
+	sqlite3_stmt *stmt;
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, int_value) "
+	                         "VALUES(\"n_time_slots\", :time_slots);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":time_slots"),
+	                          meta->n_time_slots) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, int_value) "
+	                         "VALUES(\"n_time_slots_per_day\", :time_slots);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":time_slots"),
+	                          meta->n_time_slots_per_day) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, int_value) "
+	                         "VALUES(\"n_population\", :population);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":population"),
+	                          meta->n_population) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, int_value) "
+	                         "VALUES(\"mutate_swaps\", :mutations);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_int(stmt,
+	                          sqlite3_bind_parameter_index(stmt, ":mutations"),
+	                          meta->mutate_swaps) == SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, float_value) "
+	                         "VALUES(\"fitness_penalty_time_clash_batch\", "
+	                         ":penalty);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_double(stmt,
+	                             sqlite3_bind_parameter_index(stmt, ":penalty"),
+	                             meta->fitness_penalty_time_clash_batch) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	g_assert(sqlite3_prepare(db,
+	                         "INSERT OR IGNORE INTO meta(key, float_value) "
+	                         "VALUES(\"fitness_penalty_time_clash_teacher\", "
+	                         ":penalty);",
+	                         -1, &stmt, NULL) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_bind_double(stmt,
+	                             sqlite3_bind_parameter_index(stmt, ":penalty"),
+	                             meta->fitness_penalty_time_clash_teacher) ==
+	         SQLITE_OK);
+	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
+	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+}

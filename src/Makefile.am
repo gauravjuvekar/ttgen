@@ -9,7 +9,7 @@ project_SOURCES        = main.c\
                          notebook/teachers.c    db_tables/teachers.c\
                          notebook/batches.c     db_tables/batches.c\
                          notebook/allocations.c db_tables/allocations.c\
-                         db_tables/meta.c\
+                         prefs/prefs.c          db_tables/meta.c\
                          core/genetic.c core/evolution.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread
