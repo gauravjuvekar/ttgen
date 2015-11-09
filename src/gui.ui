@@ -117,6 +117,7 @@
   <object class="GtkApplicationWindow" id="main_window">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">TTgen</property>
     <child>
       <object class="GtkBox" id="box_menubar_content">
         <property name="visible">True</property>
@@ -645,6 +646,7 @@
   </object>
   <object class="GtkWindow" id="allocations_add_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add allocation</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
@@ -799,6 +801,7 @@
   </object>
   <object class="GtkWindow" id="batches_add_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add batch</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
@@ -950,6 +953,7 @@
   </object>
   <object class="GtkWindow" id="preferences_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Preferences</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
@@ -1213,6 +1217,7 @@ batch time clash</property>
   </object>
   <object class="GtkWindow" id="rooms_add_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add room</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
@@ -1337,6 +1342,7 @@ batch time clash</property>
   </object>
   <object class="GtkWindow" id="subjects_add_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add subject</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
@@ -1436,6 +1442,7 @@ batch time clash</property>
   </object>
   <object class="GtkWindow" id="teachers_add_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add teacher</property>
     <property name="modal">True</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">main_window</property>
