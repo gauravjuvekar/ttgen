@@ -13,7 +13,7 @@ Population Population_from_db(sqlite3 *db, const Meta *meta) {
 		g_ptr_array_add(population.schedules,
 		                Schedule_from_db(individual, db, meta));
 	}
-
+	population.n_schedules = individual;
 	return population;
 }
 
