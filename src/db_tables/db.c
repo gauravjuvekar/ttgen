@@ -31,7 +31,8 @@ void reset_pks(sqlite3 *db) {
 		"teachers",
 		"allocations",
 		"rooms",
-		"subjects"
+		"subjects",
+		"schedules"
 	};
 	const gint tables_n = sizeof(tables) / sizeof(tables[0]);
 

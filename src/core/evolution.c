@@ -53,3 +53,8 @@ void Population_evolve(Population *population,
 		               g_ptr_array_index(population->schedules, 0)).fitness;
 	}
 }
+
+
+void Population_free(Population *population) {
+	g_ptr_array_free(population->schedules, TRUE);
+}
