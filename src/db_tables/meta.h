@@ -19,7 +19,7 @@ typedef struct Meta {
 	gfloat fitness_penalty_time_clash_teacher;
 	gfloat fitness_penalty_time_clash_batch;
 	gint   n_population;
-
+	gint   n_generations;
 } Meta;
 
 Meta Meta_from_db(sqlite3 *db);

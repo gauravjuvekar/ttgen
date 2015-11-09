@@ -7,20 +7,43 @@ static const char schema[] = {
 	, '\0'
 };
 
-void init_db(sqlite3 *db, const char *file_name) {
-	g_assert(sqlite3_open(file_name, &db) == SQLITE_OK);
+void init_connection(sqlite3 **db, const char *file_name) {
+	gint sql_ret;
 	sqlite3_stmt *stmt;
-	g_assert(sqlite3_prepare(db, "PRAGMA foreign_keys = ON;",
-	                         -1, &stmt, NULL) == SQLITE_OK);
-	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
-	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+
+	sql_ret = sqlite3_open(file_name, db);
+	g_assert(sql_ret == SQLITE_OK);
+	sqlite3_prepare(*db, "PRAGMA foreign_keys = ON;", -1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+}
+
+void init_db(sqlite3 *db) {
+	Meta meta;
+	meta.n_time_slots                       = 35;
+	meta.n_time_slots_per_day               = 7;
+	meta.mutate_swaps                       = 3;
+	meta.fitness_penalty_time_clash_batch   = -1000;
+	meta.fitness_penalty_time_clash_teacher = -1000;
+	meta.n_population                       = 30;
+	meta.n_generations                      = 0;
+
+	init_db_with_Meta(db, &meta);
 }
 
 void new_db(sqlite3 *db) {
 	sqlite3_stmt *stmt;
-	g_assert(sqlite3_prepare(db, schema, -1, &stmt, NULL) == SQLITE_OK);
-	g_assert(sqlite3_step(stmt) == SQLITE_OK);
-	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+	gint sql_ret;
+
+	sql_ret = sqlite3_prepare(db, schema, -1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
 }
 
 void reset_pks(sqlite3 *db) {
@@ -42,9 +65,13 @@ void reset_pks(sqlite3 *db) {
 			"UPDATE %s SET pk = (SELECT COUNT() FROM %s tmp "
 			                     "WHERE tmp.pk < %s.pk);",
 			tables[table], tables[table], tables[table]);
-		g_assert(sqlite3_prepare(db, sql, -1, &stmt, NULL) == SQLITE_OK);
-		g_assert(sqlite3_step(stmt) == SQLITE_DONE);
-		g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
+		gint sql_ret;
+		sql_ret = sqlite3_prepare(db, sql, -1, &stmt, NULL);
+		g_assert(sql_ret == SQLITE_OK);
+		sql_ret = sqlite3_step(stmt);
+		g_assert(sql_ret == SQLITE_DONE);
+		sql_ret = sqlite3_finalize(stmt);
+		g_assert(sql_ret == SQLITE_OK);
 		g_free(sql);
 	}
 }

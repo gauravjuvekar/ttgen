@@ -1,5 +1,6 @@
 #include "main.h"
 
+#include "db_tables/db.h"
 #include "notebook/notebook.h"
 #include "prefs/prefs.h"
 #include "core/interface.h"
@@ -16,8 +17,9 @@ const char db_schema_string[] = {
 
 int main(int argc, char* argv[]) {
 	gtk_init(&argc, &argv);
-	sqlite3 *db;
-	sqlite3_open("new.db", &db);
+	sqlite3 *db = NULL;
+	init_connection(&db, "new.db");
+	init_db(db);
 
 	GtkBuilder *builder = gtk_builder_new_from_string(gui_builder_string, -1);
 	GObject *window = gtk_builder_get_object(builder, "main_window");
@@ -27,9 +29,10 @@ int main(int argc, char* argv[]) {
 		.db = db,
 		.builder = builder
 	};
-	init_notebooks(&cb_data);
-	init_prefs(&cb_data);
+
 	init_core(&cb_data);
+	init_prefs(&cb_data);
+	init_notebooks(&cb_data);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();

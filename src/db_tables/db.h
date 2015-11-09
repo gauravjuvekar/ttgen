@@ -10,7 +10,8 @@
 #include "population.h"
 #include "schedule.h"
 
-void init_db(sqlite3 *db, const char *file_name);
+void init_connection(sqlite3 **db, const char *file_name);
+void init_db(sqlite3 *db);
 void new_db(sqlite3 *db);
 void reset_pks(sqlite3 *db);
 
