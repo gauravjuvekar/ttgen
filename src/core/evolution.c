@@ -6,11 +6,12 @@
 
 void Population_seed(Population *population, const Meta *meta) {
 	population->generations = 0;
-	population->schedules = g_ptr_array_sized_new(meta->n_population);
+	population->n_schedules = meta->n_population;
+	population->schedules = g_ptr_array_sized_new(population->n_schedules);
 	g_ptr_array_set_free_func(population->schedules,
 	                          (GDestroyNotify)Schedule_free);
 	gint individual;
-	for(individual = 0; individual < meta->n_population; individual++) {
+	for(individual = 0; individual < population->n_schedules; individual++) {
 		g_ptr_array_add(population->schedules, Schedule_init(meta));
 		Schedule_seed_random(g_ptr_array_index(population->schedules,
 		                                       individual),
@@ -31,8 +32,8 @@ void Population_evolve(Population *population,
 	    population->generations++) {
 
 
-		gint son      = meta->n_population - 1;
-		gint daughter = meta->n_population - 2;
+		gint son      = population->n_schedules - 1;
+		gint daughter = population->n_schedules - 2;
 		gint mother   = 0;
 		gint father   = 1;
 		g_ptr_array_remove_range(population->schedules, daughter, 2);

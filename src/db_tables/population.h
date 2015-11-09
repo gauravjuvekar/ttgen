@@ -7,8 +7,7 @@
 Population Population_from_db(sqlite3 *db, const Meta *meta);
 void replace_db_Population(Population population,
                            sqlite3 *db, const Meta *meta);
-void extend_db_Population(Population population,
-                          sqlite3 *db, const Meta *meta);
+void setup_population(gint schedules, sqlite3 *db, const Meta *meta);
 
 
 #endif

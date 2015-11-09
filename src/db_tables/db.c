@@ -7,6 +7,7 @@ static const char schema[] = {
 	, '\0'
 };
 
+
 void init_connection(sqlite3 **db, const char *file_name) {
 	gint sql_ret;
 	sqlite3_stmt *stmt;
@@ -21,6 +22,7 @@ void init_connection(sqlite3 **db, const char *file_name) {
 	g_assert(sql_ret == SQLITE_OK);
 }
 
+
 void init_db(sqlite3 *db) {
 	Meta meta;
 	meta.n_time_slots                       = 35;
@@ -32,7 +34,10 @@ void init_db(sqlite3 *db) {
 	meta.n_generations                      = 0;
 
 	init_db_with_Meta(db, &meta);
+	meta = Meta_from_db(db);
+	setup_population(meta.n_population, db, &meta);
 }
+
 
 void new_db(sqlite3 *db) {
 	sqlite3_stmt *stmt;
@@ -45,6 +50,7 @@ void new_db(sqlite3 *db) {
 	sql_ret = sqlite3_finalize(stmt);
 	g_assert(sql_ret == SQLITE_OK);
 }
+
 
 void reset_pks(sqlite3 *db) {
 	sqlite3_stmt *stmt;

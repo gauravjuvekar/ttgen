@@ -7,6 +7,7 @@
 typedef struct Population {
 	GPtrArray *schedules;
 	gint generations;
+	gint n_schedules;
 } Population;
 
 
