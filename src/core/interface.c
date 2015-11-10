@@ -23,6 +23,10 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	Population population = Population_from_db(data->db, &meta);
 	Population_evolve(&population, target_generations, target_fitness, &meta);
 	replace_db_Population(population, data->db, &meta);
+
+	meta.db_schedules_valid = 1;
+	insert_Meta(data->db, &meta);
+
 	refresh_notebook_schedules(data);
 
 	g_print("Generations %d\n", population.generations);
