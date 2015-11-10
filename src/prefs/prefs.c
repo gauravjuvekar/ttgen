@@ -44,11 +44,12 @@ static void set_prefs_CB(GtkButton *button, CallBackData *data) {
 			data->builder,
 			"preferences_window_fitness_penalty_time_clash_batch_spinbutton"));
 
-	insert_Meta(data->db, &meta);
 
 	if (db_meta.n_time_slots != meta.n_time_slots) {
-		delete_db_Population(data->db);
+		meta.db_schedules_valid = 0;
 	}
+
+	insert_Meta(data->db, &meta);
 
 	gtk_widget_hide((GtkWidget *)gtk_builder_get_object(data->builder,
 														"preferences_window"));

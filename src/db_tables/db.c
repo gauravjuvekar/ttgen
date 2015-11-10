@@ -32,6 +32,7 @@ void init_db(sqlite3 *db) {
 	meta.fitness_penalty_time_clash_teacher = -1000;
 	meta.n_population                       = 30;
 	meta.n_generations                      = 0;
+	meta.db_schedules_valid                 = 1;
 
 	init_db_with_Meta(db, &meta);
 	meta = Meta_from_db(db);

@@ -33,7 +33,22 @@ static void add_room_CB(GtkButton* button, CallBackData *data) {
 	gtk_entry_set_text((GtkEntry *)name_entry, "");
 
 	/* Because the number of slots change */
-	delete_db_Population(data->db);
+	sqlite3_stmt *stmt;
+	gint sql_ret;
+	sql_ret = sqlite3_prepare(
+		data->db,
+		"INSERT OR REPLACE INTO meta(key, int_value) "
+		"VALUES(\"db_schedules_valid\", :schedules_valid);",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":schedules_valid"),
+		0);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
 
 	refresh_notebook_rooms(data);
 }

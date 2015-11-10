@@ -91,8 +91,23 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 		gtk_tree_model_get(model, &iter, 0, &pk, -1);
 		remove_entry_func(data->db, pk);
 
-		/* Because the number of allocations may change due to cascading */
-		delete_db_Population(data->db);
+		/* Set db schedules to be invalid as allocations change */
+		sqlite3_stmt *stmt;
+		gint sql_ret;
+		sql_ret = sqlite3_prepare(
+			data->db,
+			"INSERT OR REPLACE INTO meta(key, int_value) "
+			"VALUES(\"db_schedules_valid\", :schedules_valid);",
+			-1, &stmt, NULL);
+		g_assert(sql_ret == SQLITE_OK);
+		sql_ret = sqlite3_bind_int(
+			stmt, sqlite3_bind_parameter_index(stmt, ":schedules_valid"),
+			0);
+		g_assert(sql_ret == SQLITE_OK);
+		sql_ret = sqlite3_step(stmt);
+		g_assert(sql_ret == SQLITE_DONE);
+		sql_ret = sqlite3_finalize(stmt);
+		g_assert(sql_ret == SQLITE_OK);
 
 		refresh_notebook_rooms(data);
 		refresh_notebook_subjects(data);

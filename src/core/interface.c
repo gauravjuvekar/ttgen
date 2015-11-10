@@ -14,7 +14,9 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 			data->builder, "target_generations_spin_button"));
 
 	Meta meta = Meta_from_db(data->db);
-	/* As schedules may be deleted due to a changed meta */
+	if (!meta.db_schedules_valid) {
+		delete_db_Population(data->db);
+	}
 	setup_population(meta.n_population, data->db, &meta);
 	reset_pks(data->db);
 

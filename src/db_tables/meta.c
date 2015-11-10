@@ -36,6 +36,18 @@ Meta Meta_from_db(sqlite3 *db) {
 	sql_ret = sqlite3_prepare(
 		db,
 		"SELECT int_value FROM meta "
+		"WHERE key=\"db_schedules_valid\"",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_ROW);
+	retval.db_schedules_valid = sqlite3_column_int(stmt, 0);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	sql_ret = sqlite3_prepare(
+		db,
+		"SELECT int_value FROM meta "
 		"WHERE key=\"n_time_slots_per_day\"",
 		-1, &stmt, NULL);
 	g_assert(sql_ret == SQLITE_OK);
@@ -148,6 +160,21 @@ void insert_Meta(sqlite3 *db, const Meta *meta) {
 	sql_ret = sqlite3_prepare(
 		db,
 		"INSERT OR REPLACE INTO meta(key, int_value) "
+		"VALUES(\"db_schedules_valid\", :schedules_valid);",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":schedules_valid"),
+		meta->db_schedules_valid);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	sql_ret = sqlite3_prepare(
+		db,
+		"INSERT OR REPLACE INTO meta(key, int_value) "
 		"VALUES(\"n_time_slots\", :time_slots);",
 		-1, &stmt, NULL);
 	g_assert(sql_ret == SQLITE_OK);
@@ -240,6 +267,21 @@ void insert_Meta(sqlite3 *db, const Meta *meta) {
 void init_db_with_Meta(sqlite3 *db, const Meta *meta) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
+
+	sql_ret = sqlite3_prepare(
+		db,
+		"INSERT OR IGNORE INTO meta(key, int_value) "
+		"VALUES(\"db_schedules_valid\", :schedules_valid);",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":schedules_valid"),
+		meta->db_schedules_valid);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
 
 	sql_ret = sqlite3_prepare(
 		db,
