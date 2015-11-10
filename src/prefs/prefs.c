@@ -2,7 +2,7 @@
 
 #include "../main.h"
 
-#include "../db_tables/meta.h"
+#include "../db_tables/db.h"
 
 
 static void prefs_menuitem_CB(GtkWidget *widget, CallBackData *data) {
@@ -16,6 +16,7 @@ static void prefs_menuitem_CB(GtkWidget *widget, CallBackData *data) {
 static void set_prefs_CB(GtkButton *button, CallBackData *data) {
 	(void)button;
 	Meta meta;
+	Meta db_meta = Meta_from_db(data->db);
 
 	meta.n_time_slots_per_day = gtk_spin_button_get_value_as_int(
 		(GtkSpinButton *)gtk_builder_get_object(
@@ -44,6 +45,11 @@ static void set_prefs_CB(GtkButton *button, CallBackData *data) {
 			"preferences_window_fitness_penalty_time_clash_batch_spinbutton"));
 
 	insert_Meta(data->db, &meta);
+
+	if (db_meta.n_time_slots != meta.n_time_slots) {
+		delete_db_Population(data->db);
+	}
+
 	gtk_widget_hide((GtkWidget *)gtk_builder_get_object(data->builder,
 														"preferences_window"));
 }
@@ -82,16 +88,6 @@ void init_prefs(CallBackData *data) {
 	                                        "preferences_window_ok_button"),
 	                 "clicked",
 	                 G_CALLBACK(set_prefs_CB), data);
-
-	Meta new_meta;
-	new_meta.fitness_penalty_time_clash_batch = -1000;
-	new_meta.fitness_penalty_time_clash_teacher = -1000;
-	new_meta.n_time_slots_per_day = 7;
-	new_meta.n_time_slots = new_meta.n_time_slots_per_day * 5;
-	new_meta.n_population = 30;
-	new_meta.mutate_swaps = 3;
-
-	init_db_with_Meta(data->db, &new_meta);
 
 	Meta meta = Meta_from_db(data->db);
 	gtk_spin_button_set_value(

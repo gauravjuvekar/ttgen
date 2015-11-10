@@ -44,6 +44,17 @@ static void extend_db_Population(Population population,
 	g_assert(sql_ret == SQLITE_OK);
 }
 
+void delete_db_Population(sqlite3 *db) {
+	sqlite3_stmt *stmt;
+	gint sql_ret;
+
+	sql_ret = sqlite3_prepare(db, "DELETE FROM schedules;", -1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+}
 
 void replace_db_Population(Population population,
                            sqlite3 *db, const Meta *meta) {
@@ -57,13 +68,7 @@ void replace_db_Population(Population population,
 	sql_ret = sqlite3_finalize(stmt);
 	g_assert(sql_ret == SQLITE_OK);
 
-	sql_ret = sqlite3_prepare(db, "DELETE FROM schedules;", -1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	sql_ret = sqlite3_step(stmt);
-	g_assert(sql_ret == SQLITE_DONE);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
-
+	delete_db_Population(db);
 	extend_db_Population(population, db, meta);
 
 	sql_ret = sqlite3_prepare(db, "COMMIT;", -1, &stmt, NULL);
@@ -126,7 +131,8 @@ void setup_population(gint schedules, sqlite3 *db, const Meta *meta) {
 
 		sql_ret = sqlite3_prepare(
 			db,
-			"DELETE FROM schedules ORDER BY fitness LIMIT :difference;",
+			"DELETE FROM schedules WHERE pk NOT IN "
+			"(SELECT pk FROM schedules ORDER BY fitness LIMIT :difference);",
 			-1, &stmt, NULL);
 		g_assert(sql_ret == SQLITE_OK);
 		sql_ret = sqlite3_bind_int(

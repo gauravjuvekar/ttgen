@@ -1,7 +1,7 @@
 #include "../main.h"
 
 #include "rooms.h"
-#include "../db_tables/rooms.h"
+#include "../db_tables/db.h"
 
 
 typedef enum {
@@ -31,6 +31,9 @@ static void add_room_CB(GtkButton* button, CallBackData *data) {
 		data->builder, "rooms_add_window");
 	gtk_widget_hide((GtkWidget *)window);
 	gtk_entry_set_text((GtkEntry *)name_entry, "");
+
+	/* Because the number of slots change */
+	delete_db_Population(data->db);
 
 	refresh_notebook_rooms(data);
 }

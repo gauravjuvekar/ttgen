@@ -1,7 +1,7 @@
 #include "../main.h"
 
 #include "allocations.h"
-#include "../db_tables/allocations.h"
+#include "../db_tables/db.h"
 
 
 typedef enum {
@@ -58,6 +58,9 @@ static void add_allocation_CB(GtkButton* button, CallBackData *data) {
 	else {
 		return;
 	}
+
+	/* Because the number of allocs change */
+	delete_db_Population(data->db);
 
 	insert_Allocation(data->db, &allocation);
 	GObject *window = gtk_builder_get_object(

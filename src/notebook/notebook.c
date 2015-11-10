@@ -91,6 +91,9 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 		gtk_tree_model_get(model, &iter, 0, &pk, -1);
 		remove_entry_func(data->db, pk);
 
+		/* Because the number of allocations may change due to cascading */
+		delete_db_Population(data->db);
+
 		refresh_notebook_rooms(data);
 		refresh_notebook_subjects(data);
 		refresh_notebook_batches(data);
