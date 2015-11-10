@@ -84,6 +84,14 @@
       <column type="gint"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="schedules_list_store">
+    <columns>
+      <!-- column-name pk -->
+      <column type="gint"/>
+      <!-- column-name fitness -->
+      <column type="gfloat"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="subjects_list_store">
     <columns>
       <!-- column-name pk -->
@@ -345,8 +353,9 @@
                           <object class="GtkTreeView" id="schedules_tree_view">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="model">schedules_list_store</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection6"/>
+                              <object class="GtkTreeSelection" id="schedules_tree_selection"/>
                             </child>
                           </object>
                         </child>

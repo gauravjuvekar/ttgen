@@ -9,6 +9,7 @@ project_SOURCES        = main.c\
                          notebook/teachers.c    db_tables/teachers.c\
                          notebook/batches.c     db_tables/batches.c\
                          notebook/allocations.c db_tables/allocations.c\
+                         notebook/schedules.c\
                          db_tables/population.c db_tables/schedule.c\
                          prefs/prefs.c          db_tables/meta.c\
                          db_tables/db.c\

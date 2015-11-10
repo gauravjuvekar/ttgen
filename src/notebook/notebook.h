@@ -8,6 +8,7 @@
 #include "subjects.h"
 #include "teachers.h"
 #include "allocations.h"
+#include "schedules.h"
 
 
 typedef enum NotebookTabs {

@@ -9,6 +9,7 @@ void init_notebooks(CallBackData *cb_data) {
 	init_notebook_teachers(cb_data);
 	init_notebook_batches(cb_data);
 	init_notebook_allocations(cb_data);
+	init_notebook_schedules(cb_data);
 	g_signal_connect(gtk_builder_get_object(cb_data->builder,
 	                                        "db_entry_insert_new_button"),
 	                 "clicked", G_CALLBACK(add_button_CB), cb_data);
