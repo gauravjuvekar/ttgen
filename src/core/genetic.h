@@ -28,7 +28,12 @@ gint   Schedule_compare_wrapper(const Schedule **a, const Schedule **b);
 
 void   Schedule_print(const Schedule *schedule, const Meta *meta);
 
-inline gint room_from_slot(gint slot, const Meta *meta);
-inline gint time_slot_from_slot(gint slot, const Meta *meta);
+
+static inline gint room_from_slot(gint slot, const Meta *meta) {
+	return slot % meta->n_rooms;
+}
+static inline gint time_slot_from_slot(gint slot, const Meta *meta) {
+	return slot / meta->n_rooms;
+}
 
 #endif

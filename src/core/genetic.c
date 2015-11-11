@@ -3,12 +3,6 @@
 #include "genetic.h"
 
 
-inline gint room_from_slot(gint slot, const Meta *meta) {
-	return slot % meta->n_rooms;
-}
-inline gint time_slot_from_slot(gint slot, const Meta *meta) {
-	return slot / meta->n_rooms;
-}
 static inline gint slot_from_array(const gint *array, gint slot, gint room,
                                    const Meta *meta) {
 	return array[slot * meta->n_rooms + room];

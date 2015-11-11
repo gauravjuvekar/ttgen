@@ -15,13 +15,20 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 	Meta meta = Meta_from_db(data->db);
 
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		GtkViewport *viewport = gtk_builder_get_object(data->builder,
-		                                               "timetable_viewport");
-		GtkGrid *grid = (GtkGrid *)gtk_bin_get_child(viewport);
-		gtk_widget_destroy((GtkWidget *)grid);
+		GtkViewport *viewport =
+			(GtkViewport *)gtk_builder_get_object(data->builder,
+			                                      "timetable_viewport");
+		GtkGrid *grid = (GtkGrid *)gtk_bin_get_child((GtkBin *)viewport);
+		if (grid) {
+			gtk_widget_destroy((GtkWidget *)grid);
+		}
 
 		grid = (GtkGrid *)gtk_grid_new();
 		gtk_container_add((GtkContainer *)viewport, (GtkWidget *)grid);
+		gtk_grid_set_row_spacing(grid, 6);
+		gtk_grid_set_column_spacing(grid, 6);
+		gtk_grid_set_row_homogeneous(grid, TRUE);
+		gtk_grid_set_column_homogeneous(grid, TRUE);
 
 		gint pk;
 		gtk_tree_model_get(model, &iter, 0, &pk, -1);
@@ -61,6 +68,7 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 			                1, 1);
 			g_free((gpointer)label_text);
 		}
+		gtk_widget_show_all((GtkWidget *)grid);
 	}
 }
 

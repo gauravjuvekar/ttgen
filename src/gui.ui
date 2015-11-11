@@ -282,6 +282,10 @@
                   <object class="GtkButtonBox" id="db_edit_buttons">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_left">6</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="spacing">6</property>
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton" id="db_entry_insert_new_button">
