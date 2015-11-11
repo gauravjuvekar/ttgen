@@ -4,6 +4,7 @@
 #include "notebook/notebook.h"
 #include "prefs/prefs.h"
 #include "core/interface.h"
+#include "table_view/table.h"
 
 const char gui_builder_string[] = {
 #include "gui.ui.hex.inc"
@@ -34,6 +35,7 @@ int main(int argc, char* argv[]) {
 	init_core(&cb_data);
 	init_prefs(&cb_data);
 	init_notebooks(&cb_data);
+	init_table_view(&cb_data);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();

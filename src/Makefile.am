@@ -14,7 +14,8 @@ project_SOURCES        = main.c\
                          prefs/prefs.c          db_tables/meta.c\
                          db_tables/db.c\
                          core/interface.c\
-                         core/genetic.c core/evolution.c
+                         core/genetic.c core/evolution.c\
+                         table_view/table.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread
 SUBDIRS                = sqlite
