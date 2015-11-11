@@ -17,6 +17,7 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	if (!meta.db_schedules_valid) {
 		delete_db_Population(data->db);
 	}
+	reset_pks(data->db);
 	setup_population(meta.n_population, data->db, &meta);
 	reset_pks(data->db);
 

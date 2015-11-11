@@ -1,24 +1,24 @@
-CREATE TABLE batches (
+CREATE TABLE IF NOT EXISTS batches (
 	"pk"     INTEGER NOT NULL PRIMARY KEY,
 	"name"   TEXT    NOT NULL,
 	"heads"  INTEGER NOT NULL,
 	"parent" INTEGER,
 	FOREIGN KEY (parent) REFERENCES batches(pk) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE TABLE rooms (
+CREATE TABLE IF NOT EXISTS rooms (
 	"pk"       INTEGER NOT NULL PRIMARY KEY,
 	"name"     TEXT    NOT NULL,
 	"capacity" INTEGER NOT NULL
 );
-CREATE TABLE subjects (
+CREATE TABLE IF NOT EXISTS subjects (
 	"pk"              INTEGER NOT NULL PRIMARY KEY,
 	"name"            TEXT    NOT NULL
 );
-CREATE TABLE teachers (
+CREATE TABLE IF NOT EXISTS teachers (
 	"pk"   INTEGER NOT NULL PRIMARY KEY,
 	"name" TEXT    NOT NULL
 );
-CREATE TABLE allocations (
+CREATE TABLE IF NOT EXISTS allocations (
 	"pk"       INTEGER NOT NULL PRIMARY KEY,
 	"batch"    INTEGER NOT NULL,
 	"subject"  INTEGER NOT NULL,
@@ -27,11 +27,11 @@ CREATE TABLE allocations (
 	FOREIGN KEY (subject) REFERENCES subjects(pk) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (teacher) REFERENCES teachers(pk) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE TABLE schedules (
+CREATE TABLE IF NOT EXISTS schedules (
 	"pk"      INTEGER NOT NULL PRIMARY KEY,
 	"fitness" REAL    NOT NULL
 );
-CREATE TABLE schedule_allocs (
+CREATE TABLE IF NOT EXISTS schedule_allocs (
 	"pk"         INTEGER NOT NULL PRIMARY KEY,
 	"schedule"   INTEGER NOT NULL,
 	"allocation" INTEGER NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE schedule_allocs (
 	FOREIGN KEY (schedule)   REFERENCES schedules(pk)   ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (allocation) REFERENCES allocations(pk) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE TABLE meta (
+CREATE TABLE IF NOT EXISTS meta (
 	"key"         TEXT NOT NULL PRIMARY KEY,
 	"text_value"  TEXT    DEFAULT NULL,
 	"int_value"   INTEGER DEFAULT NULL,

@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
 	gtk_init(&argc, &argv);
 	sqlite3 *db = NULL;
 	init_connection(&db, "new.db");
+	new_db(db);
 	init_db(db);
 
 	GtkBuilder *builder = gtk_builder_new_from_string(gui_builder_string, -1);

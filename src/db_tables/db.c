@@ -36,7 +36,6 @@ void init_db(sqlite3 *db) {
 
 	init_db_with_Meta(db, &meta);
 	meta = Meta_from_db(db);
-	setup_population(meta.n_population, db, &meta);
 }
 
 
@@ -44,12 +43,21 @@ void new_db(sqlite3 *db) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
 
-	sql_ret = sqlite3_prepare(db, schema, -1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	sql_ret = sqlite3_step(stmt);
-	g_assert(sql_ret == SQLITE_DONE);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
+	gchar **sqls = g_strsplit(schema, ";", -1);
+	gint i;
+	for (i = 0; sqls[i] != NULL; i++) {
+		if (g_strrstr(sqls[i], "CREATE") != NULL) {
+			gchar *sql = g_strconcat(sqls[i], ";", NULL);
+			sql_ret = sqlite3_prepare(db, sql, -1, &stmt, NULL);
+			g_assert(sql_ret == SQLITE_OK);
+			sql_ret = sqlite3_step(stmt);
+			g_assert(sql_ret == SQLITE_DONE);
+			sql_ret = sqlite3_finalize(stmt);
+			g_assert(sql_ret == SQLITE_OK);
+			g_free(sql);
+		}
+	}
+	g_strfreev(sqls);
 }
 
 

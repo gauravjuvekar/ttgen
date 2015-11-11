@@ -15,8 +15,8 @@ Batch Batch_from_stmt(sqlite3_stmt *stmt) {
 void insert_Batch(sqlite3 *db, const Batch *batch) {
 	sqlite3_stmt *stmt;
 	g_assert(sqlite3_prepare(db,
-	                         "INSERT INTO batches(name, heads, parent) "
-	                         "VALUES (:name, :heads, :parent);",
+	                         "INSERT INTO batches(name, heads) "
+	                         "VALUES (:name, :heads);",
 	                         -1, &stmt, NULL) == SQLITE_OK);
 	g_assert(sqlite3_bind_text(stmt,
 	                           sqlite3_bind_parameter_index(stmt, ":name"),
@@ -24,9 +24,6 @@ void insert_Batch(sqlite3 *db, const Batch *batch) {
 	g_assert(sqlite3_bind_int(stmt,
 	                           sqlite3_bind_parameter_index(stmt, ":heads"),
 	                           batch->heads) == SQLITE_OK);
-	g_assert(sqlite3_bind_int(stmt,
-	                           sqlite3_bind_parameter_index(stmt, ":parent"),
-	                           batch->parent) == SQLITE_OK);
 	g_assert(sqlite3_step(stmt) == SQLITE_DONE);
 	g_assert(sqlite3_finalize(stmt) == SQLITE_OK);
 }
