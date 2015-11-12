@@ -1,13 +1,14 @@
 #include <glib.h>
 #include "../sqlite/sqlite3.h"
+
 #include "meta.h"
+#include "allocations.h"
 
 
 Meta Meta_from_db(sqlite3 *db) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
 	Meta retval;
-	Allocation *allocs;
 
 	sql_ret = sqlite3_prepare(
 		db,
@@ -123,21 +124,6 @@ Meta Meta_from_db(sqlite3 *db) {
 	sql_ret = sqlite3_finalize(stmt);
 	g_assert(sql_ret == SQLITE_OK);
 
-	allocs = g_malloc(sizeof(Allocation) * retval.n_allocs);
-
-	sql_ret = sqlite3_prepare(
-		db, "SELECT batch, subject, teacher FROM allocations",
-		-1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	gint i = 0;
-	while ((sql_ret = sqlite3_step(stmt)) == SQLITE_ROW) {
-		allocs[i] = Allocation_from_stmt(stmt);
-		i++;
-	}
-	g_assert(sql_ret == SQLITE_DONE);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
-	retval.allocs = allocs;
 
 	return retval;
 }

@@ -4,8 +4,6 @@
 #include <glib.h>
 #include "../sqlite/sqlite3.h"
 
-#include "allocations.h"
-
 typedef struct Meta {
 	gint n_teachers;
 	gint n_batches;
@@ -13,7 +11,6 @@ typedef struct Meta {
 	gint n_time_slots_per_day;
 	gint n_rooms;
 	gint n_allocs;
-	Allocation *allocs;
 	/* const gint crossover_points; */ /* Fixed at 2 for now */
 	gint   mutate_swaps;
 	gfloat fitness_penalty_time_clash_teacher;

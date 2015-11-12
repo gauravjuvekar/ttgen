@@ -17,11 +17,14 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 		delete_db_Population(data->db);
 	}
 	reset_pks(data->db);
-	setup_population(meta.n_population, data->db, &meta);
+	const Allocation *allocs = Allocations_from_db(data->db, &meta);
+	setup_population(meta.n_population, data->db, &meta, allocs);
 	reset_pks(data->db);
 
 	Population population = Population_from_db(data->db, &meta);
-	Population_evolve(&population, target_generations, target_fitness, &meta);
+	Population_evolve(&population, target_generations, target_fitness,
+	                  &meta, allocs);
+	g_free((gpointer)allocs);
 	replace_db_Population(population, data->db, &meta);
 
 	meta.db_schedules_valid = 1;

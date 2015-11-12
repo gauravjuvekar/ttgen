@@ -32,7 +32,9 @@ Schedule *Schedule_init(const Meta *meta) {
 	return schedule;
 }
 
-void   Schedule_print(const Schedule *schedule, const Meta *meta) {
+void Schedule_print(const Schedule *schedule,
+                    const Meta *meta,
+                    const Allocation allocs[]) {
 	gint room;
 	for(room = 0; room < meta->n_rooms; room++) {
 		gint time_slot;
@@ -43,7 +45,7 @@ void   Schedule_print(const Schedule *schedule, const Meta *meta) {
 				g_print("(          )\t");
 			}
 			else {
-				Allocation alloc = meta->allocs[slot];
+				Allocation alloc = allocs[slot];
 				g_print("(T%d, B%d, S%d)\t",
 				        alloc.teacher, alloc.batch, alloc.subject);
 			}
@@ -81,7 +83,9 @@ static gint Schedule_find_vacant(const Schedule *schedule, gint current, const M
 }
 
 
-void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
+void Schedule_seed_random(Schedule *schedule,
+                          const Meta *meta,
+                          const Allocation allocs[]) {
 	/* The caller should check if a allocatable solution exists */
 	g_assert(meta->n_allocs <= meta->n_rooms * meta->n_time_slots);
 	gint alloc;
@@ -92,7 +96,7 @@ void Schedule_seed_random(Schedule *schedule, const Meta *meta) {
 		schedule->allocations[alloc] = empty;
 	}
 	assert_Schedule_valid(schedule, meta);
-	schedule->fitness = Schedule_fitness(schedule, meta);
+	schedule->fitness = Schedule_fitness(schedule, meta, allocs);
 }
 
 
@@ -120,7 +124,9 @@ void Schedule_free(Schedule *schedule) {
 }
 
 
-gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
+gfloat Schedule_fitness(const Schedule *schedule,
+                        const Meta *meta,
+                        const Allocation allocs[]) {
 	assert_Schedule_valid(schedule, meta);
 
 	gint alloc;
@@ -138,12 +144,12 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 			const gint allocation = slot_from_array(schedule->time_slots,
 			                                        time_slot, room, meta);
 			if (allocation == -1) continue;
-			if (meta->allocs[allocation].teacher ==
-			    meta->allocs[alloc].teacher) {
+			if (allocs[allocation].teacher ==
+			    allocs[alloc].teacher) {
 				time_clash_teacher += 1;
 			}
-			if (meta->allocs[allocation].batch ==
-			    meta->allocs[alloc].batch) {
+			if (allocs[allocation].batch ==
+			    allocs[alloc].batch) {
 				time_clash_batch += 1;
 			}
 		}
@@ -187,7 +193,9 @@ gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b) {
 }
 
 
-void Schedule_mutate(Schedule *schedule, const Meta *meta) {
+void Schedule_mutate(Schedule *schedule,
+                     const Meta *meta,
+                     const Allocation allocs[]) {
 	assert_Schedule_valid(schedule, meta);
 	gint swaps;
 	for(swaps = 0; swaps < meta->mutate_swaps; swaps++) {
@@ -203,13 +211,13 @@ void Schedule_mutate(Schedule *schedule, const Meta *meta) {
 		schedule->time_slots[schedule->allocations[second]] = second;
 	}
 	assert_Schedule_valid(schedule, meta);
-	schedule->fitness = Schedule_fitness(schedule, meta);
+	schedule->fitness = Schedule_fitness(schedule, meta, allocs);
 }
 
 
 void Schedule_crossover(const Schedule *mother, const Schedule *father,
                         Schedule **daughter,    Schedule **son,
-                        const Meta *meta) {
+                        const Meta *meta, const Allocation allocs[]) {
 	assert_Schedule_valid(mother, meta);
 	assert_Schedule_valid(father, meta);
 
@@ -244,6 +252,6 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
 	}
 	assert_Schedule_valid(*son, meta);
 	assert_Schedule_valid(*daughter, meta);
-	(*son)->fitness      = Schedule_fitness(*son, meta);
-	(*daughter)->fitness = Schedule_fitness(*daughter, meta);
+	(*son)->fitness      = Schedule_fitness(*son, meta, allocs);
+	(*daughter)->fitness = Schedule_fitness(*daughter, meta, allocs);
 }

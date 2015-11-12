@@ -10,11 +10,14 @@ typedef struct Population {
 } Population;
 
 
-void Population_seed(Population *population, const Meta *meta);
+void Population_seed(Population *population,
+                     const Meta *meta,
+                     const Allocation allocs[]);
 void Population_evolve(Population *population,
                        const gint generations,
                        const gfloat(fitness),
-                       const Meta *meta);
+                       const Meta *meta,
+                       const Allocation allocs[]);
 void Population_free(Population *population);
 
 #endif

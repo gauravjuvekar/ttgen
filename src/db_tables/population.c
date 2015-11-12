@@ -94,7 +94,8 @@ void truncate_db_Population(gint schedules, sqlite3 *db) {
 }
 
 
-void setup_population(gint schedules, sqlite3 *db, const Meta *meta) {
+void setup_population(gint schedules, sqlite3 *db,
+                      const Meta *meta, const Allocation allocs[]) {
 	gint sql_ret;
 	sqlite3_stmt *stmt;
 	sql_ret = sqlite3_prepare(
@@ -129,7 +130,7 @@ void setup_population(gint schedules, sqlite3 *db, const Meta *meta) {
 		Population population;
 		Meta meta_copy = *meta;
 		meta_copy.n_population = schedules - current_schedules;
-		Population_seed(&population, &meta_copy);
+		Population_seed(&population, &meta_copy, allocs);
 		extend_db_Population(population, db, &meta_copy);
 		Population_free(&population);
 	}

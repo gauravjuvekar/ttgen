@@ -3,6 +3,7 @@
 
 #include "../main.h"
 #include "allocations.h"
+#include "meta.h"
 #include "teachers.h"
 #include "batches.h"
 #include "subjects.h"
