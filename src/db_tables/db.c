@@ -35,7 +35,6 @@ void init_db(sqlite3 *db) {
 	meta.db_schedules_valid                 = 1;
 
 	init_db_with_Meta(db, &meta);
-	meta = Meta_from_db(db);
 }
 
 
