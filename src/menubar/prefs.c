@@ -89,7 +89,10 @@ void init_prefs(CallBackData *data) {
 	                                        "preferences_window_ok_button"),
 	                 "clicked",
 	                 G_CALLBACK(set_prefs_CB), data);
+}
 
+
+void refresh_prefs(CallBackData *data) {
 	Meta meta = Meta_from_db(data->db);
 	gtk_spin_button_set_value(
 		(GtkSpinButton *)gtk_builder_get_object(
@@ -122,5 +125,3 @@ void init_prefs(CallBackData *data) {
 			"preferences_window_fitness_penalty_time_clash_batch_spinbutton"),
 		meta.fitness_penalty_time_clash_batch);
 }
-
-

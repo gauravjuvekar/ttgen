@@ -78,9 +78,6 @@ static gboolean close_add_room_window_CB(GtkWidget *widget,
 void init_notebook_rooms(CallBackData *data) {
 	GtkTreeView *rooms_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "rooms_tree_view"));
-	GtkListStore *list_store =
-		(GtkListStore *)gtk_tree_view_get_model(rooms_tree_view);
-	set_Rooms_from_db(list_store, data->db);
 
 	gtk_tree_view_append_column(
 	  	rooms_tree_view,

@@ -77,9 +77,6 @@ static gboolean close_add_batch_window_CB(GtkWidget *widget,
 void init_notebook_batches(CallBackData *data) {
 	GtkTreeView *batches_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "batches_tree_view"));
-	GtkListStore *list_store =
-		(GtkListStore *)gtk_tree_view_get_model(batches_tree_view);
-	set_Batches_from_db(list_store, data->db);
 
 	gtk_tree_view_append_column(
 		batches_tree_view,

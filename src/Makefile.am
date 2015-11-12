@@ -11,10 +11,10 @@ project_SOURCES        = main.c\
                          notebook/allocations.c db_tables/allocations.c\
                          notebook/schedules.c\
                          db_tables/population.c db_tables/schedule.c\
-                         prefs/prefs.c          db_tables/meta.c\
-                         db_tables/db.c\
-                         core/interface.c\
+                         db_tables/meta.c       db_tables/db.c\
+                         menubar/prefs.c        menubar/file.c\
                          core/genetic.c core/evolution.c\
+                         core/interface.c\
                          table_view/table.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread

@@ -8,6 +8,10 @@
 typedef struct CallBackData {
 	sqlite3    *db;
 	GtkBuilder *builder;
+	gchar      *db_name;
 } CallBackData;
+
+void quit_CB(GtkWidget *widget, CallBackData *data);
+void init_all(CallBackData *data);
 
 #endif

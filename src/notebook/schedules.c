@@ -14,9 +14,6 @@ static void set_Schedules_from_db(GtkListStore *list_store, sqlite3 *db);
 void init_notebook_schedules(CallBackData *data) {
 	GtkTreeView *schedules_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "schedules_tree_view"));
-	GtkListStore *list_store =
-		(GtkListStore *)gtk_tree_view_get_model(schedules_tree_view);
-	set_Schedules_from_db(list_store, data->db);
 
 	gtk_tree_view_append_column(
 		schedules_tree_view,

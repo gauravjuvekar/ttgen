@@ -122,8 +122,6 @@ static gboolean close_add_allocation_window_CB(GtkWidget *widget,
 void init_notebook_allocations(CallBackData *data) {
 	GtkTreeView *allocations_tree_view = GTK_TREE_VIEW(
 		gtk_builder_get_object(data->builder, "allocations_tree_view"));
-	GtkTreeModel *list_store = gtk_tree_view_get_model(allocations_tree_view);
-	set_Allocations_from_db((GtkListStore *)list_store, data->db);
 
 	gtk_tree_view_append_column(
 		allocations_tree_view,

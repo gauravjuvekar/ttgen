@@ -3,6 +3,7 @@
 #include "notebook.h"
 #include "../db_tables/db.h"
 
+
 void init_notebooks(CallBackData *cb_data) {
 	init_notebook_rooms(cb_data);
 	init_notebook_subjects(cb_data);
@@ -17,6 +18,18 @@ void init_notebooks(CallBackData *cb_data) {
 	                                        "db_entry_remove_button"),
 	                 "clicked", G_CALLBACK(remove_button_CB), cb_data);
 }
+
+
+void refresh_notebooks(CallBackData *cb_data) {
+	refresh_notebook_rooms(cb_data);
+	refresh_notebook_subjects(cb_data);
+	refresh_notebook_teachers(cb_data);
+	refresh_notebook_batches(cb_data);
+	refresh_notebook_allocations(cb_data);
+	refresh_notebook_schedules(cb_data);
+
+}
+
 
 void add_button_CB(GtkButton *button, CallBackData *data) {
 	(void)button;
@@ -48,6 +61,7 @@ void add_button_CB(GtkButton *button, CallBackData *data) {
 	                                         builder_window_name);
 	gtk_widget_show_all(GTK_WIDGET(window));
 }
+
 
 void remove_button_CB(GtkButton *button, CallBackData *data) {
 	(void)button;
