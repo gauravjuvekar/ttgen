@@ -29,17 +29,6 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	insert_Meta(data->db, &meta);
 
 	refresh_notebook_schedules(data);
-
-	g_print("Generations %d\n", population.generations);
-	g_ptr_array_sort(population.schedules, (GCompareFunc)Schedule_compare_wrapper);
-	gint i;
-	for(i = 0; i < meta.n_population; i++) {
-		g_print("Fitness[%d] = %f\n", i,
-		        (*(Schedule *)g_ptr_array_index(population.schedules, i))
-		        .fitness);
-		Schedule_print((Schedule *)g_ptr_array_index(population.schedules, i),
-		               &meta);
-	}
 }
 
 

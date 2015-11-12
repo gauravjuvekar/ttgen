@@ -30,11 +30,33 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 		gtk_grid_set_row_homogeneous(grid, TRUE);
 		gtk_grid_set_column_homogeneous(grid, TRUE);
 
+		sqlite3_stmt *stmt;
+		gint sql_ret;
+
+		sql_ret = sqlite3_prepare(data->db, "SELECT name FROM rooms;",
+		                          -1, &stmt, NULL);
+		g_assert(sql_ret == SQLITE_OK);
+		gint row;
+		for (row = 0; (sql_ret = sqlite3_step(stmt)) == SQLITE_ROW; row++) {
+			const gchar *name = (const gchar *)sqlite3_column_text(stmt, 0);
+			GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+			gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
+		}
+		g_assert(sql_ret == SQLITE_DONE);
+		sql_ret = sqlite3_finalize(stmt);
+		g_assert(sql_ret == SQLITE_OK);
+
+		gint column;
+		for (column = 0; column < meta.n_time_slots; column++) {
+			const gchar *name = g_strdup_printf("%d", column);
+			GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+			gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
+			g_free((gpointer)name);
+		}
+
 		gint pk;
 		gtk_tree_model_get(model, &iter, 0, &pk, -1);
 
-		sqlite3_stmt *stmt;
-		gint sql_ret;
 
 		sql_ret = sqlite3_prepare(
 			data->db,
@@ -63,8 +85,8 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 			GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
 
 			gtk_grid_attach(grid, (GtkWidget *)label,
-							time_slot_from_slot(slot, &meta) ,
-			                room_from_slot(slot, &meta),
+							time_slot_from_slot(slot, &meta) + 1 ,
+			                room_from_slot(slot, &meta) + 1,
 			                1, 1);
 			g_free((gpointer)label_text);
 		}
