@@ -147,8 +147,8 @@ gfloat Schedule_fitness(const Schedule *schedule, const Meta *meta) {
 				time_clash_batch += 1;
 			}
 		}
-		/* g_assert(time_clash_batch > -1); */
-		/* g_assert(time_clash_teacher > -1); */
+		g_assert(time_clash_batch > -1);
+		g_assert(time_clash_teacher > -1);
 		fitness += (time_clash_teacher *
 		            meta->fitness_penalty_time_clash_teacher);
 		fitness += (time_clash_batch *

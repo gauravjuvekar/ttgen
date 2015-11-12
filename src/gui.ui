@@ -628,8 +628,8 @@
                           <object class="GtkSpinButton" id="target_fitness_spin_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="adjustment">target_fitness_adjustment</property>
-                            <property name="value">10</property>
+							<property name="adjustment">target_fitness_adjustment</property>
+							<property name="value">0</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

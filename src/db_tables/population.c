@@ -4,7 +4,7 @@
 
 Population Population_from_db(sqlite3 *db, const Meta *meta) {
 	Population population;
-	population.generations = 0;
+	population.generations = meta->n_generations;
 	population.schedules = g_ptr_array_sized_new(meta->n_population);
 	g_ptr_array_set_free_func(population.schedules,
 	                          (GDestroyNotify)Schedule_free);
