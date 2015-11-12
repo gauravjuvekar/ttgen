@@ -15,7 +15,6 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	Meta meta = Meta_from_db(data->db);
 	if (!meta.db_schedules_valid) {
 		delete_db_Population(data->db);
-		meta.n_generations = 0;
 	}
 	reset_pks(data->db);
 	setup_population(meta.n_population, data->db, &meta);
@@ -26,14 +25,8 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	replace_db_Population(population, data->db, &meta);
 
 	meta.db_schedules_valid = 1;
-	meta.n_generations = population.generations;
 	insert_Meta(data->db, &meta);
 
-	GtkLabel *label = (GtkLabel *)gtk_builder_get_object(
-		data->builder, "current_generations_label");
-	const gchar *generations = g_strdup_printf("%d", meta.n_generations);
-	gtk_label_set_text(label, generations);
-	g_free((gpointer) generations);
 	refresh_notebook_schedules(data);
 }
 

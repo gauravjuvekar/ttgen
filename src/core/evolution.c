@@ -5,7 +5,6 @@
 
 
 void Population_seed(Population *population, const Meta *meta) {
-	population->generations = 0;
 	population->n_schedules = meta->n_population;
 	population->schedules = g_ptr_array_sized_new(population->n_schedules);
 	g_ptr_array_set_free_func(population->schedules,
@@ -27,9 +26,10 @@ void Population_evolve(Population *population,
 	gfloat max_fitness;
 	g_ptr_array_sort(population->schedules,
 					 (GCompareFunc)Schedule_compare_wrapper);
+	gint elapsed_generations;
 	for(max_fitness = FLT_MIN;
-	    max_fitness < fitness && population->generations < generations;
-	    population->generations++) {
+	    max_fitness < fitness && elapsed_generations < generations;
+	    elapsed_generations++) {
 
 
 		gint son      = population->n_schedules - 1;

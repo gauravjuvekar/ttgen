@@ -88,16 +88,6 @@ Meta Meta_from_db(sqlite3 *db) {
 	g_assert(sql_ret == SQLITE_OK);
 
 	sql_ret = sqlite3_prepare(
-		db, "SELECT int_value FROM meta WHERE key=\"n_generations\"",
-		-1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	sql_ret = sqlite3_step(stmt);
-	g_assert(sql_ret == SQLITE_ROW);
-	retval.n_generations = sqlite3_column_int(stmt, 0);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
-
-	sql_ret = sqlite3_prepare(
 		db, "SELECT COUNT(*) FROM teachers", -1, &stmt, NULL);
 	g_assert(sql_ret == SQLITE_OK);
 	sql_ret = sqlite3_step(stmt);
@@ -322,21 +312,6 @@ void init_db_with_Meta(sqlite3 *db, const Meta *meta) {
 	sql_ret = sqlite3_bind_int(
 		stmt, sqlite3_bind_parameter_index(stmt, ":population"),
 		meta->n_population);
-	g_assert(sql_ret == SQLITE_OK);
-	sql_ret = sqlite3_step(stmt);
-	g_assert(sql_ret == SQLITE_DONE);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
-
-	sql_ret = sqlite3_prepare(
-		db,
-		"INSERT OR IGNORE INTO meta(key, int_value) "
-		"VALUES(\"n_generations\", :population);",
-		-1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	sql_ret = sqlite3_bind_int(
-		stmt, sqlite3_bind_parameter_index(stmt, ":population"),
-		meta->n_generations);
 	g_assert(sql_ret == SQLITE_OK);
 	sql_ret = sqlite3_step(stmt);
 	g_assert(sql_ret == SQLITE_DONE);
