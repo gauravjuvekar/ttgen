@@ -97,6 +97,7 @@ static void add_allocation_CB(GtkButton* button, CallBackData *data) {
 	g_assert(sql_ret == SQLITE_OK);
 
 	insert_Allocation(data->db, &allocation);
+	data->meta->n_allocs += 1;
 	GObject *window = gtk_builder_get_object(
 		data->builder, "allocations_add_window");
 	gtk_widget_hide((GtkWidget *)window);

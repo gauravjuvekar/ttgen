@@ -59,6 +59,7 @@ static void add_batch_CB(GtkButton* button, CallBackData *data) {
 	};
 
 	insert_Batch(data->db, &batch);
+	data->meta->n_batches += 1;
 	GObject *window = gtk_builder_get_object(
 		data->builder, "batches_add_window");
 	gtk_widget_hide((GtkWidget *)window);

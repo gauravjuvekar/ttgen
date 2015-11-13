@@ -119,26 +119,33 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 	gchar *tree_selection_object = NULL;
 	remove_DB_func remove_entry_func;
 
+	gint *meta_decrement_count = NULL;
+
 	switch(tab) {
 		case TAB_ALLOCATIONS:
 			tree_selection_object = "allocations_tree_view_selection";
 			remove_entry_func = remove_Allocation;
+			meta_decrement_count = &(data->meta->n_allocs);
 			break;
 		case TAB_TEACHERS:
 			tree_selection_object = "teachers_tree_view_selection";
 			remove_entry_func = remove_Teacher;
+			meta_decrement_count = &(data->meta->n_teachers);
 			break;
 		case TAB_ROOMS:
 			tree_selection_object = "rooms_tree_view_selection";
 			remove_entry_func = remove_Room;
+			meta_decrement_count = &(data->meta->n_rooms);
 			break;
 		case TAB_BATCHES:
 			tree_selection_object = "batches_tree_view_selection";
 			remove_entry_func = remove_Batch;
+			meta_decrement_count = &(data->meta->n_batches);
 			break;
 		case TAB_SUBJECTS:
 			tree_selection_object = "subjects_tree_view_selection";
 			remove_entry_func  = remove_Subject;
+			meta_decrement_count = NULL;
 			break;
 		default:
 			g_assert(FALSE);
@@ -152,6 +159,9 @@ void remove_button_CB(GtkButton *button, CallBackData *data) {
 		gint pk;
 		gtk_tree_model_get(model, &iter, 0, &pk, -1);
 		remove_entry_func(data->db, pk);
+		if (meta_decrement_count != NULL) {
+			*meta_decrement_count -= 1;
+		}
 
 		/* Set db schedules to be invalid as allocations change */
 		sqlite3_stmt *stmt;

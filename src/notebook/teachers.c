@@ -41,6 +41,7 @@ static void add_teacher_CB(GtkButton* button, CallBackData *data) {
 	};
 
 	insert_Teacher(data->db, &teacher);
+	data->meta->n_teachers += 1;
 	GObject *window = gtk_builder_get_object(
 		data->builder, "teachers_add_window");
 	gtk_widget_hide((GtkWidget *)window);

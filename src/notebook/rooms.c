@@ -46,6 +46,7 @@ static void add_room_CB(GtkButton* button, CallBackData *data) {
 	};
 
 	insert_Room(data->db, &room);
+	data->meta->n_rooms += 1;
 	GObject *window = gtk_builder_get_object(
 		data->builder, "rooms_add_window");
 	gtk_widget_hide((GtkWidget *)window);
