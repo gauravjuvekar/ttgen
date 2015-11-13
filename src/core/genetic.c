@@ -75,30 +75,33 @@ void Schedule_print(const Schedule *schedule,
 
 
 static gint Schedule_find_vacant(const Schedule *schedule, gint current, const Meta *meta) {
-		gint right;
-		gint left;
-		left = right = current;
+	gint right;
+	gint left;
+	left = right = current;
+	g_assert(left >= 0);
+	g_assert(right < meta->n_time_slots * meta->n_rooms);
+	while (((schedule->time_slots[right] != -1) &&
+	        (schedule->time_slots[left]  != -1)) &&
+	       !((left == 0) &&
+	         (right == (meta->n_time_slots * meta->n_rooms)))) {
+		if (right + 1 < meta->n_time_slots * meta->n_rooms) {
+			right++;
+		} if (left - 1 >= 0) {
+			left--;
+		}
 		g_assert(left >= 0);
 		g_assert(right < meta->n_time_slots * meta->n_rooms);
-		while (((schedule->time_slots[right] != -1) &&
-		        (schedule->time_slots[left]  != -1)) &&
-		       !((left == 0) &&
-		         (right == (meta->n_time_slots * meta->n_rooms)))) {
-			if (right + 1 < meta->n_time_slots * meta->n_rooms) {
-				right++;
-			} if (left - 1 >= 0) {
-				left--;
-			}
-			g_assert(left >= 0);
-			g_assert(right < meta->n_time_slots * meta->n_rooms);
-		}
-		if (schedule->time_slots[right] == -1) {
-			return right;
-		}
-		if (schedule->time_slots[left]  == -1) {
-			return left;
-		}
+	}
+	if (schedule->time_slots[right] == -1) {
+		return right;
+	}
+	else if (schedule->time_slots[left]  == -1) {
+		return left;
+	}
+	else {
 		g_assert(FALSE); /* Atleast one vacant slot must be found */
+		return -1; /* To shut up gcc */
+	}
 }
 
 

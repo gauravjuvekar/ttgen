@@ -27,6 +27,7 @@ static void switch_tab_sensitive_CB(GtkNotebook  *notebook,
 									guint        page_num,
                                     CallBackData *data) {
 	(void)page;
+	(void)notebook;
 
 	GtkButtonBox *db_edit_buttons =
 		(GtkButtonBox *)gtk_builder_get_object(
