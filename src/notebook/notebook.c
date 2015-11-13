@@ -4,6 +4,31 @@
 #include "notebook.h"
 #include "../db_tables/db.h"
 
+static void switch_tab_sensitive_CB(GtkNotebook  *notebook,
+                                    GtkWidget    *page,
+									guint        page_num,
+                                    CallBackData *data) {
+	(void)page;
+
+	GtkButtonBox *db_edit_buttons =
+		(GtkButtonBox *)gtk_builder_get_object(
+			data->builder, "db_edit_buttons");
+
+	switch(page_num) {
+		case TAB_ALLOCATIONS:
+		case TAB_TEACHERS:
+		case TAB_ROOMS:
+		case TAB_BATCHES:
+		case TAB_SUBJECTS:
+			gtk_widget_set_sensitive((GtkWidget *)db_edit_buttons, TRUE);
+			break;
+		case TAB_SCHEDULES:
+			gtk_widget_set_sensitive((GtkWidget *)db_edit_buttons, FALSE);
+			break;
+		default:
+			g_assert(FALSE);
+	}
+}
 
 void init_notebooks(CallBackData *cb_data) {
 	init_notebook_rooms(cb_data);
@@ -18,6 +43,10 @@ void init_notebooks(CallBackData *cb_data) {
 	g_signal_connect(gtk_builder_get_object(cb_data->builder,
 	                                        "db_entry_remove_button"),
 	                 "clicked", G_CALLBACK(remove_button_CB), cb_data);
+	g_signal_connect(gtk_builder_get_object(cb_data->builder,
+	                                        "db_notebook"),
+	                 "switch-page",
+	                 G_CALLBACK(switch_tab_sensitive_CB), cb_data);
 }
 
 
@@ -28,7 +57,6 @@ void refresh_notebooks(CallBackData *cb_data) {
 	refresh_notebook_batches(cb_data);
 	refresh_notebook_allocations(cb_data);
 	refresh_notebook_schedules(cb_data);
-
 }
 
 
