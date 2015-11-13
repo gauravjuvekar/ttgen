@@ -6,7 +6,15 @@ from trusty repos ---->
 
 A miniproject assignment to generate weekly timetables.
 
+## Dependencies ##
+
+- `gtk+-3.0 >= 3.10`, provided by `gnome-platform-devel` in Ubuntu trusty
+- `xxd`
+- `sqlite` - Provided in source
+
 ## Making ##
 
-- Checkout the `prod` branch with `$ git checkout prod`
-- `$ ./configure && make`
+- make
+
+- To build the dev branch, use autotools with
+  `autoreconf --install && ./configure && make`
