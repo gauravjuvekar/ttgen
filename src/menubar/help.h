@@ -16,12 +16,12 @@
  */
 
 
-#ifndef NOTEBOOK_ROOMS_H
-#define NOTEBOOK_ROOMS_H 1
+#ifndef MENUBAR_HELP_H
+#define MENUBAR_HELP_H
 
 #include "../callback.h"
 
-void init_notebook_rooms(CallBackData *data);
-void refresh_notebook_rooms(CallBackData *data);
+
+void init_help_menu(CallBackData *data);
 
 #endif

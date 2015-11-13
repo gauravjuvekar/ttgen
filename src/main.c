@@ -1,8 +1,27 @@
+/*  TTgen: An application to generate timetables using a genetic algorithm.
+ *  Copyright (C) 2015  Gaurav Juvekar
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include "main.h"
 
 #include "notebook/notebook.h"
 #include "menubar/prefs.h"
 #include "menubar/file.h"
+#include "menubar/help.h"
 #include "core/interface.h"
 #include "table_view/table.h"
 #include "db_tables/db.h"
@@ -76,6 +95,7 @@ int main(int argc, char* argv[]) {
 	GObject *window = gtk_builder_get_object(builder, "main_window");
 	g_signal_connect(window, "destroy", G_CALLBACK(quit_CB), &cb_data);
 	init_file_menu(&cb_data);
+	init_help_menu(&cb_data);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();

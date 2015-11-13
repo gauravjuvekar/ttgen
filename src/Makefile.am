@@ -1,7 +1,7 @@
-EXTRA_DIST             = gui.ui
+EXTRA_DIST             = gui.ui LICENSE
 bin_PROGRAMS           = project
-nodist_project_SOURCES = gui.ui.hex.inc database.sqlite3.hex.inc
-BUILT_SOURCES          = gui.ui.hex.inc database.sqlite3.hex.inc
+nodist_project_SOURCES = gui.ui.hex.inc database.sqlite3.hex.inc LICENSE.hex.inc
+BUILT_SOURCES          = gui.ui.hex.inc database.sqlite3.hex.inc LICENSE.hex.inc
 project_SOURCES        = main.c\
                          notebook/notebook.c\
                          notebook/rooms.c       db_tables/rooms.c\
@@ -13,6 +13,7 @@ project_SOURCES        = main.c\
                          db_tables/population.c db_tables/schedule.c\
                          db_tables/meta.c       db_tables/db.c\
                          menubar/prefs.c        menubar/file.c\
+                         menubar/help.c\
                          core/genetic.c core/evolution.c\
                          core/interface.c\
                          table_view/table.c
@@ -30,6 +31,6 @@ gui.ui.hex.inc : gui.ui
 database.sqlite3.hex.inc : database.sqlite3
 	xxd -i < $< > $@
 
-
-
+LICENSE.hex.inc : LICENSE
+	xxd -i < $< > $@
 
