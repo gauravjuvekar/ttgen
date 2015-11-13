@@ -1,4 +1,6 @@
-#include <glib.h>
+#include "../libs.h"
+
+#include "../db_tables/db.h"
 
 #include "evolution.h"
 #include "genetic.h"

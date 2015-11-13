@@ -1,8 +1,7 @@
 #ifndef DB_TABLES_META_H
 #define DB_TABLES_META_H 1
 
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../libs.h"
 
 typedef struct Meta {
 	gint n_teachers;

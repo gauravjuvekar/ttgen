@@ -1,11 +1,11 @@
 #ifndef CORE_GENETIC_H
 #define CORE_GENETIC_H 1
 
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../libs.h"
 
 #include "../db_tables/meta.h"
 #include "../db_tables/allocations.h"
+
 
 typedef struct Schedule {
 	gint   *time_slots;

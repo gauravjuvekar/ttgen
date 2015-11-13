@@ -1,8 +1,7 @@
 #ifndef DB_TABLES_TEACHERS_H
 #define DB_TABLES_TEACHERS_H 1
 
-#include "../main.h"
-
+#include "../libs.h"
 
 typedef struct Teacher {
 	gint        pk;

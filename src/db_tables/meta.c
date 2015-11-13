@@ -1,5 +1,4 @@
-#include <glib.h>
-#include "../sqlite/sqlite3.h"
+#include "../libs.h"
 
 #include "meta.h"
 #include "allocations.h"

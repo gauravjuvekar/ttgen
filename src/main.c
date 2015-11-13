@@ -1,11 +1,12 @@
 #include "main.h"
 
-#include "db_tables/db.h"
 #include "notebook/notebook.h"
 #include "menubar/prefs.h"
 #include "menubar/file.h"
 #include "core/interface.h"
 #include "table_view/table.h"
+#include "db_tables/db.h"
+#include "db_tables/meta.h"
 
 
 const char gui_builder_string[] = {
@@ -47,6 +48,9 @@ void init_all(CallBackData *data) {
 	init_db(db);
 
 	data->db = db;
+	data->meta = g_new(Meta, 1);
+	*(data->meta) = Meta_from_db(db);
+
 	init_core(data);
 	init_prefs(data);
 	init_notebooks(data);
@@ -63,8 +67,10 @@ int main(int argc, char* argv[]) {
 	GtkBuilder *builder = gtk_builder_new_from_string(gui_builder_string, -1);
 
 	CallBackData cb_data = (CallBackData) {
-		.db = NULL,
-		.builder = builder
+		.db      = NULL,
+		.builder = builder,
+		.meta    = NULL,
+		.db_name = NULL
 	};
 
 	GObject *window = gtk_builder_get_object(builder, "main_window");

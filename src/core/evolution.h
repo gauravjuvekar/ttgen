@@ -1,7 +1,8 @@
 #ifndef CORE_EVOLUTION_H
 #define CORE_EVOLUTION_H 1
 
-#include "../main.h"
+#include "../libs.h"
+#include "../db_tables/db.h"
 #include "genetic.h"
 
 typedef struct Population {

@@ -1,7 +1,7 @@
 #ifndef DB_TABLES_ALLOCATIONS_H
 #define DB_TABLES_ALLOCATIONS_H 1
 
-#include "../main.h"
+#include "../libs.h"
 #include "meta.h"
 
 typedef struct Allocation {

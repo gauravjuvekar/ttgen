@@ -1,7 +1,6 @@
-#include "../main.h"
+#include "../libs.h"
 
 #include "allocations.h"
-#include "db.h"
 
 Allocation Allocation_from_stmt(sqlite3_stmt *stmt) {
 	return (Allocation) {

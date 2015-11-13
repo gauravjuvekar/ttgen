@@ -1,5 +1,5 @@
+#include "../libs.h"
 #include "schedule.h"
-
 
 Schedule *Schedule_from_db(gint pk, sqlite3 *db, const Meta *meta) {
 	Schedule *schedule = Schedule_init(meta);

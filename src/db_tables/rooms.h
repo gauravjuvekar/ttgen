@@ -1,7 +1,7 @@
 #ifndef DB_TABLES_ROOMS_H
 #define DB_TABLES_ROOMS_H 1
 
-#include "../main.h"
+#include "../libs.h"
 
 typedef struct Room {
 	gint        pk;

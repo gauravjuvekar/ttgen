@@ -1,0 +1,13 @@
+/*!  \file
+ *
+ * Do not include this file in any source
+ * It's here for documentation purposes only
+ */
+#error "Don't include this file in any sources"
+
+/*!
+ * \defgroup ttgen TTgen
+ *
+ * Documentation for miniproject
+ */
+

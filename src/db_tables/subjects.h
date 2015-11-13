@@ -1,8 +1,7 @@
 #ifndef DB_TABLES_SUBJECTS_H
 #define DB_TABLES_SUBJECTS_H 1
 
-#include "../main.h"
-
+#include "../libs.h"
 
 typedef struct Subject {
 	gint        pk;

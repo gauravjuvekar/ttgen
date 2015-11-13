@@ -12,6 +12,8 @@
 *.taghl
 tags
 
+doc/doxygen
+
 *Makefile.in
 *Makefile
 

@@ -1,8 +1,9 @@
-#include "interface.h"
+#include "../libs.h"
+#include "../callback.h"
 
-#include "../main.h"
 #include "../db_tables/db.h"
 #include "../notebook/notebook.h"
+#include "interface.h"
 
 static void evolve_CB(GtkButton *button, CallBackData *data) {
 	(void)button;

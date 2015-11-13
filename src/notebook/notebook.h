@@ -1,7 +1,8 @@
 #ifndef NOTEBOOK_NOTEBOOK_H
 #define NOTEBOOK_NOTEBOOK_H 1
 
-#include "../main.h"
+#include "../libs.h"
+#include "../callback.h"
 
 #include "rooms.h"
 #include "batches.h"

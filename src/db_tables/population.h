@@ -1,7 +1,9 @@
 #ifndef DB_TABLES_POPULATION_H
 #define DB_TABLES_POPULATION_H 1
 
-#include "../main.h"
+#include "../libs.h"
+#include "allocations.h"
+#include "meta.h"
 #include "../core/evolution.h"
 
 Population Population_from_db(sqlite3 *db, const Meta *meta);

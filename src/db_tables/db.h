@@ -1,7 +1,7 @@
 #ifndef DB_TABLES_DB_H
 #define DB_TABLES_DB_H 1
 
-#include "../main.h"
+#include "../libs.h"
 #include "allocations.h"
 #include "meta.h"
 #include "teachers.h"

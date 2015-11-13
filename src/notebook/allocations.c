@@ -1,4 +1,5 @@
-#include "../main.h"
+#include "../libs.h"
+#include "../callback.h"
 
 #include "allocations.h"
 #include "../db_tables/db.h"

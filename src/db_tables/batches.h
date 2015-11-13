@@ -1,7 +1,7 @@
 #ifndef DB_TABLES_BATCHES_H
 #define DB_TABLES_BATCHES_H 1
 
-#include "../main.h"
+#include "../libs.h"
 
 typedef struct Batch {
 	gint        pk;

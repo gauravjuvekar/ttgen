@@ -1,6 +1,6 @@
+#include "../libs.h"
 #include "population.h"
-
-#include "db.h"
+#include "schedule.h"
 
 Population Population_from_db(sqlite3 *db, const Meta *meta) {
 	Population population;

@@ -1,8 +1,8 @@
-#include "../main.h"
+#include "../libs.h"
+#include "../callback.h"
 
-#include "table.h"
-#include "../main.h"
 #include "../core/genetic.h"
+#include "table.h"
 
 static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 	(void)widget;

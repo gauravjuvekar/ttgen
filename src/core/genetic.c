@@ -1,5 +1,6 @@
-#include "../sqlite/sqlite3.h"
-#include <glib.h>
+#include "../libs.h"
+
+#include "../db_tables/db.h"
 #include "genetic.h"
 
 

@@ -1,3 +1,6 @@
+#include "../libs.h"
+#include "../callback.h"
+
 #include "file.h"
 #include "../main.h"
 
