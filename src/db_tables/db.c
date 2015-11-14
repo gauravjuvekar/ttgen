@@ -25,19 +25,43 @@ static const char schema[] = {
 	, '\0'
 };
 
+void init_failure_dialog(CallBackData *data) {
+	GtkMessageDialog *dialog = (GtkMessageDialog *)gtk_message_dialog_new(
+		(GtkWindow *)gtk_builder_get_object(data->builder, "main_window"),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		GTK_MESSAGE_ERROR,
+		GTK_BUTTONS_CLOSE,
+		"Unable to open file %s\n"
+		"Please ensure that it was created by this program.",
+		data->db_name);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy((GtkWidget *)dialog);
+}
 
-void init_connection(sqlite3 **db, const char *file_name) {
+
+gboolean init_connection(sqlite3 **db, CallBackData *data) {
 	gint sql_ret;
 	sqlite3_stmt *stmt;
 
-	sql_ret = sqlite3_open(file_name, db);
+	sql_ret = sqlite3_open(data->db_name, db);
+	if (sql_ret != SQLITE_OK) {
+		init_failure_dialog(data);
+		return FALSE;
+	}
 	g_assert(sql_ret == SQLITE_OK);
 	sqlite3_prepare(*db, "PRAGMA foreign_keys = ON;", -1, &stmt, NULL);
 	g_assert(sql_ret == SQLITE_OK);
 	sql_ret = sqlite3_step(stmt);
+	if (sql_ret != SQLITE_DONE) {
+		init_failure_dialog(data);
+		sql_ret = sqlite3_finalize(stmt);
+		g_assert(sql_ret == SQLITE_OK);
+		return FALSE;
+	}
 	g_assert(sql_ret == SQLITE_DONE);
 	sql_ret = sqlite3_finalize(stmt);
 	g_assert(sql_ret == SQLITE_OK);
+	return TRUE;
 }
 
 
@@ -55,7 +79,7 @@ void init_db(sqlite3 *db) {
 }
 
 
-void new_db(sqlite3 *db) {
+gboolean new_db(sqlite3 *db, CallBackData *data) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
 
@@ -65,8 +89,24 @@ void new_db(sqlite3 *db) {
 		if (g_strrstr(sqls[i], "CREATE") != NULL) {
 			gchar *sql = g_strconcat(sqls[i], ";", NULL);
 			sql_ret = sqlite3_prepare(db, sql, -1, &stmt, NULL);
+			if (sql_ret == SQLITE_NOTADB) {
+				init_failure_dialog(data);
+				sql_ret = sqlite3_finalize(stmt);
+				g_assert(sql_ret == SQLITE_OK);
+				g_free(sql);
+				g_strfreev(sqls);
+				return FALSE;
+			}
 			g_assert(sql_ret == SQLITE_OK);
 			sql_ret = sqlite3_step(stmt);
+			if (sql_ret != SQLITE_DONE) {
+				init_failure_dialog(data);
+				sql_ret = sqlite3_finalize(stmt);
+				g_assert(sql_ret == SQLITE_OK);
+				g_free(sql);
+				g_strfreev(sqls);
+				return FALSE;
+			}
 			g_assert(sql_ret == SQLITE_DONE);
 			sql_ret = sqlite3_finalize(stmt);
 			g_assert(sql_ret == SQLITE_OK);
@@ -74,6 +114,7 @@ void new_db(sqlite3 *db) {
 		}
 	}
 	g_strfreev(sqls);
+	return TRUE;
 }
 
 

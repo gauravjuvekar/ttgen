@@ -20,6 +20,7 @@
 #define DB_TABLES_DB_H 1
 
 #include "../libs.h"
+#include "../callback.h"
 #include "allocations.h"
 #include "meta.h"
 #include "teachers.h"
@@ -29,9 +30,9 @@
 #include "population.h"
 #include "schedule.h"
 
-void init_connection(sqlite3 **db, const char *file_name);
+gboolean init_connection(sqlite3 **db, CallBackData *data);
 void init_db(sqlite3 *db);
-void new_db(sqlite3 *db);
+gboolean new_db(sqlite3 *db, CallBackData *data);
 void reset_pks(sqlite3 *db);
 
 typedef void (*remove_DB_func)(sqlite3 *db, gint pk);
