@@ -27,7 +27,6 @@ typedef enum {
 	COLUMN_INT_pk,
 	COLUMN_STRING_name,
 	COLUMN_INT_heads,
-	COLUMN_INT_parent,
 	N_COLUMNS
 } TreeView_Batches_E;
 
@@ -40,22 +39,11 @@ static void add_batch_CB(GtkButton* button, CallBackData *data) {
 		data->builder, "batches_add_window_name_entry");
 	GObject *heads_spin_button = gtk_builder_get_object(
 		data->builder, "batches_add_window_heads_spinbutton");
-	GtkComboBox *combo_box = (GtkComboBox *)gtk_builder_get_object(
-		data->builder, "batches_add_window_parent_combobox");
-	GtkTreeModel *list_store = gtk_combo_box_get_model(combo_box);
-	GtkTreeIter iter;
-	gint parent_pk;
-	if (gtk_combo_box_get_active_iter(combo_box, &iter)) {
-		gtk_tree_model_get(list_store, &iter, 0, &parent_pk, -1);
-	}
-	else {
-		parent_pk = 0;
-	}
+
 	Batch batch = (Batch) {
 		.name = gtk_entry_get_text((GtkEntry *)name_entry),
 		.heads = gtk_spin_button_get_value_as_int(
 			 (GtkSpinButton *)heads_spin_button),
-		.parent = parent_pk
 	};
 
 	insert_Batch(data->db, &batch);
@@ -64,7 +52,6 @@ static void add_batch_CB(GtkButton* button, CallBackData *data) {
 		data->builder, "batches_add_window");
 	gtk_widget_hide((GtkWidget *)window);
 	gtk_entry_set_text((GtkEntry *)name_entry, "");
-	gtk_combo_box_set_active(combo_box, -1);
 
 	refresh_notebook_batches(data);
 }
@@ -112,13 +99,6 @@ void init_notebook_batches(CallBackData *data) {
 			gtk_cell_renderer_text_new(),
 			"text", COLUMN_INT_heads,
 			NULL));
-	gtk_tree_view_append_column(
-		batches_tree_view,
-		gtk_tree_view_column_new_with_attributes(
-			"Parent",
-			gtk_cell_renderer_text_new(),
-			"text", COLUMN_INT_parent,
-			NULL));
 
 	GObject *add_batch_button = gtk_builder_get_object(
 		data->builder, "batches_add_window_ok_button");
@@ -132,15 +112,6 @@ void init_notebook_batches(CallBackData *data) {
 													   "batches_add_window");
 	g_signal_connect(add_batch_window, "delete-event",
 	                 G_CALLBACK(close_add_batch_window_CB), data);
-
-	GObject *batches_parent_combobox = gtk_builder_get_object(
-		data->builder, "batches_add_window_parent_combobox");
-	GtkCellRenderer *combobox_text = gtk_cell_renderer_text_new();
-	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(batches_parent_combobox),
-	                           combobox_text, TRUE);
-	gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(batches_parent_combobox),
-	                              combobox_text,
-	                              "text", COLUMN_STRING_name);
 }
 
 
@@ -156,7 +127,6 @@ static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_INT_pk,      batch.pk,
 		                   COLUMN_STRING_name, batch.name,
 		                   COLUMN_INT_heads,   batch.heads,
-		                   COLUMN_INT_parent,  batch.parent,
 		                   -1);
 	}
 	sqlite3_finalize(stmt);
