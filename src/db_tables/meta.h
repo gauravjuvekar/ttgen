@@ -32,6 +32,7 @@ typedef struct Meta {
 	gint   mutate_swaps;
 	gfloat fitness_penalty_time_clash_teacher;
 	gfloat fitness_penalty_time_clash_batch;
+	gfloat fitness_penalty_room_capacity;
 	gint   n_population;
 	gint   db_schedules_valid;
 } Meta;

@@ -31,12 +31,16 @@ typedef struct Population {
 
 void Population_seed(Population *population,
                      const Meta *meta,
-                     const Allocation allocs[]);
+                     const Allocation allocs[],
+                     const Batch      batches[],
+                     const Room       rooms[]);
 void Population_evolve(Population *population,
                        const gint generations,
                        const gfloat(fitness),
                        const Meta *meta,
-                       const Allocation allocs[]);
+                       const Allocation allocs[],
+                       const Batch      batches[],
+                       const Room       rooms[]);
 void Population_free(Population *population);
 
 #endif

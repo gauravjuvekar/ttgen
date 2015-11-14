@@ -62,9 +62,15 @@ static void refresh_after_db(CallBackData *data) {
 
 
 void init_all(CallBackData *data) {
+	sqlite3_close(data->db);
+
 	sqlite3 *db = NULL;
-	init_connection(&db, data->db_name);
-	new_db(db);
+	if (!init_connection(&db, data)) {
+		return;
+	}
+	if (!new_db(db, data)) {
+		return;
+	}
 	init_db(db);
 
 	data->db = db;

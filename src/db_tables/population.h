@@ -21,6 +21,8 @@
 
 #include "../libs.h"
 #include "allocations.h"
+#include "batches.h"
+#include "rooms.h"
 #include "meta.h"
 #include "../core/evolution.h"
 
@@ -29,7 +31,9 @@ void delete_db_Population(sqlite3 *db);
 void replace_db_Population(Population population,
                            sqlite3 *db, const Meta *meta);
 void setup_population(gint schedules, sqlite3 *db,
-                      const Meta *meta, const Allocation allocs[]);
-
+                      const Meta *meta,
+                      const Allocation allocs[],
+                      const Batch      batches[],
+                      const Room       rooms[]);
 
 #endif
