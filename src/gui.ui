@@ -361,7 +361,6 @@
                             <property name="can_focus">True</property>
                             <property name="model">schedules_list_store</property>
                             <property name="level_indentation">1</property>
-                            <property name="tooltip_column">0</property>
                             <child internal-child="selection">
                               <object class="GtkTreeSelection" id="schedules_tree_selection"/>
                             </child>
@@ -812,7 +811,6 @@
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Teacher</property>
                 <property name="justify">right</property>
-                <property name="ellipsize">end</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -936,7 +934,6 @@
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Name</property>
-                <property name="ellipsize">end</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -951,6 +948,7 @@
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Heads</property>
+                <property name="justify">right</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1129,8 +1127,7 @@ batch time clash</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Number of schedules</property>
-                <property name="justify">fill</property>
-                <property name="angle">0.01</property>
+                <property name="justify">right</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1326,7 +1323,6 @@ batch time clash</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Name</property>
-                <property name="ellipsize">end</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1452,7 +1448,6 @@ batch time clash</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Name</property>
                 <property name="justify">right</property>
-                <property name="ellipsize">end</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1553,7 +1548,6 @@ batch time clash</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Name</property>
                 <property name="justify">right</property>
-                <property name="ellipsize">end</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
