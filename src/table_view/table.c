@@ -11,9 +11,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ *  You should have received a copy of the GNU General Public License *  along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 
 #include "../libs.h"
@@ -29,6 +27,28 @@ typedef enum {
 	FILTER_SELECTION_ROOM,
 	FILTER_SELECTION_BATCH
 } FilterSelection_E;
+
+
+static void draw_table_headers_daywise(GtkGrid *grid, CallBackData *data) {
+	gtk_grid_insert_row(grid, 0);
+	gtk_grid_insert_column(grid, 0);
+	gint row;
+	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
+		const gchar *name = g_strdup_printf("Slot %d", row + 1) ;
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
+		g_free((gpointer)name);
+	}
+	gint column;
+	for (column = 0;
+	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
+	     column++) {
+		const gchar *name = g_strdup_printf("Day %d", column + 1);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
+		g_free((gpointer)name);
+	}
+}
 
 
 static void change_type_selection_combobox_CB(GtkComboBoxText *type_combobox,
@@ -77,30 +97,12 @@ static void change_type_selection_combobox_CB(GtkComboBoxText *type_combobox,
 }
 
 
-static void set_grid_batch(GtkGrid *grid,
+static void draw_grid_batch(GtkGrid *grid,
                            gint schedule_pk,
                            gint batch_pk,
                            CallBackData *data) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
-
-	gint row;
-	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
-		const gchar *name = g_strdup_printf("%d", row);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
-		g_free((gpointer)name);
-	}
-
-	gint column;
-	for (column = 0;
-	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
-	     column++) {
-		const gchar *name = g_strdup_printf("Day %d", column);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
-		g_free((gpointer)name);
-	}
 
 	sql_ret = sqlite3_prepare(
 		data->db,
@@ -130,44 +132,25 @@ static void set_grid_batch(GtkGrid *grid,
 
 		const gchar *label_text = g_strdup_printf("R:%s\nS:%s\nT:%s\n",
 												  room, subject, teacher);
-
 		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
-
 		gtk_grid_attach(grid, (GtkWidget *)label,
 						(time_slot_from_slot(slot, data->meta) /
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						(time_slot_from_slot(slot, data->meta) %
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						1, 1);
 		g_free((gpointer)label_text);
 	}
+	draw_table_headers_daywise(grid, data);
 }
 
 
-static void set_grid_teacher(GtkGrid *grid,
+static void draw_grid_teacher(GtkGrid *grid,
                              gint schedule_pk,
                              gint teacher_pk,
                              CallBackData *data) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
-
-	gint row;
-	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
-		const gchar *name = g_strdup_printf("%d", row);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
-		g_free((gpointer)name);
-	}
-
-	gint column;
-	for (column = 0;
-	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
-	     column++) {
-		const gchar *name = g_strdup_printf("Day %d", column);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
-		g_free((gpointer)name);
-	}
 
 	sql_ret = sqlite3_prepare(
 		data->db,
@@ -197,44 +180,25 @@ static void set_grid_teacher(GtkGrid *grid,
 
 		const gchar *label_text = g_strdup_printf("R:%s\nS:%s\nB:%s\n",
 												  room, subject, batch);
-
 		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
-
 		gtk_grid_attach(grid, (GtkWidget *)label,
 						(time_slot_from_slot(slot, data->meta) /
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						(time_slot_from_slot(slot, data->meta) %
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						1, 1);
 		g_free((gpointer)label_text);
 	}
+	draw_table_headers_daywise(grid, data);
 }
 
 
-static void set_grid_room(GtkGrid *grid,
+static void draw_grid_room(GtkGrid *grid,
                           gint schedule_pk,
                           gint room_pk,
                           CallBackData *data) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
-
-	gint row;
-	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
-		const gchar *name = g_strdup_printf("%d", row);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
-		g_free((gpointer)name);
-	}
-
-	gint column;
-	for (column = 0;
-	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
-	     column++) {
-		const gchar *name = g_strdup_printf("Day %d", column);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
-		g_free((gpointer)name);
-	}
 
 	sql_ret = sqlite3_prepare(
 		data->db,
@@ -264,43 +228,22 @@ static void set_grid_room(GtkGrid *grid,
 
 		const gchar *label_text = g_strdup_printf("T:%s\nS:%s\nB:%s\n",
 												  teacher, subject, batch);
-
 		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
-
 		gtk_grid_attach(grid, (GtkWidget *)label,
 						(time_slot_from_slot(slot, data->meta) /
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						(time_slot_from_slot(slot, data->meta) %
-						 data->meta->n_time_slots_per_day) + 1 ,
+						 data->meta->n_time_slots_per_day),
 						1, 1);
 		g_free((gpointer)label_text);
 	}
+	draw_table_headers_daywise(grid, data);
 }
 
 
-static void set_grid_all(GtkGrid *grid, gint schedule_pk, CallBackData *data) {
+static void draw_grid_all(GtkGrid *grid, gint schedule_pk, CallBackData *data) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
-	sql_ret = sqlite3_prepare(data->db, "SELECT name FROM rooms;",
-							  -1, &stmt, NULL);
-	g_assert(sql_ret == SQLITE_OK);
-	gint row;
-	for (row = 0; (sql_ret = sqlite3_step(stmt)) == SQLITE_ROW; row++) {
-		const gchar *name = (const gchar *)sqlite3_column_text(stmt, 0);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
-	}
-	g_assert(sql_ret == SQLITE_DONE);
-	sql_ret = sqlite3_finalize(stmt);
-	g_assert(sql_ret == SQLITE_OK);
-
-	gint column;
-	for (column = 0; column < data->meta->n_time_slots; column++) {
-		const gchar *name = g_strdup_printf("%d", column);
-		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
-		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
-		g_free((gpointer)name);
-	}
 
 	sql_ret = sqlite3_prepare(
 		data->db,
@@ -325,14 +268,48 @@ static void set_grid_all(GtkGrid *grid, gint schedule_pk, CallBackData *data) {
 
 		const gchar *label_text = g_strdup_printf("T:%s\nS:%s\nB:%s\n",
 												  teacher, subject, batch);
-
 		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
-
 		gtk_grid_attach(grid, (GtkWidget *)label,
-						time_slot_from_slot(slot, data->meta) + 1 ,
-						room_from_slot(slot, data->meta) + 1,
+						time_slot_from_slot(slot, data->meta),
+						room_from_slot(slot, data->meta),
 						1, 1);
 		g_free((gpointer)label_text);
+	}
+
+	/* Headers */
+	gtk_grid_insert_row(grid, 0);
+	gtk_grid_insert_column(grid, 0);
+	sql_ret = sqlite3_prepare(data->db, "SELECT name FROM rooms;",
+							  -1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	gint row;
+	for (row = 0; (sql_ret = sqlite3_step(stmt)) == SQLITE_ROW; row++) {
+		const gchar *name = (const gchar *)sqlite3_column_text(stmt, 0);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
+	}
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	gint column;
+	for (column = 0; column < data->meta->n_time_slots; column++) {
+		const gchar *name = g_strdup_printf("%d", column + 1);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
+		g_free((gpointer)name);
+	}
+	gtk_grid_insert_row(grid, 0);
+	for (column = 0;
+	     column < data->meta->n_time_slots;
+	     column += data->meta->n_time_slots_per_day) {
+		const gchar *name = g_strdup_printf(
+			"Day %d", column / data->meta->n_time_slots_per_day + 1);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label,
+		                column + 1, 0,
+		                data->meta->n_time_slots_per_day, 1);
+		g_free((gpointer)name);
 	}
 }
 
@@ -387,21 +364,21 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 		}
 		switch(filter_type) {
 			case FILTER_SELECTION_ALL:
-				set_grid_all(grid, pk, data);
+				draw_grid_all(grid, pk, data);
 				break;
 			case FILTER_SELECTION_TEACHER:
 				if (iter_set) {
-					set_grid_teacher(grid, pk, filter_pk, data);
+					draw_grid_teacher(grid, pk, filter_pk, data);
 				}
 				break;
 			case FILTER_SELECTION_ROOM:
 				if (iter_set) {
-					set_grid_room(grid, pk, filter_pk, data);
+					draw_grid_room(grid, pk, filter_pk, data);
 				}
 				break;
 			case FILTER_SELECTION_BATCH:
 				if (iter_set) {
-					set_grid_batch(grid, pk, filter_pk, data);
+					draw_grid_batch(grid, pk, filter_pk, data);
 				}
 				break;
 			default:
