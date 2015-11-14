@@ -31,8 +31,8 @@ typedef enum {
 } FilterSelection_E;
 
 
-static void change_filter_selection_combobox_CB(GtkComboBoxText *type_combobox,
-                                                CallBackData *data) {
+static void change_type_selection_combobox_CB(GtkComboBoxText *type_combobox,
+                                              CallBackData *data) {
 	const gchar *id = gtk_combo_box_get_active_id((GtkComboBox *)type_combobox);
 	g_assert(id != NULL);
 	g_assert(g_ascii_isdigit(id[0]));
@@ -69,6 +69,11 @@ static void change_filter_selection_combobox_CB(GtkComboBoxText *type_combobox,
 		gtk_widget_set_sensitive(GTK_WIDGET(filter_combobox), FALSE);
 		gtk_combo_box_set_model(filter_combobox, NULL);
 	}
+
+	/* To refresh the table view */
+	g_signal_emit_by_name(
+		gtk_builder_get_object(data->builder, "schedules_tree_selection"),
+		"changed");
 }
 
 
@@ -407,6 +412,13 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 	}
 }
 
+static void table_view_filter_selection_CB(GtkComboBoxText *filter_combobox,
+                                           CallBackData *data) {
+	(void)filter_combobox;
+	g_signal_emit_by_name(
+		gtk_builder_get_object(data->builder, "schedules_tree_selection"),
+		"changed");
+}
 
 void init_table_view(CallBackData *data) {
 	g_signal_connect(gtk_builder_get_object(data->builder,
@@ -416,7 +428,11 @@ void init_table_view(CallBackData *data) {
 	g_signal_connect(
 		gtk_builder_get_object(data->builder,
 		                       "table_view_type_selection_combobox"),
-		"changed", G_CALLBACK(change_filter_selection_combobox_CB), data);
+		"changed", G_CALLBACK(change_type_selection_combobox_CB), data);
+	g_signal_connect(
+		gtk_builder_get_object(data->builder,
+		                       "table_view_filter_item_selection_combobox"),
+		"changed", G_CALLBACK(table_view_filter_selection_CB), data);
 
 
 	GtkComboBox *filter_combobox = (GtkComboBox *)gtk_builder_get_object(
