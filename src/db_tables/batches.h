@@ -25,7 +25,6 @@ typedef struct Batch {
 	gint        pk;
 	const gchar *name;
 	gint        heads;
-	gint        parent;
 } Batch;
 
 
