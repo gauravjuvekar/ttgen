@@ -20,6 +20,7 @@
 #define DB_TABLES_ROOMS_H 1
 
 #include "../libs.h"
+#include "meta.h"
 
 typedef struct Room {
 	gint        pk;
@@ -30,6 +31,7 @@ typedef struct Room {
 
 
 Room Room_from_stmt(sqlite3_stmt *stmt);
+Room *Rooms_from_db(sqlite3 *db, const Meta *meta);
 void insert_Room(sqlite3 *db, const Room *room);
 void remove_Room(sqlite3 *db, gint pk);
 

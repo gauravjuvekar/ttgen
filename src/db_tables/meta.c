@@ -53,6 +53,18 @@ Meta Meta_from_db(sqlite3 *db) {
 
 	sql_ret = sqlite3_prepare(
 		db,
+		"SELECT float_value FROM meta "
+		"WHERE key=\"fitness_penalty_room_capacity\"",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_ROW);
+	retval.fitness_penalty_room_capacity = sqlite3_column_double(stmt, 0);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	sql_ret = sqlite3_prepare(
+		db,
 		"SELECT int_value FROM meta "
 		"WHERE key=\"db_schedules_valid\"",
 		-1, &stmt, NULL);
@@ -254,6 +266,21 @@ void insert_Meta(sqlite3 *db, const Meta *meta) {
 	g_assert(sql_ret == SQLITE_DONE);
 	sql_ret = sqlite3_finalize(stmt);
 	g_assert(sql_ret == SQLITE_OK);
+
+	sql_ret = sqlite3_prepare(
+		db,
+		"INSERT OR REPLACE INTO meta(key, float_value) "
+		"VALUES(\"fitness_penalty_room_capacity\", :penalty);",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_double(
+		stmt, sqlite3_bind_parameter_index(stmt, ":penalty"),
+		meta->fitness_penalty_room_capacity);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
 }
 
 
@@ -360,6 +387,21 @@ void init_db_with_Meta(sqlite3 *db, const Meta *meta) {
 	sql_ret = sqlite3_bind_double(
 		stmt, sqlite3_bind_parameter_index(stmt, ":penalty"),
 		meta->fitness_penalty_time_clash_teacher);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_step(stmt);
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	sql_ret = sqlite3_prepare(
+		db,
+		"INSERT OR IGNORE INTO meta(key, float_value) "
+		"VALUES(\"fitness_penalty_room_capacity\", :penalty);",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_double(
+		stmt, sqlite3_bind_parameter_index(stmt, ":penalty"),
+		meta->fitness_penalty_room_capacity);
 	g_assert(sql_ret == SQLITE_OK);
 	sql_ret = sqlite3_step(stmt);
 	g_assert(sql_ret == SQLITE_DONE);

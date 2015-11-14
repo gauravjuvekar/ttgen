@@ -30,6 +30,28 @@ Room Room_from_stmt(sqlite3_stmt *stmt) {
 }
 
 
+Room *Rooms_from_db(sqlite3 *db, const Meta *meta) {
+	Room *rooms = g_malloc(sizeof(Room) * meta->n_rooms);
+
+	sqlite3_stmt *stmt;
+	gint sql_ret;
+	sql_ret = sqlite3_prepare(
+		db, "SELECT pk, name, capacity FROM rooms",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	gint i = 0;
+	while ((sql_ret = sqlite3_step(stmt)) == SQLITE_ROW) {
+		rooms[i] = Room_from_stmt(stmt);
+		i++;
+	}
+	g_assert(sql_ret == SQLITE_DONE);
+	sql_ret = sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
+
+	return rooms;
+}
+
+
 void insert_Room(sqlite3 *db, const Room *room) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;

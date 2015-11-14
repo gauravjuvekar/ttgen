@@ -54,13 +54,19 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 		(GtkSpinButton *)gtk_builder_get_object(
 			data->builder, "target_generations_spin_button"));
 	reset_pks(data->db);
-	const Allocation *allocs = Allocations_from_db(data->db, &meta);
-	setup_population(meta.n_population, data->db, &meta, allocs);
+	const Allocation *allocs  = Allocations_from_db(data->db, &meta);
+	const Batch      *batches = Batches_from_db(data->db, &meta);
+	const Room       *rooms   = Rooms_from_db(data->db, &meta);
+
+
+
+	setup_population(meta.n_population, data->db,
+	                 &meta, allocs, batches, rooms);
 	reset_pks(data->db);
 
 	Population population = Population_from_db(data->db, &meta);
 	Population_evolve(&population, target_generations, target_fitness,
-	                  &meta, allocs);
+	                  &meta, allocs, batches, rooms);
 	g_free((gpointer)allocs);
 	replace_db_Population(population, data->db, &meta);
 

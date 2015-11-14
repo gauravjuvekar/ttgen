@@ -35,7 +35,7 @@ Allocation *Allocations_from_db(sqlite3 *db, const Meta *meta) {
 	sqlite3_stmt *stmt;
 	gint sql_ret;
 	sql_ret = sqlite3_prepare(
-		db, "SELECT batch, subject, teacher FROM allocations",
+		db, "SELECT pk, batch, subject, teacher FROM allocations",
 		-1, &stmt, NULL);
 	g_assert(sql_ret == SQLITE_OK);
 	gint i = 0;

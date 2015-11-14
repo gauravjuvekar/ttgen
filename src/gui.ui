@@ -40,6 +40,12 @@
     <property name="can_focus">False</property>
     <property name="model">batches_list_store</property>
   </object>
+  <object class="GtkAdjustment" id="preferences_fitness_penalty_room_capacity_adjustment">
+    <property name="lower">-1000000</property>
+    <property name="upper">-500</property>
+    <property name="step_increment">1000</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="preferences_fitness_penalty_time_clash_batch_adjustment">
     <property name="lower">-1000000</property>
     <property name="upper">-1000</property>
@@ -1122,39 +1128,6 @@ batch time clash</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="preferences_window_population">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">Number of schedules</property>
-                <property name="justify">right</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="preferences_window_population_spinbutton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="text" translatable="yes">0</property>
-                <property name="input_purpose">number</property>
-                <property name="adjustment">preferences_population_adjustment</property>
-                <property name="snap_to_ticks">True</property>
-                <property name="numeric">True</property>
-                <property name="value">50</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkLabel" id="preferences_window_working_days">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -1188,37 +1161,6 @@ batch time clash</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="preferences_window_mutate_swaps">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">Mutations per child</property>
-                <property name="justify">right</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">5</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="preferences_window_mutation_swaps_spinbutton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="input_purpose">number</property>
-                <property name="adjustment">preferences_mutate_swaps_adjustment</property>
-                <property name="snap_to_ticks">True</property>
-                <property name="numeric">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkLabel" id="preferences_window_time_slots_per_day">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -1243,6 +1185,105 @@ batch time clash</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_mutate_swaps">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Mutations per child</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">6</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_population">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Number of schedules</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">5</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_mutation_swaps_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_mutate_swaps_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">6</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_population_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">0</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_population_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">50</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">5</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="preferences_window_fitness_penalty_room_capacity">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Fitness penalty for
+every head above
+room capacity</property>
+                <property name="justify">right</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="preferences_window_fitness_penalty_room_capacity_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="text" translatable="yes">-1000</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">preferences_fitness_penalty_room_capacity_adjustment</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
+                <property name="value">-500</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>

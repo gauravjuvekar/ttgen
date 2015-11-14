@@ -23,6 +23,8 @@
 
 #include "../db_tables/meta.h"
 #include "../db_tables/allocations.h"
+#include "../db_tables/batches.h"
+#include "../db_tables/rooms.h"
 
 
 typedef struct Schedule {
@@ -35,25 +37,36 @@ typedef struct Schedule {
 Schedule *Schedule_init(const Meta *meta);
 void Schedule_seed_random(Schedule *schedule,
                           const Meta *meta,
-                          const Allocation allocs[]);
+                          const Allocation allocs[],
+                          const Batch      batches[],
+                          const Room       rooms[]);
 Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta);
 void Schedule_free(Schedule *schedule);
 void Schedule_mutate(Schedule *schedule,
                      const Meta *meta,
-                     const Allocation allocs[]);
+                     const Allocation allocs[],
+                     const Batch      batches[],
+                     const Room       rooms[]);
 void Schedule_crossover(const Schedule *mother, const Schedule *father,
 	    			    Schedule **daughter,    Schedule **son,
-                        const Meta *meta, const Allocation allocs[]);
+                        const Meta *meta,
+                        const Allocation allocs[],
+                        const Batch      batches[],
+                        const Room       rooms[]);
 
 gfloat Schedule_fitness(const Schedule *schedule,
                         const Meta *meta,
-                        const Allocation allocs[]);
+                        const Allocation allocs[],
+                        const Batch      batches[],
+                        const Room       rooms[]);
 gint Schedule_compare(const Schedule *a, const Schedule *b);
 gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b);
 
 void Schedule_print(const Schedule *schedule,
                     const Meta *meta,
-                    const Allocation allocs[]);
+                    const Allocation allocs[],
+                    const Batch      batches[],
+                    const Room       rooms[]);
 
 static inline gint room_from_slot(gint slot, const Meta *meta) {
 	return slot % meta->n_rooms;

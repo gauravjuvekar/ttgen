@@ -26,7 +26,9 @@
 
 void Population_seed(Population *population,
                      const Meta *meta,
-                     const Allocation allocs[]) {
+                     const Allocation allocs[],
+                     const Batch      batches[],
+                     const Room       rooms[]) {
 	population->n_schedules = meta->n_population;
 	population->schedules = g_ptr_array_sized_new(population->n_schedules);
 	g_ptr_array_set_free_func(population->schedules,
@@ -36,7 +38,7 @@ void Population_seed(Population *population,
 		g_ptr_array_add(population->schedules, Schedule_init(meta));
 		Schedule_seed_random(g_ptr_array_index(population->schedules,
 		                                       individual),
-		                                       meta, allocs);
+		                                       meta, allocs, batches, rooms);
 	}
 }
 
@@ -45,7 +47,9 @@ void Population_evolve(Population *population,
                        const gint generations,
                        const gfloat(fitness),
                        const Meta *meta,
-                       const Allocation allocs[]) {
+                       const Allocation allocs[],
+                       const Batch      batches[],
+                       const Room       rooms[]) {
 	gfloat max_fitness;
 	g_ptr_array_sort(population->schedules,
 					 (GCompareFunc)Schedule_compare_wrapper);
@@ -65,13 +69,14 @@ void Population_evolve(Population *population,
 
 		Schedule_crossover(g_ptr_array_index(population->schedules, mother),
 		                   g_ptr_array_index(population->schedules, father),
-		                   &son_schedule, &daughter_schedule, meta, allocs);
+		                   &son_schedule, &daughter_schedule,
+		                   meta, allocs, batches, rooms);
 		g_ptr_array_add(population->schedules, son_schedule);
 		g_ptr_array_add(population->schedules, daughter_schedule);
 		Schedule_mutate(g_ptr_array_index(population->schedules, son),
-		                meta, allocs);
+		                meta, allocs, batches, rooms);
 		Schedule_mutate(g_ptr_array_index(population->schedules, daughter),
-		                meta, allocs);
+		                meta, allocs, batches, rooms);
 		g_ptr_array_sort(population->schedules,
 						 (GCompareFunc)Schedule_compare_wrapper);
 		max_fitness = (*(Schedule *)

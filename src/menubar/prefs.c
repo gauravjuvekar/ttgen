@@ -64,6 +64,10 @@ static void set_prefs_CB(GtkButton *button, CallBackData *data) {
 		(GtkSpinButton *)gtk_builder_get_object(
 			data->builder,
 			"preferences_window_fitness_penalty_time_clash_batch_spinbutton"));
+	data->meta->fitness_penalty_room_capacity = gtk_spin_button_get_value(
+		(GtkSpinButton *)gtk_builder_get_object(
+			data->builder,
+			"preferences_window_fitness_penalty_room_capacity_spinbutton"));
 
 	insert_Meta(data->db, data->meta);
 
@@ -139,4 +143,9 @@ void refresh_prefs(CallBackData *data) {
 			data->builder,
 			"preferences_window_fitness_penalty_time_clash_batch_spinbutton"),
 		data->meta->fitness_penalty_time_clash_batch);
+	gtk_spin_button_set_value(
+		(GtkSpinButton *)gtk_builder_get_object(
+			data->builder,
+			"preferences_window_fitness_penalty_room_capacity_spinbutton"),
+		data->meta->fitness_penalty_room_capacity);
 }
