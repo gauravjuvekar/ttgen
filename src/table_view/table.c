@@ -72,6 +72,73 @@ static void change_filter_selection_combobox_CB(GtkComboBoxText *type_combobox,
 }
 
 
+static void set_grid_batch(GtkGrid *grid,
+                           gint schedule_pk,
+                           gint batch_pk,
+                           CallBackData *data) {
+	sqlite3_stmt *stmt;
+	gint sql_ret;
+
+	gint row;
+	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
+		const gchar *name = g_strdup_printf("%d", row);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
+		g_free((gpointer)name);
+	}
+
+	gint column;
+	for (column = 0;
+	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
+	     column++) {
+		const gchar *name = g_strdup_printf("Day %d", column);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
+		g_free((gpointer)name);
+	}
+
+	sql_ret = sqlite3_prepare(
+		data->db,
+		"SELECT "
+		"schedule_allocs.slot, subjects.name, teachers.name, rooms.name "
+		"FROM schedule_allocs "
+			"JOIN allocations ON schedule_allocs.allocation=allocations.pk "
+			"JOIN teachers    ON allocations.teacher=teachers.pk "
+			"JOIN subjects    ON allocations.subject=subjects.pk "
+			"JOIN rooms       ON (schedule_allocs.slot % "
+			                     "(SELECT COUNT() FROM rooms))=rooms.pk "
+				"WHERE schedule_allocs.schedule=:schedule_pk AND "
+				      "allocations.batch=:batch_pk;",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":schedule_pk"), schedule_pk);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":batch_pk"), batch_pk);
+	g_assert(sql_ret == SQLITE_OK);
+	while ((sql_ret = sqlite3_step(stmt)) == SQLITE_ROW) {
+		gint slot = sqlite3_column_int(stmt, 0);
+		const gchar *subject = (const gchar*)sqlite3_column_text(stmt, 1);
+		const gchar *teacher = (const gchar*)sqlite3_column_text(stmt, 2);
+		const gchar *room    = (const gchar*)sqlite3_column_text(stmt, 3);
+
+		const gchar *label_text = g_strdup_printf("R:%s\nS:%s\nT:%s\n",
+												  room, subject, teacher);
+
+		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
+
+		gtk_grid_attach(grid, (GtkWidget *)label,
+						(time_slot_from_slot(slot, data->meta) /
+						 data->meta->n_time_slots_per_day) + 1 ,
+						(time_slot_from_slot(slot, data->meta) %
+						 data->meta->n_time_slots_per_day) + 1 ,
+						1, 1);
+		g_free((gpointer)label_text);
+	}
+}
+
+
 static void set_grid_teacher(GtkGrid *grid,
                              gint schedule_pk,
                              gint teacher_pk,
@@ -125,6 +192,73 @@ static void set_grid_teacher(GtkGrid *grid,
 
 		const gchar *label_text = g_strdup_printf("R:%s\nS:%s\nB:%s\n",
 												  room, subject, batch);
+
+		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
+
+		gtk_grid_attach(grid, (GtkWidget *)label,
+						(time_slot_from_slot(slot, data->meta) /
+						 data->meta->n_time_slots_per_day) + 1 ,
+						(time_slot_from_slot(slot, data->meta) %
+						 data->meta->n_time_slots_per_day) + 1 ,
+						1, 1);
+		g_free((gpointer)label_text);
+	}
+}
+
+
+static void set_grid_room(GtkGrid *grid,
+                          gint schedule_pk,
+                          gint room_pk,
+                          CallBackData *data) {
+	sqlite3_stmt *stmt;
+	gint sql_ret;
+
+	gint row;
+	for (row = 0; row < data->meta->n_time_slots_per_day; row++) {
+		const gchar *name = g_strdup_printf("%d", row);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, 0, row + 1, 1, 1);
+		g_free((gpointer)name);
+	}
+
+	gint column;
+	for (column = 0;
+	     column < (data->meta->n_time_slots / data->meta->n_time_slots_per_day);
+	     column++) {
+		const gchar *name = g_strdup_printf("Day %d", column);
+		GtkLabel *label = (GtkLabel *)gtk_label_new(name);
+		gtk_grid_attach(grid, (GtkWidget *)label, column + 1, 0, 1, 1);
+		g_free((gpointer)name);
+	}
+
+	sql_ret = sqlite3_prepare(
+		data->db,
+		"SELECT "
+		"schedule_allocs.slot, subjects.name, batches.name, teachers.name "
+		"FROM schedule_allocs "
+			"JOIN allocations ON schedule_allocs.allocation=allocations.pk "
+			"JOIN batches     ON allocations.batch=batches.pk "
+			"JOIN subjects    ON allocations.subject=subjects.pk "
+			"JOIN teachers    ON allocations.teacher=teachers.pk "
+				"WHERE schedule_allocs.schedule=:schedule_pk AND "
+				      "(schedule_allocs.slot % "
+				       "(SELECT COUNT() FROM rooms))=:room_pk;",
+		-1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":schedule_pk"), schedule_pk);
+	g_assert(sql_ret == SQLITE_OK);
+	sql_ret = sqlite3_bind_int(
+		stmt, sqlite3_bind_parameter_index(stmt, ":room_pk"), room_pk);
+	g_assert(sql_ret == SQLITE_OK);
+	while ((sql_ret = sqlite3_step(stmt)) == SQLITE_ROW) {
+		gint slot = sqlite3_column_int(stmt, 0);
+		const gchar *subject = (const gchar*)sqlite3_column_text(stmt, 1);
+		const gchar *batch   = (const gchar*)sqlite3_column_text(stmt, 2);
+		const gchar *teacher = (const gchar*)sqlite3_column_text(stmt, 3);
+
+		const gchar *label_text = g_strdup_printf("T:%s\nS:%s\nB:%s\n",
+												  teacher, subject, batch);
 
 		GtkLabel *label = (GtkLabel *)gtk_label_new(label_text);
 
@@ -256,8 +390,14 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 				}
 				break;
 			case FILTER_SELECTION_ROOM:
+				if (iter_set) {
+					set_grid_room(grid, pk, filter_pk, data);
+				}
 				break;
 			case FILTER_SELECTION_BATCH:
+				if (iter_set) {
+					set_grid_batch(grid, pk, filter_pk, data);
+				}
 				break;
 			default:
 				g_assert(FALSE);
