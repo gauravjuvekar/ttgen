@@ -21,7 +21,6 @@
 
 #include "../core/genetic.h"
 #include "table.h"
-
 static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 	(void)widget;
 	GtkTreeSelection *selection =
@@ -113,8 +112,75 @@ static void refresh_table_CB(GtkWidget* widget, CallBackData *data) {
 }
 
 
+typedef enum {
+	FILTER_SELECTION_ALL = 0,
+	FILTER_SELECTION_TEACHER,
+	FILTER_SELECTION_ROOM,
+	FILTER_SELECTION_BATCH
+} FilterSelection_E;
+
+
+static void change_filter_selection_combobox_CB(GtkComboBoxText *type_combobox,
+                                                CallBackData *data) {
+
+	const gchar *id = gtk_combo_box_get_active_id((GtkComboBox *)type_combobox);
+	g_assert(id != NULL);
+	g_assert(g_ascii_isdigit(id[0]));
+	FilterSelection_E filter_type = (FilterSelection_E) id[0] - '0';
+
+	GtkComboBox *filter_combobox = (GtkComboBox *)gtk_builder_get_object(
+			data->builder, "table_view_filter_item_selection_combobox");
+
+	gchar *model_name = NULL;
+	switch(filter_type) {
+		case FILTER_SELECTION_ALL:
+			model_name = NULL;
+			break;
+		case FILTER_SELECTION_TEACHER:
+			model_name = "teachers_list_store";
+			break;
+		case FILTER_SELECTION_ROOM:
+			model_name = "rooms_list_store";
+			break;
+		case FILTER_SELECTION_BATCH:
+			model_name = "batches_list_store";
+			break;
+		default:
+			g_assert(FALSE);
+	}
+
+
+	if (model_name != NULL) {
+		GtkTreeModel *model =
+			(GtkTreeModel *)gtk_builder_get_object(data->builder, model_name);
+		gtk_combo_box_set_model(filter_combobox, GTK_TREE_MODEL(model));
+		gtk_widget_set_sensitive(GTK_WIDGET(filter_combobox), TRUE);
+	}
+	else {
+		gtk_widget_set_sensitive(GTK_WIDGET(filter_combobox), FALSE);
+		gtk_combo_box_set_model(filter_combobox, NULL);
+	}
+}
+
+
 void init_table_view(CallBackData *data) {
 	g_signal_connect(gtk_builder_get_object(data->builder,
 	                                        "schedules_tree_selection"),
 	                 "changed", G_CALLBACK(refresh_table_CB), data);
+
+	g_signal_connect(
+		gtk_builder_get_object(data->builder,
+		                       "table_view_type_selection_combobox"),
+		"changed", G_CALLBACK(change_filter_selection_combobox_CB), data);
+
+
+	GtkComboBox *filter_combobox = (GtkComboBox *)gtk_builder_get_object(
+			data->builder, "table_view_filter_item_selection_combobox");
+	GtkCellRenderer *combobox_text = gtk_cell_renderer_combo_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(filter_combobox),
+							   combobox_text, TRUE);
+	gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(filter_combobox),
+								  combobox_text,
+								  "text", 1);
+
 }

@@ -46,11 +46,12 @@ static void init_set_sensitive(CallBackData *data) {
 		(GtkWidget *)gtk_builder_get_object(data->builder, "edit_menu"),
 		TRUE);
 	gtk_widget_set_sensitive(
-		(GtkWidget *)gtk_builder_get_object(data->builder, "view_menu"),
-		TRUE);
-	gtk_widget_set_sensitive(
 		(GtkWidget *)gtk_builder_get_object(data->builder, "app_view_pane"),
 		TRUE);
+	gtk_widget_set_sensitive(
+		(GtkWidget *)gtk_builder_get_object(
+			data->builder, "table_view_filter_item_selection_combobox"),
+		FALSE);
 }
 
 
