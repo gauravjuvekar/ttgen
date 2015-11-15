@@ -112,6 +112,7 @@ static void set_Subjects_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_INT_pk,      subject.pk,
 		                   COLUMN_STRING_name, subject.name,
 		                   -1);
+		g_free((gpointer)subject.name);
 	}
 	sqlite3_finalize(stmt);
 }

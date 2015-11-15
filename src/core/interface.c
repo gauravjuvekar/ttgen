@@ -64,7 +64,6 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	Population population = Population_from_db(data->db, &meta);
 	Population_evolve(&population, target_generations, target_fitness,
 	                  &meta, allocs, batches, rooms);
-	g_free((gpointer)allocs);
 	replace_db_Population(population, data->db, &meta);
 	Population_free(&population);
 
@@ -78,7 +77,7 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 		g_free((gpointer)batches[i].name);
 	}
 	g_free((gpointer)batches);
-	for(i = 0; i < meta.n_batches; i++) {
+	for(i = 0; i < meta.n_rooms; i++) {
 		g_free((gpointer)rooms[i].name);
 	}
 	g_free((gpointer)rooms);

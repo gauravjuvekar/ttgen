@@ -109,6 +109,7 @@ static void set_Teachers_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_INT_pk,      teacher.pk,
 		                   COLUMN_STRING_name, teacher.name,
 		                   -1);
+		g_free((gpointer)teacher.name);
 	}
 	sqlite3_finalize(stmt);
 }
