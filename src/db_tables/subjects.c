@@ -24,7 +24,7 @@
 Subject Subject_from_stmt(sqlite3_stmt *stmt) {
 	return (Subject) {
 		.pk   = sqlite3_column_int(stmt, 0),
-		.name = (const gchar*) sqlite3_column_text(stmt, 1)
+		.name = g_strdup((gchar*) sqlite3_column_text(stmt, 1))
 	};
 }
 

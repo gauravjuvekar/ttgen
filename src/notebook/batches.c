@@ -125,6 +125,7 @@ static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_STRING_name, batch.name,
 		                   COLUMN_INT_heads,   batch.heads,
 		                   -1);
+		g_free((gpointer)batch.name);
 	}
 	sqlite3_finalize(stmt);
 }

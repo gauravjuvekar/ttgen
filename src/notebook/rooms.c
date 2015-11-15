@@ -143,6 +143,7 @@ static void set_Rooms_from_db(GtkListStore *list_store, sqlite3 *db) {
 		                   COLUMN_STRING_name,  room.name,
 		                   COLUMN_INT_capacity, room.capacity,
 		                   -1);
+		g_free((gpointer)room.name);
 	}
 	sqlite3_finalize(stmt);
 }
