@@ -51,32 +51,6 @@ Schedule *Schedule_init(const Meta *meta) {
 	return schedule;
 }
 
-void Schedule_print(const Schedule *schedule,
-                    const Meta *meta,
-                    const Allocation allocs[],
-                    const Batch      batches[],
-                    const Room       rooms[]) {
-	(void)rooms;
-	(void)batches;
-	gint room;
-	for(room = 0; room < meta->n_rooms; room++) {
-		gint time_slot;
-		for(time_slot = 0; time_slot < meta->n_time_slots; time_slot++) {
-			gint slot = slot_from_array(schedule->time_slots, time_slot, room,
-			                            meta);
-			if (slot == -1) {
-				g_print("(          )\t");
-			}
-			else {
-				Allocation alloc = allocs[slot];
-				g_print("(T%d, B%d, S%d)\t",
-				        alloc.teacher, alloc.batch, alloc.subject);
-			}
-		}
-		g_print("\n");
-	}
-}
-
 
 static gint Schedule_find_vacant(const Schedule *schedule,
                                  gint current, const Meta *meta) {

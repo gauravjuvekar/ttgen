@@ -62,12 +62,6 @@ gfloat Schedule_fitness(const Schedule *schedule,
 gint Schedule_compare(const Schedule *a, const Schedule *b);
 gint Schedule_compare_wrapper(const Schedule **a, const Schedule **b);
 
-void Schedule_print(const Schedule *schedule,
-                    const Meta *meta,
-                    const Allocation allocs[],
-                    const Batch      batches[],
-                    const Room       rooms[]);
-
 static inline gint room_from_slot(gint slot, const Meta *meta) {
 	return slot % meta->n_rooms;
 }
