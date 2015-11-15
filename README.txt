@@ -41,7 +41,9 @@ as the evolution process might be very expensive for large inputs
 (As scheduling in general is an NP-hard problem). However, it has been observed
 that inserting a completely new population into the database is a bottle-neck
 because the os buffers need to be flushed to the disk to prevent corruption n
-case of power-failures.
+case of power-failures (upto a minute for 165 allocations) but the actual
+algorithm is faster than expected (about 4 seconds for 100,000 generations of 20
+schedules of 165 allocations).
 
 
 ## Dependencies ##
