@@ -66,6 +66,7 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	                  &meta, allocs, batches, rooms);
 	g_free((gpointer)allocs);
 	replace_db_Population(population, data->db, &meta);
+	Population_free(&population);
 
 	meta.db_schedules_valid = 1;
 	insert_Meta(data->db, &meta);

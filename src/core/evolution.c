@@ -29,6 +29,7 @@ void Population_seed(Population *population,
                      const Allocation allocs[],
                      const Batch      batches[],
                      const Room       rooms[]) {
+	/* Randomly seeds schedules to create a population */
 	population->n_schedules = meta->n_population;
 	population->schedules = g_ptr_array_sized_new(population->n_schedules);
 	g_ptr_array_set_free_func(population->schedules,
@@ -50,6 +51,11 @@ void Population_evolve(Population *population,
                        const Allocation allocs[],
                        const Batch      batches[],
                        const Room       rooms[]) {
+	/* Evolves the population by repeated crossover of the fittest,
+	 * mutation and death of the least fit schedules till a certain number of
+	 * generations have completed or till a schedule with required fitness is
+	 * obtained */
+
 	gfloat max_fitness;
 	g_ptr_array_sort(population->schedules,
 					 (GCompareFunc)Schedule_compare_wrapper);
