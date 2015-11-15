@@ -51,35 +51,13 @@ Schedule *Schedule_init(const Meta *meta) {
 	return schedule;
 }
 
-void Schedule_print(const Schedule *schedule,
-                    const Meta *meta,
-                    const Allocation allocs[],
-                    const Batch      batches[],
-                    const Room       rooms[]) {
-	(void)rooms;
-	(void)batches;
-	gint room;
-	for(room = 0; room < meta->n_rooms; room++) {
-		gint time_slot;
-		for(time_slot = 0; time_slot < meta->n_time_slots; time_slot++) {
-			gint slot = slot_from_array(schedule->time_slots, time_slot, room,
-			                            meta);
-			if (slot == -1) {
-				g_print("(          )\t");
-			}
-			else {
-				Allocation alloc = allocs[slot];
-				g_print("(T%d, B%d, S%d)\t",
-				        alloc.teacher, alloc.batch, alloc.subject);
-			}
-		}
-		g_print("\n");
-	}
-}
-
 
 static gint Schedule_find_vacant(const Schedule *schedule,
                                  gint current, const Meta *meta) {
+	/* Finds an available vacant slot closest to current.
+	 * This slot must exist for a feasible solution.
+	 */
+
 	gint right;
 	gint left;
 	left = right = current;
@@ -131,6 +109,7 @@ void Schedule_seed_random(Schedule *schedule,
 
 
 Schedule *Schedule_clone(const Schedule *schedule, const Meta *meta) {
+	/* Deep clone */
 	assert_Schedule_valid(schedule, meta);
 	Schedule *clone = g_new(Schedule, 1);
 	*clone = (Schedule) {
@@ -169,6 +148,7 @@ gfloat Schedule_fitness(const Schedule *schedule,
 		gint slot = schedule->allocations[alloc];
 		gint time_slot = time_slot_from_slot(slot, meta);
 
+		/* Find number of clashes for each allocation */
 		gint time_clash_teacher = -1;
 		gint time_clash_batch = -1;
 		gint room;
@@ -187,18 +167,20 @@ gfloat Schedule_fitness(const Schedule *schedule,
 		}
 		g_assert(time_clash_batch > -1);
 		g_assert(time_clash_teacher > -1);
+
+		/* Multiply number of clashes by fitness_penalty (negative) */
 		fitness += (time_clash_teacher *
 		            meta->fitness_penalty_time_clash_teacher);
 		fitness += (time_clash_batch *
 		            meta->fitness_penalty_time_clash_batch);
 
+		/* Find if the room is large enough for the batch */
 		room = room_from_slot(slot, meta);
 		if (rooms[room].capacity < batches[allocs[alloc].batch].heads) {
 			fitness += ((batches[allocs[alloc].batch].heads -
 			             rooms[room].capacity) *
 			            meta->fitness_penalty_room_capacity);
 		}
-
 	}
 	return fitness;
 }
@@ -208,7 +190,7 @@ gint Schedule_compare(const Schedule *a, const Schedule *b) {
 	/* Fittest first */
 
 	if (a->fitness > b->fitness) {
-		if ((a->fitness - b->fitness) < (10 * FLT_EPSILON)) {
+		if ((a->fitness - b->fitness) < (100 * FLT_EPSILON)) {
 			return 0;
 		}
 		else {
@@ -216,7 +198,7 @@ gint Schedule_compare(const Schedule *a, const Schedule *b) {
 		}
 	}
 	else if (a->fitness < b->fitness) {
-		if ((b->fitness - a->fitness) < (10 * FLT_EPSILON)) {
+		if ((b->fitness - a->fitness) < (100 * FLT_EPSILON)) {
 			return 0;
 		}
 		else {
@@ -238,6 +220,8 @@ void Schedule_mutate(Schedule *schedule,
                      const Allocation allocs[],
                      const Batch      batches[],
                      const Room       rooms[]) {
+	/* Randomly swap a few allocations */
+
 	assert_Schedule_valid(schedule, meta);
 	gint swaps;
 	for(swaps = 0; swaps < meta->mutate_swaps; swaps++) {
@@ -264,6 +248,13 @@ void Schedule_crossover(const Schedule *mother, const Schedule *father,
                         const Allocation allocs[],
                         const Batch      batches[],
                         const Room       rooms[]) {
+	 /* Combine two parent allocations (mother and father) into two
+	  * offsprings (son and daughter)
+	  *
+	  * The parents are cloned to form the children and a randomly determined
+	  * chunk of allocations is swapped between the children.
+	  */
+
 	assert_Schedule_valid(mother, meta);
 	assert_Schedule_valid(father, meta);
 

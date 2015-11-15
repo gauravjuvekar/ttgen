@@ -46,7 +46,6 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 		return;
 	}
 
-
 	gfloat target_fitness = gtk_spin_button_get_value(
 		(GtkSpinButton *)gtk_builder_get_object(data->builder,
 		                                        "target_fitness_spin_button"));
@@ -58,8 +57,6 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	const Batch      *batches = Batches_from_db(data->db, &meta);
 	const Room       *rooms   = Rooms_from_db(data->db, &meta);
 
-
-
 	setup_population(meta.n_population, data->db,
 	                 &meta, allocs, batches, rooms);
 	reset_pks(data->db);
@@ -69,9 +66,23 @@ static void evolve_CB(GtkButton *button, CallBackData *data) {
 	                  &meta, allocs, batches, rooms);
 	g_free((gpointer)allocs);
 	replace_db_Population(population, data->db, &meta);
+	Population_free(&population);
 
 	meta.db_schedules_valid = 1;
 	insert_Meta(data->db, &meta);
+
+
+	g_free((gpointer)allocs);
+	gint i;
+	for(i = 0; i < meta.n_batches; i++) {
+		g_free((gpointer)batches[i].name);
+	}
+	g_free((gpointer)batches);
+	for(i = 0; i < meta.n_batches; i++) {
+		g_free((gpointer)rooms[i].name);
+	}
+	g_free((gpointer)rooms);
+
 
 	refresh_notebook_schedules(data);
 }

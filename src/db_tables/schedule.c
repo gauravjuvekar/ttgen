@@ -81,12 +81,12 @@ void insert_Schedule(Schedule *schedule, sqlite3 *db, const Meta *meta) {
 	gint pk = sqlite3_last_insert_rowid(db);
 
 	gint alloc;
+	sql_ret = sqlite3_prepare(
+		db,
+		"INSERT INTO schedule_allocs(schedule, allocation, slot) "
+		"VALUES(:schedule, :allocation, :slot);", -1, &stmt, NULL);
+	g_assert(sql_ret == SQLITE_OK);
 	for (alloc = 0; alloc < meta->n_allocs; alloc++) {
-		sql_ret = sqlite3_prepare(
-			db,
-			"INSERT INTO schedule_allocs(schedule, allocation, slot) "
-			"VALUES(:schedule, :allocation, :slot);", -1, &stmt, NULL);
-		g_assert(sql_ret == SQLITE_OK);
 		sql_ret = sqlite3_bind_int(
 			stmt, sqlite3_bind_parameter_index(stmt, ":schedule"), pk);
 		g_assert(sql_ret == SQLITE_OK);
@@ -99,6 +99,12 @@ void insert_Schedule(Schedule *schedule, sqlite3 *db, const Meta *meta) {
 		g_assert(sql_ret == SQLITE_OK);
 		sql_ret = sqlite3_step(stmt);
 		g_assert(sql_ret == SQLITE_DONE);
-		sqlite3_finalize(stmt);
+
+		sql_ret = sqlite3_clear_bindings(stmt);
+		g_assert(sql_ret == SQLITE_OK);
+		sql_ret = sqlite3_reset(stmt);
+		g_assert(sql_ret == SQLITE_OK);
 	}
+	sqlite3_finalize(stmt);
+	g_assert(sql_ret == SQLITE_OK);
 }
