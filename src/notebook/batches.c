@@ -65,9 +65,6 @@ static void cancel_add_batch_CB(GtkButton* button, CallBackData *data) {
 		data->builder, "batches_add_window");
 	gtk_widget_hide((GtkWidget *)window);
 	gtk_entry_set_text((GtkEntry *)name_entry, "");
-	GtkComboBox *combo_box = (GtkComboBox *)gtk_builder_get_object(
-		data->builder, "batches_add_window_parent_combobox");
-	gtk_combo_box_set_active(combo_box, -1);
 }
 
 
@@ -117,7 +114,7 @@ void init_notebook_batches(CallBackData *data) {
 
 static void set_Batches_from_db(GtkListStore *list_store, sqlite3 *db) {
 	sqlite3_stmt *stmt;
-	sqlite3_prepare(db, "SELECT pk, name, heads, parent FROM batches;",
+	sqlite3_prepare(db, "SELECT pk, name, heads FROM batches;",
 	                -1, &stmt, NULL);
 	GtkTreeIter iter;
 	while(sqlite3_step(stmt) == SQLITE_ROW) {
