@@ -77,11 +77,6 @@ void init_all(CallBackData *data) {
 	data->meta = g_new(Meta, 1);
 	*(data->meta) = Meta_from_db(db);
 
-	init_core(data);
-	init_prefs(data);
-	init_notebooks(data);
-	init_table_view(data);
-
 	init_set_sensitive(data);
 	refresh_after_db(data);
 }
@@ -103,6 +98,11 @@ int main(int argc, char* argv[]) {
 	g_signal_connect(window, "destroy", G_CALLBACK(quit_CB), &cb_data);
 	init_file_menu(&cb_data);
 	init_help_menu(&cb_data);
+
+	init_core(&cb_data);
+	init_notebooks(&cb_data);
+	init_table_view(&cb_data);
+	init_prefs(&cb_data);
 
 	gtk_widget_show(GTK_WIDGET(window));
 	gtk_main();
