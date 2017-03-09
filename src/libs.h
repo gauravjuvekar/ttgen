@@ -21,7 +21,12 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
-#include "sqlite/sqlite3.h"
+
+#if HAVE_LIBSQLITE3
+#	include <sqlite3.h>
+#else
+#	include "sqlite/sqlite3.h"
+#endif
 
 #endif
 

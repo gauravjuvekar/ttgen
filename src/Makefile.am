@@ -18,8 +18,14 @@ project_SOURCES        = main.c\
                          core/interface.c\
                          table_view/table.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
-project_LDADD          = $(GTK3_LIBS) sqlite/libsqlite3.a -ldl -lpthread
+project_LDADD          = $(GTK3_LIBS) -ldl -lpthread
+if !USE_SQLITE3
+project_LDADD         += sqlite/libsqlite3.a
 SUBDIRS                = sqlite
+else
+project_CPPFLAGS      += $(sqlite3_CFLAGS)
+project_LDADD         += $(sqlite3_LIBS)
+endif
 
 CLEANFILES             = gui.ui.hex.inc database.sqlite3.hex.inc
 
