@@ -8,11 +8,11 @@ AM_PROG_AR
 AC_PROG_RANLIB
 
 PKG_CHECK_MODULES([GTK3],[gtk+-3.0 >= 3.10])
-PKG_CHECK_MODULES([CHECK],[check])
+# PKG_CHECK_MODULES([CHECK],[check])
 
 AC_CHECK_PROG([xxd],[xxd],[yes],[no])
 AM_CONDITIONAL([FOUND_XXD],[test "x$xxd" = xyes])
-AM_COND_IF([FOUND_XXD],,[AC_MSG_ERROR([required program 'xxd' not found.])])
+AM_COND_IF([FOUND_XXD],,[AC_MSG_ERROR([required program 'xxd' not found. Please install it])])
 
 AC_CONFIG_FILES([Makefile src/Makefile src/sqlite/Makefile])
 AC_CONFIG_SRCDIR([src/main.c])
