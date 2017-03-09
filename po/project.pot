@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Gaurav Juvekar
+# This file is distributed under the same license as the GNU project package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU project 0.1\n"
+"Report-Msgid-Bugs-To: gauravjuvekar@gmail.com\n"
+"POT-Creation-Date: 2017-03-10 00:56+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/gui.ui:142
+msgid "TTgen"
+msgstr ""
+
+#: src/gui.ui:156
+msgid "_File"
+msgstr ""
+
+#: src/gui.ui:204
+msgid "_Edit"
+msgstr ""
+
+#: src/gui.ui:227
+msgid "_Help"
+msgstr ""
+
+#: src/gui.ui:295
+msgid "Add"
+msgstr ""
+
+#: src/gui.ui:308
+msgid "Remove"
+msgstr ""
+
+#: src/gui.ui:353
+msgid "Allocations"
+msgstr ""
+
+#: src/gui.ui:384
+msgid "Schedules"
+msgstr ""
+
+#: src/gui.ui:415
+msgid "Teachers"
+msgstr ""
+
+#: src/gui.ui:446
+msgid "Rooms"
+msgstr ""
+
+#: src/gui.ui:477
+msgid "Batches"
+msgstr ""
+
+#: src/gui.ui:508
+msgid "Subjects"
+msgstr ""
+
+#: src/gui.ui:537
+msgid "View"
+msgstr ""
+
+#: src/gui.ui:557
+msgid "All"
+msgstr ""
+
+#: src/gui.ui:558
+msgid "By teacher"
+msgstr ""
+
+#: src/gui.ui:559
+msgid "By room"
+msgstr ""
+
+#: src/gui.ui:560
+msgid "By batch"
+msgstr ""
+
+#: src/gui.ui:602
+msgid "Evolve"
+msgstr ""
+
+#: src/gui.ui:630
+msgid "Generations"
+msgstr ""
+
+#: src/gui.ui:670
+msgid "Target fitness"
+msgstr ""
+
+#: src/gui.ui:725
+msgid "Add allocation"
+msgstr ""
+
+#: src/gui.ui:744 src/gui.ui:898 src/gui.ui:1024 src/gui.ui:1322
+#: src/gui.ui:1446 src/gui.ui:1545
+msgid "Cancel"
+msgstr ""
+
+#: src/gui.ui:757 src/gui.ui:911 src/gui.ui:1037 src/gui.ui:1335
+#: src/gui.ui:1459 src/gui.ui:1559
+msgid "Ok"
+msgstr ""
+
+#: src/gui.ui:788
+msgid "Subject"
+msgstr ""
+
+#: src/gui.ui:803
+msgid "Batch"
+msgstr ""
+
+#: src/gui.ui:818
+msgid "Teacher"
+msgstr ""
+
+#: src/gui.ui:879
+msgid "Add batch"
+msgstr ""
+
+#: src/gui.ui:942 src/gui.ui:1366 src/gui.ui:1490 src/gui.ui:1590
+msgid "Name"
+msgstr ""
+
+#: src/gui.ui:956
+msgid "Heads"
+msgstr ""
+
+#: src/gui.ui:982 src/gui.ui:1242
+msgid "0"
+msgstr ""
+
+#: src/gui.ui:1005
+msgid "Preferences"
+msgstr ""
+
+#: src/gui.ui:1068
+msgid ""
+"Fitness penalty for\n"
+"teacher time clash"
+msgstr ""
+
+#: src/gui.ui:1084
+msgid ""
+"Fitness penalty for\n"
+"batch time clash"
+msgstr ""
+
+#: src/gui.ui:1116 src/gui.ui:1277
+msgid "-1000"
+msgstr ""
+
+#: src/gui.ui:1135
+msgid "Working days per week"
+msgstr ""
+
+#: src/gui.ui:1149
+msgid "5"
+msgstr ""
+
+#: src/gui.ui:1168
+msgid "Time slots per day"
+msgstr ""
+
+#: src/gui.ui:1197
+msgid "Mutations per child"
+msgstr ""
+
+#: src/gui.ui:1212
+msgid "Number of schedules"
+msgstr ""
+
+#: src/gui.ui:1261
+msgid ""
+"Fitness penalty for\n"
+"every head above\n"
+"room capacity"
+msgstr ""
+
+#: src/gui.ui:1303
+msgid "Add room"
+msgstr ""
+
+#: src/gui.ui:1380
+msgid "Capacity"
+msgstr ""
+
+#: src/gui.ui:1427
+msgid "Add subject"
+msgstr ""
+
+#: src/gui.ui:1526
+msgid "Add teacher"
+msgstr ""

@@ -19,6 +19,9 @@ project_SOURCES        = main.c\
                          table_view/table.c
 project_CPPFLAGS       = $(GTK3_CFLAGS)
 project_LDADD          = $(GTK3_LIBS) -ldl -lpthread
+project_LDFLAGS        = $(LTLIBINTL)
+localedir              = $(datadir)/locale
+DEFS                   = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 if !USE_SQLITE3
 project_LDADD         += sqlite/libsqlite3.a
 SUBDIRS                = sqlite

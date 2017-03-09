@@ -15,6 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <locale.h>
+#include <libintl.h>
 
 #include "main.h"
 
@@ -83,6 +85,10 @@ void init_all(CallBackData *data) {
 
 
 int main(int argc, char* argv[]) {
+	setlocale(LC_ALL, "");
+	bindtextdomain("project", "/usr/share/locale");
+	textdomain("project");
+
 	gtk_init(&argc, &argv);
 
 	GtkBuilder *builder = gtk_builder_new_from_string(gui_builder_string, -1);

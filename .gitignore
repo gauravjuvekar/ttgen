@@ -33,6 +33,9 @@ doc/doxygen
 /stamp-h?
 /depcomp
 /test-driver
+*.sed
+*.sin
+*.header
 
 .deps/
 .dirstamp
