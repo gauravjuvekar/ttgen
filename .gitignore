@@ -49,3 +49,6 @@ ltmain.sh
 Makevars
 stamp-po
 *.gmo
+.libs*
+*.la
+*.lo

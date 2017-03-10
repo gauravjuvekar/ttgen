@@ -1,2 +1,2 @@
-noinst_LIBRARIES     = libsqlite3.a
-libsqlite3_a_SOURCES = sqlite3.c
+lib_LTLIBRARIES     = libsqlite3.la
+libsqlite3_la_SOURCES = sqlite3.c

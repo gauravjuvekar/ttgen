@@ -22,7 +22,8 @@ project_LDADD          = $(GTK3_LIBS)
 project_LDFLAGS        = $(LTLIBINTL)
 project_CPPFLAGS      += -DLOCALEDIR=\"$(localedir)\"
 if !USE_SQLITE3
-project_LDADD         += sqlite/libsqlite3.a
+project_LDADD         += sqlite/libsqlite3.la
+project_LDFLAGS       += -static
 SUBDIRS                = sqlite
 else
 project_CPPFLAGS      += $(sqlite3_CFLAGS)
