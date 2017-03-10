@@ -36,6 +36,15 @@ doc/doxygen
 *.sed
 *.sin
 *.header
+*.in
 
 .deps/
 .dirstamp
+trace
+POTFILES
+ABOUT_NLS
+ABOUT-NLS
+libtool
+ltmain.sh
+Makevars
+stamp-po

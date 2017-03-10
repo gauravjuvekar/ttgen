@@ -14,9 +14,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "../config.h"
 #include <locale.h>
 #include <libintl.h>
+#include "gettext.h"
 
 #include "main.h"
 
@@ -86,8 +87,8 @@ void init_all(CallBackData *data) {
 
 int main(int argc, char* argv[]) {
 	setlocale(LC_ALL, "");
-	bindtextdomain("project", "/usr/share/locale");
-	textdomain("project");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
 
 	gtk_init(&argc, &argv);
 
