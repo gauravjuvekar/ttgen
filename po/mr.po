@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: Marathi\n"
 "Language: mr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/gui.ui:142
@@ -50,11 +50,11 @@ msgstr ""
 
 #: src/gui.ui:415
 msgid "Teachers"
-msgstr ""
+msgstr "शिक्षक"
 
 #: src/gui.ui:446
 msgid "Rooms"
-msgstr "kholi"
+msgstr "खोल्या"
 
 #: src/gui.ui:477
 msgid "Batches"
@@ -62,7 +62,7 @@ msgstr ""
 
 #: src/gui.ui:508
 msgid "Subjects"
-msgstr ""
+msgstr "विषय"
 
 #: src/gui.ui:537
 msgid "View"
