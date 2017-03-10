@@ -19,7 +19,6 @@ doc/doxygen
 
 /autom4te.cache/
 /config.*
-/m4/
 
 /aclocal.m4
 /autoscan.log
